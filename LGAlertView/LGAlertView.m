@@ -1342,7 +1342,7 @@ LGAlertViewStyle;
     
     if (animated)
     {
-        [LGAlertView animateStandartWithAnimations:^(void)
+        [LGAlertView animateStandardWithAnimations:^(void)
          {
              [self showAnimations];
          }
@@ -1407,7 +1407,7 @@ LGAlertViewStyle;
     
     if (animated)
     {
-        [LGAlertView animateStandartWithAnimations:^(void)
+        [LGAlertView animateStandardWithAnimations:^(void)
          {
              [self dismissAnimations];
          }
@@ -2060,7 +2060,7 @@ LGAlertViewStyle;
 
 #pragma mark - Support
 
-+ (void)animateStandartWithAnimations:(void(^)())animations completion:(void(^)(BOOL finished))completion
++ (void)animateStandardWithAnimations:(void(^)())animations completion:(void(^)(BOOL finished))completion
 {
     if ([UIDevice currentDevice].systemVersion.floatValue >= 7.0)
     {
