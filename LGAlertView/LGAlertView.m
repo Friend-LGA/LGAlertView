@@ -193,7 +193,7 @@ LGAlertViewStyle;
 
 #if __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_8_0
 
-#pragma mark iOS == 8
+#pragma mark iOS >= 8
 
 - (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator
 {
@@ -989,7 +989,10 @@ LGAlertViewStyle;
     
     UIWindow *window = notification.object;
     
-    if ([NSStringFromClass([window class]) isEqualToString:@"UITextEffectsWindow"]) return;
+    //NSLog(@"%@", NSStringFromClass([window class]));
+    
+    if ([NSStringFromClass([window class]) isEqualToString:@"UITextEffectsWindow"] ||
+        [NSStringFromClass([window class]) isEqualToString:@"UIRemoteKeyboardWindow"]) return;
     
     if (notification.name == UIWindowDidBecomeVisibleNotification)
     {
