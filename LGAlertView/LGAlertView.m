@@ -164,7 +164,7 @@ LGAlertViewStyle;
     return window.currentViewController.shouldAutorotate;
 }
 
-- (NSUInteger)supportedInterfaceOrientations
+- (UIInterfaceOrientationMask)supportedInterfaceOrientations
 {
     UIWindow *window = [UIApplication sharedApplication].delegate.window;
 
