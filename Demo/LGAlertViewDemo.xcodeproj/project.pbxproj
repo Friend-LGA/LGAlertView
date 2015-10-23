@@ -12,6 +12,7 @@
 		4A3B78711AD2A28300DB8642 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4A3B78701AD2A28300DB8642 /* Images.xcassets */; };
 		4A3B788B1AD2A93D00DB8642 /* TableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A3B788A1AD2A93D00DB8642 /* TableViewController.m */; };
 		4A3B788E1AD2B29F00DB8642 /* NavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A3B788D1AD2B29F00DB8642 /* NavigationController.m */; };
+		4ABF191C1BDA895200A12B6E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4ABF191B1BDA895200A12B6E /* LaunchScreen.storyboard */; settings = {ASSET_TAGS = (); }; };
 		92E830BBF9A0E9733AA1BC7E /* libPods-LGAlertViewDemo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 623B5C352E52555F577FBF72 /* libPods-LGAlertViewDemo.a */; };
 /* End PBXBuildFile section */
 
@@ -26,6 +27,7 @@
 		4A3B788A1AD2A93D00DB8642 /* TableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TableViewController.m; sourceTree = "<group>"; };
 		4A3B788C1AD2B29F00DB8642 /* NavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NavigationController.h; sourceTree = "<group>"; };
 		4A3B788D1AD2B29F00DB8642 /* NavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NavigationController.m; sourceTree = "<group>"; };
+		4ABF191B1BDA895200A12B6E /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		623B5C352E52555F577FBF72 /* libPods-LGAlertViewDemo.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-LGAlertViewDemo.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		637E642E08EC55B4AF82AB1E /* Pods-LGAlertViewDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LGAlertViewDemo.debug.xcconfig"; path = "Pods/Target Support Files/Pods-LGAlertViewDemo/Pods-LGAlertViewDemo.debug.xcconfig"; sourceTree = "<group>"; };
 		75F4867B7B8225C0410A3B3A /* Pods-LGAlertViewDemo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LGAlertViewDemo.release.xcconfig"; path = "Pods/Target Support Files/Pods-LGAlertViewDemo/Pods-LGAlertViewDemo.release.xcconfig"; sourceTree = "<group>"; };
@@ -72,6 +74,7 @@
 				4A3B788A1AD2A93D00DB8642 /* TableViewController.m */,
 				4A3B78701AD2A28300DB8642 /* Images.xcassets */,
 				4A3B78631AD2A28200DB8642 /* Supporting Files */,
+				4ABF191B1BDA895200A12B6E /* LaunchScreen.storyboard */,
 			);
 			path = LGAlertViewDemo;
 			sourceTree = "<group>";
@@ -114,6 +117,7 @@
 				4A3B785D1AD2A28200DB8642 /* Frameworks */,
 				4A3B785E1AD2A28200DB8642 /* Resources */,
 				29113AC9920AC8E38789F323 /* Copy Pods Resources */,
+				B520B4BA66BB51ABABA89F86 /* Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -162,6 +166,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4A3B78711AD2A28300DB8642 /* Images.xcassets in Resources */,
+				4ABF191C1BDA895200A12B6E /* LaunchScreen.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -196,6 +201,21 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		B520B4BA66BB51ABABA89F86 /* Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-LGAlertViewDemo/Pods-LGAlertViewDemo-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */

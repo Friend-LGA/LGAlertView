@@ -36,9 +36,6 @@ static NSString *const kLGAlertViewWillDismissNotification = @"LGAlertViewWillDi
 static NSString *const kLGAlertViewDidShowNotification     = @"LGAlertViewDidShowNotification";
 static NSString *const kLGAlertViewDidDismissNotification  = @"LGAlertViewDidDismissNotification";
 
-static CGFloat const kLGAlertViewMargin = 16.f;
-static CGFloat const kLGAlertViewWidth  = 320.f-kLGAlertViewMargin*2;
-
 @protocol LGAlertViewDelegate <NSObject>
 
 @optional
@@ -65,14 +62,17 @@ static CGFloat const kLGAlertViewWidth  = 320.f-kLGAlertViewMargin*2;
 @property (strong, nonatomic) UIColor *tintColor;
 @property (strong, nonatomic) UIColor *coverColor;
 @property (strong, nonatomic) UIColor *backgroundColor;
+@property (assign, nonatomic) CGFloat buttonsHeight;
+@property (assign, nonatomic) CGFloat textFieldsHeight;
+@property (assign, nonatomic) CGFloat offsetVertical;
+@property (assign, nonatomic) CGFloat heightMax;
+@property (assign, nonatomic) CGFloat width;
+
 @property (assign, nonatomic) CGFloat layerCornerRadius;
 @property (strong, nonatomic) UIColor *layerBorderColor;
 @property (assign, nonatomic) CGFloat layerBorderWidth;
 @property (strong, nonatomic) UIColor *layerShadowColor;
 @property (assign, nonatomic) CGFloat layerShadowRadius;
-
-@property (assign, nonatomic) CGFloat heightMax;
-@property (assign, nonatomic) CGFloat widthMax;
 
 @property (strong, nonatomic) UIColor         *titleTextColor;
 @property (assign, nonatomic) NSTextAlignment titleTextAlignment;
