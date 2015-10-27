@@ -65,8 +65,8 @@ LGAlertViewStyle;
 @property (assign, nonatomic, getter=isExists) BOOL exists;
 
 @property (strong, nonatomic) UIWindow *window;
-@property (assign, nonatomic) UIWindow *windowPrevious;
-@property (assign, nonatomic) UIWindow *windowNotice;
+@property (strong, nonatomic) UIWindow *windowPrevious;
+@property (strong, nonatomic) UIWindow *windowNotice;
 
 @property (strong, nonatomic) UIView *view;
 
@@ -207,6 +207,11 @@ LGAlertViewStyle;
 }
 
 #endif
+
+- (UIStatusBarStyle)preferredStatusBarStyle
+{
+    return [UIApplication sharedApplication].statusBarStyle;
+}
 
 @end
 
@@ -998,7 +1003,8 @@ LGAlertViewStyle;
     //NSLog(@"%@", NSStringFromClass([window class]));
 
     if ([NSStringFromClass([window class]) isEqualToString:@"UITextEffectsWindow"] ||
-        [NSStringFromClass([window class]) isEqualToString:@"UIRemoteKeyboardWindow"]) return;
+        [NSStringFromClass([window class]) isEqualToString:@"UIRemoteKeyboardWindow"] ||
+        [window isEqual:_window]) return;
 
     if (notification.name == UIWindowDidBecomeVisibleNotification)
     {
@@ -1006,7 +1012,7 @@ LGAlertViewStyle;
         {
             window.hidden = YES;
         }
-        else if (![window isEqual:_window] && !_windowNotice)
+        else if (!_windowNotice)
         {
             _windowNotice = window;
 
@@ -1015,19 +1021,11 @@ LGAlertViewStyle;
     }
     else if (notification.name == UIWindowDidBecomeHiddenNotification)
     {
-        __weak UIView *view = window.subviews.lastObject;
-
-        if (![window isEqual:_window] && [window isEqual:_windowNotice])
+        if ([window isEqual:_windowNotice])
         {
-            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^(void)
-                           {
-                               if (!view)
-                               {
-                                   _windowNotice = nil;
+            _windowNotice = nil;
 
-                                   [_window makeKeyAndVisible];
-                               }
-                           });
+            [_window makeKeyAndVisible];
         }
     }
 }
@@ -1241,7 +1239,7 @@ LGAlertViewStyle;
         label.adjustsFontSizeToFitWidth = _destructiveButtonAdjustsFontSizeToFitWidth;
         label.minimumScaleFactor        = _destructiveButtonMinimumScaleFactor;
 
-        CGSize size = [label sizeThatFits:CGSizeMake(tableView.frame.size.width-kLGAlertViewInnerMarginW*2, CGFLOAT_MAX)];
+        CGSize size = [label sizeThatFits:CGSizeMake(tableView.frame.size.width-kLGAlertViewPaddingW*2, CGFLOAT_MAX)];
         size.height += kLGAlertViewButtonTitleMarginH*2;
 
         if (size.height < _buttonsHeight)
@@ -1262,7 +1260,7 @@ LGAlertViewStyle;
         label.adjustsFontSizeToFitWidth = _cancelButtonAdjustsFontSizeToFitWidth;
         label.minimumScaleFactor        = _cancelButtonMinimumScaleFactor;
 
-        CGSize size = [label sizeThatFits:CGSizeMake(tableView.frame.size.width-kLGAlertViewInnerMarginW*2, CGFLOAT_MAX)];
+        CGSize size = [label sizeThatFits:CGSizeMake(tableView.frame.size.width-kLGAlertViewPaddingW*2, CGFLOAT_MAX)];
         size.height += kLGAlertViewButtonTitleMarginH*2;
 
         if (size.height < _buttonsHeight)
@@ -1283,7 +1281,7 @@ LGAlertViewStyle;
         label.adjustsFontSizeToFitWidth = _buttonsAdjustsFontSizeToFitWidth;
         label.minimumScaleFactor        = _buttonsMinimumScaleFactor;
 
-        CGSize size = [label sizeThatFits:CGSizeMake(tableView.frame.size.width-kLGAlertViewInnerMarginW*2, CGFLOAT_MAX)];
+        CGSize size = [label sizeThatFits:CGSizeMake(tableView.frame.size.width-kLGAlertViewPaddingW*2, CGFLOAT_MAX)];
         size.height += kLGAlertViewButtonTitleMarginH*2;
 
         if (size.height < _buttonsHeight)
@@ -1540,8 +1538,8 @@ LGAlertViewStyle;
             _titleLabel.backgroundColor = [UIColor clearColor];
             _titleLabel.font = _titleFont;
 
-            CGSize titleLabelSize = [_titleLabel sizeThatFits:CGSizeMake(width-kLGAlertViewInnerMarginW*2, CGFLOAT_MAX)];
-            CGRect titleLabelFrame = CGRectMake(kLGAlertViewInnerMarginW, kLGAlertViewInnerMarginH, width-kLGAlertViewInnerMarginW*2, titleLabelSize.height);
+            CGSize titleLabelSize = [_titleLabel sizeThatFits:CGSizeMake(width-kLGAlertViewPaddingW*2, CGFLOAT_MAX)];
+            CGRect titleLabelFrame = CGRectMake(kLGAlertViewPaddingW, kLGAlertViewInnerMarginH, width-kLGAlertViewPaddingW*2, titleLabelSize.height);
             if ([UIScreen mainScreen].scale == 1.f)
                 titleLabelFrame = CGRectIntegral(titleLabelFrame);
 
@@ -1564,8 +1562,8 @@ LGAlertViewStyle;
 
             if (!offsetY) offsetY = kLGAlertViewInnerMarginH/2;
 
-            CGSize messageLabelSize = [_messageLabel sizeThatFits:CGSizeMake(width-kLGAlertViewInnerMarginW*2, CGFLOAT_MAX)];
-            CGRect messageLabelFrame = CGRectMake(kLGAlertViewInnerMarginW, offsetY+kLGAlertViewInnerMarginH/2, width-kLGAlertViewInnerMarginW*2, messageLabelSize.height);
+            CGSize messageLabelSize = [_messageLabel sizeThatFits:CGSizeMake(width-kLGAlertViewPaddingW*2, CGFLOAT_MAX)];
+            CGRect messageLabelFrame = CGRectMake(kLGAlertViewPaddingW, offsetY+kLGAlertViewInnerMarginH/2, width-kLGAlertViewPaddingW*2, messageLabelSize.height);
             if ([UIScreen mainScreen].scale == 1.f)
                 messageLabelFrame = CGRectIntegral(messageLabelFrame);
 
@@ -1613,7 +1611,7 @@ LGAlertViewStyle;
             if (_progressViewTrackImage)
                 _progressView.trackImage = _progressViewTrackImage;
 
-            CGRect progressViewFrame = CGRectMake(kLGAlertViewInnerMarginW, offsetY+kLGAlertViewInnerMarginH, width-kLGAlertViewInnerMarginW*2, _progressView.frame.size.height);
+            CGRect progressViewFrame = CGRectMake(kLGAlertViewPaddingW, offsetY+kLGAlertViewInnerMarginH, width-kLGAlertViewPaddingW*2, _progressView.frame.size.height);
             if ([UIScreen mainScreen].scale == 1.f)
                 progressViewFrame = CGRectIntegral(progressViewFrame);
 
@@ -1630,8 +1628,8 @@ LGAlertViewStyle;
             _progressLabel.backgroundColor = [UIColor clearColor];
             _progressLabel.font = _progressLabelFont;
 
-            CGSize progressLabelSize = [_progressLabel sizeThatFits:CGSizeMake(width-kLGAlertViewInnerMarginW*2, CGFLOAT_MAX)];
-            CGRect progressLabelFrame = CGRectMake(kLGAlertViewInnerMarginW, offsetY+kLGAlertViewInnerMarginH/2, width-kLGAlertViewInnerMarginW*2, progressLabelSize.height);
+            CGSize progressLabelSize = [_progressLabel sizeThatFits:CGSizeMake(width-kLGAlertViewPaddingW*2, CGFLOAT_MAX)];
+            CGRect progressLabelFrame = CGRectMake(kLGAlertViewPaddingW, offsetY+kLGAlertViewInnerMarginH/2, width-kLGAlertViewPaddingW*2, progressLabelSize.height);
             if ([UIScreen mainScreen].scale == 1.f)
                 progressLabelFrame = CGRectIntegral(progressLabelFrame);
 
@@ -1699,7 +1697,7 @@ LGAlertViewStyle;
                 [_destructiveButton setTitleColor:_destructiveButtonTitleColorHighlighted forState:UIControlStateSelected];
                 [_destructiveButton setBackgroundImage:[LGAlertView image1x1WithColor:_destructiveButtonBackgroundColorHighlighted] forState:UIControlStateHighlighted];
                 [_destructiveButton setBackgroundImage:[LGAlertView image1x1WithColor:_destructiveButtonBackgroundColorHighlighted] forState:UIControlStateSelected];
-                _destructiveButton.contentEdgeInsets = UIEdgeInsetsMake(kLGAlertViewButtonTitleMarginH, kLGAlertViewInnerMarginW, kLGAlertViewButtonTitleMarginH, kLGAlertViewInnerMarginW);
+                _destructiveButton.contentEdgeInsets = UIEdgeInsetsMake(kLGAlertViewButtonTitleMarginH, kLGAlertViewPaddingW, kLGAlertViewButtonTitleMarginH, kLGAlertViewPaddingW);
                 _destructiveButton.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
                 if (_destructiveButtonTextAlignment == NSTextAlignmentCenter)
                     _destructiveButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentCenter;
@@ -1730,7 +1728,7 @@ LGAlertViewStyle;
                 [_cancelButton setTitleColor:_cancelButtonTitleColorHighlighted forState:UIControlStateSelected];
                 [_cancelButton setBackgroundImage:[LGAlertView image1x1WithColor:_cancelButtonBackgroundColorHighlighted] forState:UIControlStateHighlighted];
                 [_cancelButton setBackgroundImage:[LGAlertView image1x1WithColor:_cancelButtonBackgroundColorHighlighted] forState:UIControlStateSelected];
-                _cancelButton.contentEdgeInsets = UIEdgeInsetsMake(kLGAlertViewButtonTitleMarginH, kLGAlertViewInnerMarginW, kLGAlertViewButtonTitleMarginH, kLGAlertViewInnerMarginW);
+                _cancelButton.contentEdgeInsets = UIEdgeInsetsMake(kLGAlertViewButtonTitleMarginH, kLGAlertViewPaddingW, kLGAlertViewButtonTitleMarginH, kLGAlertViewPaddingW);
                 _cancelButton.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
                 if (_cancelButtonTextAlignment == NSTextAlignmentCenter)
                     _cancelButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentCenter;
@@ -1761,7 +1759,7 @@ LGAlertViewStyle;
                 [_firstButton setTitleColor:_buttonsTitleColorHighlighted forState:UIControlStateSelected];
                 [_firstButton setBackgroundImage:[LGAlertView image1x1WithColor:_buttonsBackgroundColorHighlighted] forState:UIControlStateHighlighted];
                 [_firstButton setBackgroundImage:[LGAlertView image1x1WithColor:_buttonsBackgroundColorHighlighted] forState:UIControlStateSelected];
-                _firstButton.contentEdgeInsets = UIEdgeInsetsMake(kLGAlertViewButtonTitleMarginH, kLGAlertViewInnerMarginW, kLGAlertViewButtonTitleMarginH, kLGAlertViewInnerMarginW);
+                _firstButton.contentEdgeInsets = UIEdgeInsetsMake(kLGAlertViewButtonTitleMarginH, kLGAlertViewPaddingW, kLGAlertViewButtonTitleMarginH, kLGAlertViewPaddingW);
                 _firstButton.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
                 if (_buttonsTextAlignment == NSTextAlignmentCenter)
                     _firstButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentCenter;
@@ -1791,7 +1789,7 @@ LGAlertViewStyle;
                     [_secondButton setTitleColor:_buttonsTitleColorHighlighted forState:UIControlStateSelected];
                     [_secondButton setBackgroundImage:[LGAlertView image1x1WithColor:_buttonsBackgroundColorHighlighted] forState:UIControlStateHighlighted];
                     [_secondButton setBackgroundImage:[LGAlertView image1x1WithColor:_buttonsBackgroundColorHighlighted] forState:UIControlStateSelected];
-                    _secondButton.contentEdgeInsets = UIEdgeInsetsMake(kLGAlertViewButtonTitleMarginH, kLGAlertViewInnerMarginW, kLGAlertViewButtonTitleMarginH, kLGAlertViewInnerMarginW);
+                    _secondButton.contentEdgeInsets = UIEdgeInsetsMake(kLGAlertViewButtonTitleMarginH, kLGAlertViewPaddingW, kLGAlertViewButtonTitleMarginH, kLGAlertViewPaddingW);
                     _secondButton.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
                     if (_buttonsTextAlignment == NSTextAlignmentCenter)
                         _secondButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentCenter;

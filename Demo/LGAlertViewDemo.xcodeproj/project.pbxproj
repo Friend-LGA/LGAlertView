@@ -12,7 +12,7 @@
 		4A3B78711AD2A28300DB8642 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4A3B78701AD2A28300DB8642 /* Images.xcassets */; };
 		4A3B788B1AD2A93D00DB8642 /* TableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A3B788A1AD2A93D00DB8642 /* TableViewController.m */; };
 		4A3B788E1AD2B29F00DB8642 /* NavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A3B788D1AD2B29F00DB8642 /* NavigationController.m */; };
-		4ABF191C1BDA895200A12B6E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4ABF191B1BDA895200A12B6E /* LaunchScreen.storyboard */; settings = {ASSET_TAGS = (); }; };
+		4ABF191C1BDA895200A12B6E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4ABF191B1BDA895200A12B6E /* LaunchScreen.storyboard */; };
 		92E830BBF9A0E9733AA1BC7E /* libPods-LGAlertViewDemo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 623B5C352E52555F577FBF72 /* libPods-LGAlertViewDemo.a */; };
 /* End PBXBuildFile section */
 
@@ -321,6 +321,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				INFOPLIST_FILE = LGAlertViewDemo/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.test.$(PRODUCT_NAME)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -334,6 +335,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				INFOPLIST_FILE = LGAlertViewDemo/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.test.$(PRODUCT_NAME)";
 				PRODUCT_NAME = "$(TARGET_NAME)";

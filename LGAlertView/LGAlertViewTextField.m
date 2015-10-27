@@ -47,8 +47,8 @@
 
 - (CGRect)textRectForBounds:(CGRect)bounds
 {
-    bounds.origin.x += kLGAlertViewInnerMarginW;
-    bounds.size.width -= kLGAlertViewInnerMarginW*2;
+    bounds.origin.x += kLGAlertViewPaddingW;
+    bounds.size.width -= kLGAlertViewPaddingW*2;
 
     if ([UIDevice currentDevice].systemVersion.floatValue < 7.0)
     {
@@ -58,12 +58,12 @@
 
     if (self.leftView)
     {
-        bounds.origin.x += (self.leftView.frame.size.width+kLGAlertViewInnerMarginW);
-        bounds.size.width -= (self.leftView.frame.size.width+kLGAlertViewInnerMarginW);
+        bounds.origin.x += (self.leftView.frame.size.width+kLGAlertViewPaddingW);
+        bounds.size.width -= (self.leftView.frame.size.width+kLGAlertViewPaddingW);
     }
 
     if (self.rightView)
-        bounds.size.width -= (self.rightView.frame.size.width+kLGAlertViewInnerMarginW);
+        bounds.size.width -= (self.rightView.frame.size.width+kLGAlertViewPaddingW);
     else if (self.clearButtonMode == UITextFieldViewModeAlways)
         bounds.size.width -= 20.f;
 
@@ -72,8 +72,8 @@
 
 - (CGRect)editingRectForBounds:(CGRect)bounds
 {
-    bounds.origin.x += kLGAlertViewInnerMarginW;
-    bounds.size.width -= kLGAlertViewInnerMarginW*2;
+    bounds.origin.x += kLGAlertViewPaddingW;
+    bounds.size.width -= kLGAlertViewPaddingW*2;
 
     if ([UIDevice currentDevice].systemVersion.floatValue < 7.0)
     {
@@ -83,12 +83,12 @@
 
     if (self.leftView)
     {
-        bounds.origin.x += (self.leftView.frame.size.width+kLGAlertViewInnerMarginW);
-        bounds.size.width -= (self.leftView.frame.size.width+kLGAlertViewInnerMarginW);
+        bounds.origin.x += (self.leftView.frame.size.width+kLGAlertViewPaddingW);
+        bounds.size.width -= (self.leftView.frame.size.width+kLGAlertViewPaddingW);
     }
 
     if (self.rightView)
-        bounds.size.width -= (self.rightView.frame.size.width+kLGAlertViewInnerMarginW);
+        bounds.size.width -= (self.rightView.frame.size.width+kLGAlertViewPaddingW);
     else if (self.clearButtonMode == UITextFieldViewModeAlways)
         bounds.size.width -= 20.f;
 
