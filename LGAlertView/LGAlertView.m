@@ -146,8 +146,10 @@ LGAlertViewStyle;
     self = [super init];
     if (self)
     {
+#if __IPHONE_OS_VERSION_MIN_REQUIRED < __IPHONE_7_0
         if ([UIDevice currentDevice].systemVersion.floatValue < 7.0)
             self.wantsFullScreenLayout = YES;
+#endif
 
         _alertView = alertView;
 
