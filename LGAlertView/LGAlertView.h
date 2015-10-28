@@ -35,6 +35,9 @@ static NSString *const kLGAlertViewWillShowNotification    = @"LGAlertViewWillSh
 static NSString *const kLGAlertViewWillDismissNotification = @"LGAlertViewWillDismissNotification";
 static NSString *const kLGAlertViewDidShowNotification     = @"LGAlertViewDidShowNotification";
 static NSString *const kLGAlertViewDidDismissNotification  = @"LGAlertViewDidDismissNotification";
+static NSString *const kLGAlertViewActionNotification      = @"LGAlertViewActionNotification";
+static NSString *const kLGAlertViewCancelNotification      = @"LGAlertViewCancelNotification";
+static NSString *const kLGAlertViewDestructiveNotification = @"LGAlertViewDestructiveNotification";
 
 @protocol LGAlertViewDelegate <NSObject>
 

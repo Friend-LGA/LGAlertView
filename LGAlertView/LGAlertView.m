@@ -966,8 +966,6 @@ LGAlertViewStyle;
 #if DEBUG
     NSLog(@"%s [Line %d]", __PRETTY_FUNCTION__, __LINE__);
 #endif
-
-    [self removeObservers];
 }
 
 #pragma mark - Observers
@@ -1074,6 +1072,13 @@ LGAlertViewStyle;
     }
 
     return YES;
+}
+
+#pragma mark - UIGestureRecognizer Delegate
+
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch
+{
+    return self.isCancelOnTouch;
 }
 
 #pragma mark - Setters and Getters
@@ -1313,6 +1318,13 @@ LGAlertViewStyle;
 
         NSString *title = _buttonTitles[indexPath.row];
 
+        // -----
+
+        [[NSNotificationCenter defaultCenter] postNotificationName:kLGAlertViewActionNotification
+                                                            object:self
+                                                          userInfo:@{@"title" : title,
+                                                                     @"index" : [NSNumber numberWithInteger:index]}];
+
         if (_actionHandler) _actionHandler(self, title, index);
 
         if (_delegate && [_delegate respondsToSelector:@selector(alertView:buttonPressedWithTitle:index:)])
@@ -1473,9 +1485,6 @@ LGAlertViewStyle;
 
     [_windowPrevious makeKeyAndVisible];
 
-    self.viewController = nil;
-    self.window = nil;
-
     // -----
 
     [[NSNotificationCenter defaultCenter] postNotificationName:kLGAlertViewDidDismissNotification object:self userInfo:nil];
@@ -1484,6 +1493,14 @@ LGAlertViewStyle;
 
     if (_delegate && [_delegate respondsToSelector:@selector(alertViewDidDismiss:)])
         [_delegate alertViewDidDismiss:self];
+
+    // -----
+
+    _view = nil;
+    _viewController = nil;
+    _windowNotice = nil;
+    _windowPrevious = nil;
+    _window = nil;
 }
 
 #pragma mark -
@@ -2020,19 +2037,18 @@ LGAlertViewStyle;
 
 - (void)cancelAction:(id)sender
 {
-    BOOL onButton = [sender isKindOfClass:[UIButton class]];
+    BOOL onButton = ![sender isKindOfClass:[UIGestureRecognizer class]];
 
-    if (sender)
-    {
-        if (onButton)
-            [(UIButton *)sender setSelected:YES];
-        else if ([sender isKindOfClass:[UIGestureRecognizer class]] && !self.isCancelOnTouch)
-            return;
-    }
+    if (onButton)
+        [(UIButton *)sender setSelected:YES];
 
     [self dismissAnimated:YES completionHandler:nil];
 
     // -----
+
+    [[NSNotificationCenter defaultCenter] postNotificationName:kLGAlertViewCancelNotification
+                                                        object:self
+                                                      userInfo:@{@"onButton" : [NSNumber numberWithBool:onButton]}];
 
     if (_cancelHandler) _cancelHandler(self, onButton);
 
@@ -2046,6 +2062,10 @@ LGAlertViewStyle;
         [(UIButton *)sender setSelected:YES];
 
     [self dismissAnimated:YES completionHandler:nil];
+
+    // -----
+
+    [[NSNotificationCenter defaultCenter] postNotificationName:kLGAlertViewDestructiveNotification object:self userInfo:nil];
 
     if (_destructiveHandler) _destructiveHandler(self);
 
@@ -2063,6 +2083,13 @@ LGAlertViewStyle;
 
     NSString *title = _buttonTitles[0];
 
+    // -----
+
+    [[NSNotificationCenter defaultCenter] postNotificationName:kLGAlertViewActionNotification
+                                                        object:self
+                                                      userInfo:@{@"title" : title,
+                                                                 @"index" : [NSNumber numberWithInteger:index]}];
+
     if (_actionHandler) _actionHandler(self, title, index);
 
     if (_delegate && [_delegate respondsToSelector:@selector(alertView:buttonPressedWithTitle:index:)])
@@ -2078,6 +2105,13 @@ LGAlertViewStyle;
     NSUInteger index = 1;
 
     NSString *title = _buttonTitles[1];
+
+    // -----
+
+    [[NSNotificationCenter defaultCenter] postNotificationName:kLGAlertViewActionNotification
+                                                        object:self
+                                                      userInfo:@{@"title" : title,
+                                                                 @"index" : [NSNumber numberWithInteger:index]}];
 
     if (_actionHandler) _actionHandler(self, title, index);
 
@@ -2128,13 +2162,9 @@ LGAlertViewStyle;
 
 + (void)keyboardAnimateWithNotificationUserInfo:(NSDictionary *)notificationUserInfo animations:(void(^)(CGFloat keyboardHeight))animations
 {
-    CGFloat keyboardHeight = (notificationUserInfo[@"UIKeyboardBoundsUserInfoKey"] ? [notificationUserInfo[@"UIKeyboardBoundsUserInfoKey"] CGRectValue].size.height : 0.f);
-    if (!keyboardHeight)
-        keyboardHeight = (notificationUserInfo[UIKeyboardFrameBeginUserInfoKey] ? [notificationUserInfo[UIKeyboardFrameBeginUserInfoKey] CGRectValue].size.height : 0.f);
-    if (!keyboardHeight)
-        keyboardHeight = (notificationUserInfo[UIKeyboardFrameEndUserInfoKey] ? [notificationUserInfo[UIKeyboardFrameEndUserInfoKey] CGRectValue].size.height : 0.f);
-    if (!keyboardHeight)
-        return;
+    CGFloat keyboardHeight = (notificationUserInfo[UIKeyboardFrameEndUserInfoKey] ? [notificationUserInfo[UIKeyboardFrameEndUserInfoKey] CGRectValue].size.height : 0.f);
+
+    if (!keyboardHeight) return;
 
     NSTimeInterval animationDuration = [notificationUserInfo[UIKeyboardAnimationDurationUserInfoKey] doubleValue];
     int animationCurve = [notificationUserInfo[UIKeyboardAnimationCurveUserInfoKey] intValue];
