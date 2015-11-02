@@ -18,8 +18,10 @@
 {
     [super viewDidLoad];
 
+    self.navigationBar.translucent = YES;
     self.navigationBar.barTintColor = [UIColor colorWithRed:0.f green:0.5 blue:1.f alpha:1.f];
     self.navigationBar.titleTextAttributes = @{NSForegroundColorAttributeName: [UIColor whiteColor]};
+    self.navigationBar.tintColor = [UIColor colorWithWhite:1.f alpha:0.5];
 }
 
 - (BOOL)shouldAutorotate

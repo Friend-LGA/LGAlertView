@@ -53,6 +53,8 @@
 
         _separatorView = [UIView new];
         [self addSubview:_separatorView];
+
+        _enabled = YES;
     }
     return self;
 }
@@ -98,8 +100,7 @@
     }
     else
     {
-        _titleLabel.textColor = _titleColor;
-        self.backgroundColor = [UIColor clearColor];
+        [self setEnabled:_enabled];
     }
 }
 
@@ -114,8 +115,25 @@
     }
     else
     {
+        [self setEnabled:_enabled];
+    }
+}
+
+- (void)setEnabled:(BOOL)enabled
+{
+    _enabled = enabled;
+
+    self.userInteractionEnabled = enabled;
+
+    if (enabled)
+    {
         _titleLabel.textColor = _titleColor;
-        self.backgroundColor = [UIColor clearColor];
+        self.backgroundColor = _backgroundColorNormal;
+    }
+    else
+    {
+        _titleLabel.textColor = _titleColorDisabled;
+        self.backgroundColor = _backgroundColorDisabled;
     }
 }
 

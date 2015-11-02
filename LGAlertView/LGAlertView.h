@@ -55,19 +55,39 @@ static NSString *const kLGAlertViewDestructiveNotification = @"LGAlertViewDestru
 
 @interface LGAlertView : NSObject
 
+typedef enum
+{
+    LGAlertViewStyleAlert       = 0,
+    LGAlertViewStyleActionSheet = 1
+}
+LGAlertViewStyle;
+
+typedef enum
+{
+    LGAlertViewWindowLevelAboveStatusBar = 0,
+    LGAlertViewWindowLevelBelowStatusBar = 1
+}
+LGAlertViewWindowLevel;
+
 @property (assign, nonatomic, getter=isShowing) BOOL showing;
+/** Default is LGAlertViewWindowLevelAboveStatusBar */
+@property (assign, nonatomic) LGAlertViewWindowLevel windowLevel;
 
 /** Default is YES */
 @property (assign, nonatomic, getter=isCancelOnTouch) BOOL cancelOnTouch;
 /** Set highlighted buttons background color to blue, and set highlighted destructive button background color to red. Default is YES */
 @property (assign, nonatomic, getter=isColorful) BOOL colorful;
 
+/** Set colors of buttons title and background, cancel button title and background, activity indicator and progress view */
 @property (strong, nonatomic) UIColor *tintColor;
 @property (strong, nonatomic) UIColor *coverColor;
 @property (strong, nonatomic) UIColor *backgroundColor;
 @property (assign, nonatomic) CGFloat buttonsHeight;
 @property (assign, nonatomic) CGFloat textFieldsHeight;
+/** Top and bottom offsets from borders of the screen */
 @property (assign, nonatomic) CGFloat offsetVertical;
+/** Offset between cancel button and main view when style is LGAlertViewStyleActionSheet. Default is 8.f */
+@property (assign, nonatomic) CGFloat cancelButtonOffset;
 @property (assign, nonatomic) CGFloat heightMax;
 @property (assign, nonatomic) CGFloat width;
 
@@ -76,6 +96,8 @@ static NSString *const kLGAlertViewDestructiveNotification = @"LGAlertViewDestru
 @property (assign, nonatomic) CGFloat layerBorderWidth;
 @property (strong, nonatomic) UIColor *layerShadowColor;
 @property (assign, nonatomic) CGFloat layerShadowRadius;
+@property (assign, nonatomic) CGFloat layerShadowOpacity;
+@property (assign, nonatomic) CGSize  layerShadowOffset;
 
 @property (strong, nonatomic) UIColor         *titleTextColor;
 @property (assign, nonatomic) NSTextAlignment titleTextAlignment;
@@ -87,33 +109,38 @@ static NSString *const kLGAlertViewDestructiveNotification = @"LGAlertViewDestru
 
 @property (strong, nonatomic) UIColor         *buttonsTitleColor;
 @property (strong, nonatomic) UIColor         *buttonsTitleColorHighlighted;
+@property (strong, nonatomic) UIColor         *buttonsTitleColorDisabled;
 @property (assign, nonatomic) NSTextAlignment buttonsTextAlignment;
 @property (strong, nonatomic) UIFont          *buttonsFont;
+@property (strong, nonatomic) UIColor         *buttonsBackgroundColor;
 @property (strong, nonatomic) UIColor         *buttonsBackgroundColorHighlighted;
+@property (strong, nonatomic) UIColor         *buttonsBackgroundColorDisabled;
 @property (assign, nonatomic) NSUInteger      buttonsNumberOfLines;
 @property (assign, nonatomic) NSLineBreakMode buttonsLineBreakMode;
-@property (assign, nonatomic) BOOL            buttonsAdjustsFontSizeToFitWidth;
 @property (assign, nonatomic) CGFloat         buttonsMinimumScaleFactor;
+@property (assign, nonatomic, getter=isButtonsAdjustsFontSizeToFitWidth) BOOL buttonsAdjustsFontSizeToFitWidth;
 
 @property (strong, nonatomic) UIColor         *cancelButtonTitleColor;
 @property (strong, nonatomic) UIColor         *cancelButtonTitleColorHighlighted;
 @property (assign, nonatomic) NSTextAlignment cancelButtonTextAlignment;
 @property (strong, nonatomic) UIFont          *cancelButtonFont;
+@property (strong, nonatomic) UIColor         *cancelButtonBackgroundColor;
 @property (strong, nonatomic) UIColor         *cancelButtonBackgroundColorHighlighted;
 @property (assign, nonatomic) NSUInteger      cancelButtonNumberOfLines;
 @property (assign, nonatomic) NSLineBreakMode cancelButtonLineBreakMode;
-@property (assign, nonatomic) BOOL            cancelButtonAdjustsFontSizeToFitWidth;
 @property (assign, nonatomic) CGFloat         cancelButtonMinimumScaleFactor;
+@property (assign, nonatomic, getter=isCancelButtonAdjustsFontSizeToFitWidth) BOOL cancelButtonAdjustsFontSizeToFitWidth;
 
 @property (strong, nonatomic) UIColor         *destructiveButtonTitleColor;
 @property (strong, nonatomic) UIColor         *destructiveButtonTitleColorHighlighted;
 @property (assign, nonatomic) NSTextAlignment destructiveButtonTextAlignment;
 @property (strong, nonatomic) UIFont          *destructiveButtonFont;
+@property (strong, nonatomic) UIColor         *destructiveButtonBackgroundColor;
 @property (strong, nonatomic) UIColor         *destructiveButtonBackgroundColorHighlighted;
 @property (assign, nonatomic) NSUInteger      destructiveButtonNumberOfLines;
 @property (assign, nonatomic) NSLineBreakMode destructiveButtonLineBreakMode;
-@property (assign, nonatomic) BOOL            destructiveButtonAdjustsFontSizeToFitWidth;
 @property (assign, nonatomic) CGFloat         destructiveButtonMinimumScaleFactor;
+@property (assign, nonatomic, getter=isDestructiveButtonAdjustsFontSizeToFitWidth) BOOL destructiveButtonAdjustsFontSizeToFitWidth;
 
 @property (assign, nonatomic) UIActivityIndicatorViewStyle activityIndicatorViewStyle;
 @property (strong, nonatomic) UIColor                      *activityIndicatorViewColor;
@@ -132,6 +159,7 @@ static NSString *const kLGAlertViewDestructiveNotification = @"LGAlertViewDestru
 @property (strong, nonatomic) UIColor *separatorsColor;
 
 @property (assign, nonatomic) UIScrollViewIndicatorStyle indicatorStyle;
+@property (assign, nonatomic, getter=isShowsVerticalScrollIndicator) BOOL showsVerticalScrollIndicator;
 
 @property (strong, nonatomic, readonly) NSMutableArray *textFieldsArray;
 
@@ -155,79 +183,86 @@ static NSString *const kLGAlertViewDestructiveNotification = @"LGAlertViewDestru
 
 - (instancetype)initWithTitle:(NSString *)title
                       message:(NSString *)message
+                        style:(LGAlertViewStyle)style
                  buttonTitles:(NSArray *)buttonTitles
             cancelButtonTitle:(NSString *)cancelButtonTitle
        destructiveButtonTitle:(NSString *)destructiveButtonTitle;
 
-/** View can not be subclass of UIScrollView */
-- (instancetype)initWithViewStyleWithTitle:(NSString *)title
+- (instancetype)initWithViewAndTitle:(NSString *)title
+                             message:(NSString *)message
+                               style:(LGAlertViewStyle)style
+                                view:(UIView *)view
+                        buttonTitles:(NSArray *)buttonTitles
+                   cancelButtonTitle:(NSString *)cancelButtonTitle
+              destructiveButtonTitle:(NSString *)destructiveButtonTitle;
+
+- (instancetype)initWithActivityIndicatorAndTitle:(NSString *)title
+                                          message:(NSString *)message
+                                            style:(LGAlertViewStyle)style
+                                     buttonTitles:(NSArray *)buttonTitles
+                                cancelButtonTitle:(NSString *)cancelButtonTitle
+                           destructiveButtonTitle:(NSString *)destructiveButtonTitle;
+
+- (instancetype)initWithProgressViewAndTitle:(NSString *)title
+                                     message:(NSString *)message
+                                       style:(LGAlertViewStyle)style
+                           progressLabelText:(NSString *)progressLabelText
+                                buttonTitles:(NSArray *)buttonTitles
+                           cancelButtonTitle:(NSString *)cancelButtonTitle
+                      destructiveButtonTitle:(NSString *)destructiveButtonTitle;
+
+- (instancetype)initWithTextFieldsAndTitle:(NSString *)title
                                    message:(NSString *)message
-                                      view:(UIView *)view
+                        numberOfTextFields:(NSUInteger)numberOfTextFields
+                    textFieldsSetupHandler:(void(^)(UITextField *textField, NSUInteger index))textFieldsSetupHandler
                               buttonTitles:(NSArray *)buttonTitles
                          cancelButtonTitle:(NSString *)cancelButtonTitle
                     destructiveButtonTitle:(NSString *)destructiveButtonTitle;
 
-- (instancetype)initWithActivityIndicatorStyleWithTitle:(NSString *)title
-                                                message:(NSString *)message
-                                           buttonTitles:(NSArray *)buttonTitles
-                                      cancelButtonTitle:(NSString *)cancelButtonTitle
-                                 destructiveButtonTitle:(NSString *)destructiveButtonTitle;
-
-- (instancetype)initWithProgressViewStyleWithTitle:(NSString *)title
-                                           message:(NSString *)message
-                                 progressLabelText:(NSString *)progressLabelText
-                                      buttonTitles:(NSArray *)buttonTitles
-                                 cancelButtonTitle:(NSString *)cancelButtonTitle
-                            destructiveButtonTitle:(NSString *)destructiveButtonTitle;
-
-- (instancetype)initWithTextFieldsStyleWithTitle:(NSString *)title
-                                         message:(NSString *)message
-                              numberOfTextFields:(NSUInteger)numberOfTextFields
-                          textFieldsSetupHandler:(void(^)(UITextField *textField, NSUInteger index))textFieldsSetupHandler
-                                    buttonTitles:(NSArray *)buttonTitles
-                               cancelButtonTitle:(NSString *)cancelButtonTitle
-                          destructiveButtonTitle:(NSString *)destructiveButtonTitle;
-
 + (instancetype)alertViewWithTitle:(NSString *)title
                            message:(NSString *)message
+                             style:(LGAlertViewStyle)style
                       buttonTitles:(NSArray *)buttonTitles
                  cancelButtonTitle:(NSString *)cancelButtonTitle
             destructiveButtonTitle:(NSString *)destructiveButtonTitle;
 
-/** View can not be subclass of UIScrollView */
-+ (instancetype)alertViewWithViewStyleWithTitle:(NSString *)title
++ (instancetype)alertViewWithViewAndTitle:(NSString *)title
+                                  message:(NSString *)message
+                                    style:(LGAlertViewStyle)style
+                                     view:(UIView *)view
+                             buttonTitles:(NSArray *)buttonTitles
+                        cancelButtonTitle:(NSString *)cancelButtonTitle
+                   destructiveButtonTitle:(NSString *)destructiveButtonTitle;
+
++ (instancetype)alertViewWithActivityIndicatorAndTitle:(NSString *)title
+                                               message:(NSString *)message
+                                                 style:(LGAlertViewStyle)style
+                                          buttonTitles:(NSArray *)buttonTitles
+                                     cancelButtonTitle:(NSString *)cancelButtonTitle
+                                destructiveButtonTitle:(NSString *)destructiveButtonTitle;
+
++ (instancetype)alertViewWithProgressViewAndTitle:(NSString *)title
+                                          message:(NSString *)message
+                                            style:(LGAlertViewStyle)style
+                                progressLabelText:(NSString *)progressLabelText
+                                     buttonTitles:(NSArray *)buttonTitles
+                                cancelButtonTitle:(NSString *)cancelButtonTitle
+                           destructiveButtonTitle:(NSString *)destructiveButtonTitle;
+
++ (instancetype)alertViewWithTextFieldsAndTitle:(NSString *)title
                                         message:(NSString *)message
-                                           view:(UIView *)view
+                             numberOfTextFields:(NSUInteger)numberOfTextFields
+                         textFieldsSetupHandler:(void(^)(UITextField *textField, NSUInteger index))textFieldsSetupHandler
                                    buttonTitles:(NSArray *)buttonTitles
                               cancelButtonTitle:(NSString *)cancelButtonTitle
                          destructiveButtonTitle:(NSString *)destructiveButtonTitle;
-
-+ (instancetype)alertViewWithActivityIndicatorStyleWithTitle:(NSString *)title
-                                                     message:(NSString *)message
-                                                buttonTitles:(NSArray *)buttonTitles
-                                           cancelButtonTitle:(NSString *)cancelButtonTitle
-                                      destructiveButtonTitle:(NSString *)destructiveButtonTitle;
-
-+ (instancetype)alertViewWithProgressViewStyleWithTitle:(NSString *)title
-                                                message:(NSString *)message
-                                      progressLabelText:(NSString *)progressLabelText
-                                           buttonTitles:(NSArray *)buttonTitles
-                                      cancelButtonTitle:(NSString *)cancelButtonTitle
-                                 destructiveButtonTitle:(NSString *)destructiveButtonTitle;
-
-+ (instancetype)alertViewWithTextFieldsStyleWithTitle:(NSString *)title
-                                              message:(NSString *)message
-                                   numberOfTextFields:(NSUInteger)numberOfTextFields
-                               textFieldsSetupHandler:(void(^)(UITextField *textField, NSUInteger index))textFieldsSetupHandler
-                                         buttonTitles:(NSArray *)buttonTitles
-                                    cancelButtonTitle:(NSString *)cancelButtonTitle
-                               destructiveButtonTitle:(NSString *)destructiveButtonTitle;
 
 #pragma mark -
 
 /** Do not forget about weak referens to self for actionHandler, cancelHandler and destructiveHandler blocks */
 - (instancetype)initWithTitle:(NSString *)title
                       message:(NSString *)message
+                        style:(LGAlertViewStyle)style
                  buttonTitles:(NSArray *)buttonTitles
             cancelButtonTitle:(NSString *)cancelButtonTitle
        destructiveButtonTitle:(NSString *)destructiveButtonTitle
@@ -235,13 +270,46 @@ static NSString *const kLGAlertViewDestructiveNotification = @"LGAlertViewDestru
                 cancelHandler:(void(^)(LGAlertView *alertView, BOOL onButton))cancelHandler
            destructiveHandler:(void(^)(LGAlertView *alertView))destructiveHandler;
 
-/**
- View can not be subclass of UIScrollView.
- Do not forget about weak referens to self for actionHandler, cancelHandler and destructiveHandler blocks.
- */
-- (instancetype)initWithViewStyleWithTitle:(NSString *)title
+/** Do not forget about weak referens to self for actionHandler, cancelHandler and destructiveHandler blocks */
+- (instancetype)initWithViewAndTitle:(NSString *)title
+                             message:(NSString *)message
+                               style:(LGAlertViewStyle)style
+                                view:(UIView *)view
+                        buttonTitles:(NSArray *)buttonTitles
+                   cancelButtonTitle:(NSString *)cancelButtonTitle
+              destructiveButtonTitle:(NSString *)destructiveButtonTitle
+                       actionHandler:(void(^)(LGAlertView *alertView, NSString *title, NSUInteger index))actionHandler
+                       cancelHandler:(void(^)(LGAlertView *alertView, BOOL onButton))cancelHandler
+                  destructiveHandler:(void(^)(LGAlertView *alertView))destructiveHandler;
+
+/** Do not forget about weak referens to self for actionHandler, cancelHandler and destructiveHandler blocks */
+- (instancetype)initWithActivityIndicatorAndTitle:(NSString *)title
+                                          message:(NSString *)message
+                                            style:(LGAlertViewStyle)style
+                                     buttonTitles:(NSArray *)buttonTitles
+                                cancelButtonTitle:(NSString *)cancelButtonTitle
+                           destructiveButtonTitle:(NSString *)destructiveButtonTitle
+                                    actionHandler:(void(^)(LGAlertView *alertView, NSString *title, NSUInteger index))actionHandler
+                                    cancelHandler:(void(^)(LGAlertView *alertView, BOOL onButton))cancelHandler
+                               destructiveHandler:(void(^)(LGAlertView *alertView))destructiveHandler;
+
+/** Do not forget about weak referens to self for actionHandler, cancelHandler and destructiveHandler blocks */
+- (instancetype)initWithProgressViewAndTitle:(NSString *)title
+                                     message:(NSString *)message
+                                       style:(LGAlertViewStyle)style
+                           progressLabelText:(NSString *)progressLabelText
+                                buttonTitles:(NSArray *)buttonTitles
+                           cancelButtonTitle:(NSString *)cancelButtonTitle
+                      destructiveButtonTitle:(NSString *)destructiveButtonTitle
+                               actionHandler:(void(^)(LGAlertView *alertView, NSString *title, NSUInteger index))actionHandler
+                               cancelHandler:(void(^)(LGAlertView *alertView, BOOL onButton))cancelHandler
+                          destructiveHandler:(void(^)(LGAlertView *alertView))destructiveHandler;
+
+/** Do not forget about weak referens to self for actionHandler, cancelHandler and destructiveHandler blocks */
+- (instancetype)initWithTextFieldsAndTitle:(NSString *)title
                                    message:(NSString *)message
-                                      view:(UIView *)view
+                        numberOfTextFields:(NSUInteger)numberOfTextFields
+                    textFieldsSetupHandler:(void(^)(UITextField *textField, NSUInteger index))textFieldsSetupHandler
                               buttonTitles:(NSArray *)buttonTitles
                          cancelButtonTitle:(NSString *)cancelButtonTitle
                     destructiveButtonTitle:(NSString *)destructiveButtonTitle
@@ -250,41 +318,9 @@ static NSString *const kLGAlertViewDestructiveNotification = @"LGAlertViewDestru
                         destructiveHandler:(void(^)(LGAlertView *alertView))destructiveHandler;
 
 /** Do not forget about weak referens to self for actionHandler, cancelHandler and destructiveHandler blocks */
-- (instancetype)initWithActivityIndicatorStyleWithTitle:(NSString *)title
-                                                message:(NSString *)message
-                                           buttonTitles:(NSArray *)buttonTitles
-                                      cancelButtonTitle:(NSString *)cancelButtonTitle
-                                 destructiveButtonTitle:(NSString *)destructiveButtonTitle
-                                          actionHandler:(void(^)(LGAlertView *alertView, NSString *title, NSUInteger index))actionHandler
-                                          cancelHandler:(void(^)(LGAlertView *alertView, BOOL onButton))cancelHandler
-                                     destructiveHandler:(void(^)(LGAlertView *alertView))destructiveHandler;
-
-/** Do not forget about weak referens to self for actionHandler, cancelHandler and destructiveHandler blocks */
-- (instancetype)initWithProgressViewStyleWithTitle:(NSString *)title
-                                           message:(NSString *)message
-                                 progressLabelText:(NSString *)progressLabelText
-                                      buttonTitles:(NSArray *)buttonTitles
-                                 cancelButtonTitle:(NSString *)cancelButtonTitle
-                            destructiveButtonTitle:(NSString *)destructiveButtonTitle
-                                     actionHandler:(void(^)(LGAlertView *alertView, NSString *title, NSUInteger index))actionHandler
-                                     cancelHandler:(void(^)(LGAlertView *alertView, BOOL onButton))cancelHandler
-                                destructiveHandler:(void(^)(LGAlertView *alertView))destructiveHandler;
-
-/** Do not forget about weak referens to self for actionHandler, cancelHandler and destructiveHandler blocks */
-- (instancetype)initWithTextFieldsStyleWithTitle:(NSString *)title
-                                         message:(NSString *)message
-                              numberOfTextFields:(NSUInteger)numberOfTextFields
-                          textFieldsSetupHandler:(void(^)(UITextField *textField, NSUInteger index))textFieldsSetupHandler
-                                    buttonTitles:(NSArray *)buttonTitles
-                               cancelButtonTitle:(NSString *)cancelButtonTitle
-                          destructiveButtonTitle:(NSString *)destructiveButtonTitle
-                                   actionHandler:(void(^)(LGAlertView *alertView, NSString *title, NSUInteger index))actionHandler
-                                   cancelHandler:(void(^)(LGAlertView *alertView, BOOL onButton))cancelHandler
-                              destructiveHandler:(void(^)(LGAlertView *alertView))destructiveHandler;
-
-/** Do not forget about weak referens to self for actionHandler, cancelHandler and destructiveHandler blocks */
 + (instancetype)alertViewWithTitle:(NSString *)title
                            message:(NSString *)message
+                             style:(LGAlertViewStyle)style
                       buttonTitles:(NSArray *)buttonTitles
                  cancelButtonTitle:(NSString *)cancelButtonTitle
             destructiveButtonTitle:(NSString *)destructiveButtonTitle
@@ -292,13 +328,46 @@ static NSString *const kLGAlertViewDestructiveNotification = @"LGAlertViewDestru
                      cancelHandler:(void(^)(LGAlertView *alertView, BOOL onButton))cancelHandler
                 destructiveHandler:(void(^)(LGAlertView *alertView))destructiveHandler;
 
-/**
- View can not be subclass of UIScrollView.
- Do not forget about weak referens to self for actionHandler, cancelHandler and destructiveHandler blocks.
- */
-+ (instancetype)alertViewWithViewStyleWithTitle:(NSString *)title
+/** Do not forget about weak referens to self for actionHandler, cancelHandler and destructiveHandler blocks */
++ (instancetype)alertViewWithViewAndTitle:(NSString *)title
+                                  message:(NSString *)message
+                                    style:(LGAlertViewStyle)style
+                                     view:(UIView *)view
+                             buttonTitles:(NSArray *)buttonTitles
+                        cancelButtonTitle:(NSString *)cancelButtonTitle
+                   destructiveButtonTitle:(NSString *)destructiveButtonTitle
+                            actionHandler:(void(^)(LGAlertView *alertView, NSString *title, NSUInteger index))actionHandler
+                            cancelHandler:(void(^)(LGAlertView *alertView, BOOL onButton))cancelHandler
+                       destructiveHandler:(void(^)(LGAlertView *alertView))destructiveHandler;
+
+/** Do not forget about weak referens to self for actionHandler, cancelHandler and destructiveHandler blocks */
++ (instancetype)alertViewWithActivityIndicatorAndTitle:(NSString *)title
+                                               message:(NSString *)message
+                                                 style:(LGAlertViewStyle)style
+                                          buttonTitles:(NSArray *)buttonTitles
+                                     cancelButtonTitle:(NSString *)cancelButtonTitle
+                                destructiveButtonTitle:(NSString *)destructiveButtonTitle
+                                         actionHandler:(void(^)(LGAlertView *alertView, NSString *title, NSUInteger index))actionHandler
+                                         cancelHandler:(void(^)(LGAlertView *alertView, BOOL onButton))cancelHandler
+                                    destructiveHandler:(void(^)(LGAlertView *alertView))destructiveHandler;
+
+/** Do not forget about weak referens to self for actionHandler, cancelHandler and destructiveHandler blocks */
++ (instancetype)alertViewWithProgressViewAndTitle:(NSString *)title
+                                          message:(NSString *)message
+                                            style:(LGAlertViewStyle)style
+                                progressLabelText:(NSString *)progressLabelText
+                                     buttonTitles:(NSArray *)buttonTitles
+                                cancelButtonTitle:(NSString *)cancelButtonTitle
+                           destructiveButtonTitle:(NSString *)destructiveButtonTitle
+                                    actionHandler:(void(^)(LGAlertView *alertView, NSString *title, NSUInteger index))actionHandler
+                                    cancelHandler:(void(^)(LGAlertView *alertView, BOOL onButton))cancelHandler
+                               destructiveHandler:(void(^)(LGAlertView *alertView))destructiveHandler;
+
+/** Do not forget about weak referens to self for actionHandler, cancelHandler and destructiveHandler blocks */
++ (instancetype)alertViewWithTextFieldsAndTitle:(NSString *)title
                                         message:(NSString *)message
-                                           view:(UIView *)view
+                             numberOfTextFields:(NSUInteger)numberOfTextFields
+                         textFieldsSetupHandler:(void(^)(UITextField *textField, NSUInteger index))textFieldsSetupHandler
                                    buttonTitles:(NSArray *)buttonTitles
                               cancelButtonTitle:(NSString *)cancelButtonTitle
                          destructiveButtonTitle:(NSString *)destructiveButtonTitle
@@ -306,120 +375,95 @@ static NSString *const kLGAlertViewDestructiveNotification = @"LGAlertViewDestru
                                   cancelHandler:(void(^)(LGAlertView *alertView, BOOL onButton))cancelHandler
                              destructiveHandler:(void(^)(LGAlertView *alertView))destructiveHandler;
 
-/** Do not forget about weak referens to self for actionHandler, cancelHandler and destructiveHandler blocks */
-+ (instancetype)alertViewWithActivityIndicatorStyleWithTitle:(NSString *)title
-                                                     message:(NSString *)message
-                                                buttonTitles:(NSArray *)buttonTitles
-                                           cancelButtonTitle:(NSString *)cancelButtonTitle
-                                      destructiveButtonTitle:(NSString *)destructiveButtonTitle
-                                               actionHandler:(void(^)(LGAlertView *alertView, NSString *title, NSUInteger index))actionHandler
-                                               cancelHandler:(void(^)(LGAlertView *alertView, BOOL onButton))cancelHandler
-                                          destructiveHandler:(void(^)(LGAlertView *alertView))destructiveHandler;
-
-/** Do not forget about weak referens to self for actionHandler, cancelHandler and destructiveHandler blocks */
-+ (instancetype)alertViewWithProgressViewStyleWithTitle:(NSString *)title
-                                                message:(NSString *)message
-                                      progressLabelText:(NSString *)progressLabelText
-                                           buttonTitles:(NSArray *)buttonTitles
-                                      cancelButtonTitle:(NSString *)cancelButtonTitle
-                                 destructiveButtonTitle:(NSString *)destructiveButtonTitle
-                                          actionHandler:(void(^)(LGAlertView *alertView, NSString *title, NSUInteger index))actionHandler
-                                          cancelHandler:(void(^)(LGAlertView *alertView, BOOL onButton))cancelHandler
-                                     destructiveHandler:(void(^)(LGAlertView *alertView))destructiveHandler;
-
-/** Do not forget about weak referens to self for actionHandler, cancelHandler and destructiveHandler blocks */
-+ (instancetype)alertViewWithTextFieldsStyleWithTitle:(NSString *)title
-                                              message:(NSString *)message
-                                   numberOfTextFields:(NSUInteger)numberOfTextFields
-                               textFieldsSetupHandler:(void(^)(UITextField *textField, NSUInteger index))textFieldsSetupHandler
-                                         buttonTitles:(NSArray *)buttonTitles
-                                    cancelButtonTitle:(NSString *)cancelButtonTitle
-                               destructiveButtonTitle:(NSString *)destructiveButtonTitle
-                                        actionHandler:(void(^)(LGAlertView *alertView, NSString *title, NSUInteger index))actionHandler
-                                        cancelHandler:(void(^)(LGAlertView *alertView, BOOL onButton))cancelHandler
-                                   destructiveHandler:(void(^)(LGAlertView *alertView))destructiveHandler;
-
 #pragma mark -
 
 - (instancetype)initWithTitle:(NSString *)title
                       message:(NSString *)message
+                        style:(LGAlertViewStyle)style
                  buttonTitles:(NSArray *)buttonTitles
             cancelButtonTitle:(NSString *)cancelButtonTitle
        destructiveButtonTitle:(NSString *)destructiveButtonTitle
                      delegate:(id<LGAlertViewDelegate>)delegate;
 
 /** View can not be subclass of UIScrollView */
-- (instancetype)initWithViewStyleWithTitle:(NSString *)title
+- (instancetype)initWithViewAndTitle:(NSString *)title
+                             message:(NSString *)message
+                               style:(LGAlertViewStyle)style
+                                view:(UIView *)view
+                        buttonTitles:(NSArray *)buttonTitles
+                   cancelButtonTitle:(NSString *)cancelButtonTitle
+              destructiveButtonTitle:(NSString *)destructiveButtonTitle
+                            delegate:(id<LGAlertViewDelegate>)delegate;
+
+- (instancetype)initWithActivityIndicatorAndTitle:(NSString *)title
+                                          message:(NSString *)message
+                                            style:(LGAlertViewStyle)style
+                                     buttonTitles:(NSArray *)buttonTitles
+                                cancelButtonTitle:(NSString *)cancelButtonTitle
+                           destructiveButtonTitle:(NSString *)destructiveButtonTitle
+                                         delegate:(id<LGAlertViewDelegate>)delegate;
+
+- (instancetype)initWithProgressViewAndTitle:(NSString *)title
+                                     message:(NSString *)message
+                                       style:(LGAlertViewStyle)style
+                           progressLabelText:(NSString *)progressLabelText
+                                buttonTitles:(NSArray *)buttonTitles
+                           cancelButtonTitle:(NSString *)cancelButtonTitle
+                      destructiveButtonTitle:(NSString *)destructiveButtonTitle
+                                    delegate:(id<LGAlertViewDelegate>)delegate;
+
+- (instancetype)initWithTextFieldsAndTitle:(NSString *)title
                                    message:(NSString *)message
-                                      view:(UIView *)view
+                        numberOfTextFields:(NSUInteger)numberOfTextFields
+                    textFieldsSetupHandler:(void(^)(UITextField *textField, NSUInteger index))textFieldsSetupHandler
                               buttonTitles:(NSArray *)buttonTitles
                          cancelButtonTitle:(NSString *)cancelButtonTitle
                     destructiveButtonTitle:(NSString *)destructiveButtonTitle
                                   delegate:(id<LGAlertViewDelegate>)delegate;
 
-- (instancetype)initWithActivityIndicatorStyleWithTitle:(NSString *)title
-                                                message:(NSString *)message
-                                           buttonTitles:(NSArray *)buttonTitles
-                                      cancelButtonTitle:(NSString *)cancelButtonTitle
-                                 destructiveButtonTitle:(NSString *)destructiveButtonTitle
-                                               delegate:(id<LGAlertViewDelegate>)delegate;
-
-- (instancetype)initWithProgressViewStyleWithTitle:(NSString *)title
-                                           message:(NSString *)message
-                                 progressLabelText:(NSString *)progressLabelText
-                                      buttonTitles:(NSArray *)buttonTitles
-                                 cancelButtonTitle:(NSString *)cancelButtonTitle
-                            destructiveButtonTitle:(NSString *)destructiveButtonTitle
-                                          delegate:(id<LGAlertViewDelegate>)delegate;
-
-- (instancetype)initWithTextFieldsStyleWithTitle:(NSString *)title
-                                         message:(NSString *)message
-                              numberOfTextFields:(NSUInteger)numberOfTextFields
-                          textFieldsSetupHandler:(void(^)(UITextField *textField, NSUInteger index))textFieldsSetupHandler
-                                    buttonTitles:(NSArray *)buttonTitles
-                               cancelButtonTitle:(NSString *)cancelButtonTitle
-                          destructiveButtonTitle:(NSString *)destructiveButtonTitle
-                                        delegate:(id<LGAlertViewDelegate>)delegate;
-
 + (instancetype)alertViewWithTitle:(NSString *)title
                            message:(NSString *)message
+                             style:(LGAlertViewStyle)style
                       buttonTitles:(NSArray *)buttonTitles
                  cancelButtonTitle:(NSString *)cancelButtonTitle
             destructiveButtonTitle:(NSString *)destructiveButtonTitle
                           delegate:(id<LGAlertViewDelegate>)delegate;
 
 /** View can not be subclass of UIScrollView */
-+ (instancetype)alertViewWithViewStyleWithTitle:(NSString *)title
++ (instancetype)alertViewWithViewAndTitle:(NSString *)title
+                                  message:(NSString *)message
+                                    style:(LGAlertViewStyle)style
+                                     view:(UIView *)view
+                             buttonTitles:(NSArray *)buttonTitles
+                        cancelButtonTitle:(NSString *)cancelButtonTitle
+                   destructiveButtonTitle:(NSString *)destructiveButtonTitle
+                                 delegate:(id<LGAlertViewDelegate>)delegate;
+
++ (instancetype)alertViewWithActivityIndicatorAndTitle:(NSString *)title
+                                               message:(NSString *)message
+                                                 style:(LGAlertViewStyle)style
+                                          buttonTitles:(NSArray *)buttonTitles
+                                     cancelButtonTitle:(NSString *)cancelButtonTitle
+                                destructiveButtonTitle:(NSString *)destructiveButtonTitle
+                                              delegate:(id<LGAlertViewDelegate>)delegate;
+
++ (instancetype)alertViewWithProgressViewAndTitle:(NSString *)title
+                                          message:(NSString *)message
+                                            style:(LGAlertViewStyle)style
+                                progressLabelText:(NSString *)progressLabelText
+                                     buttonTitles:(NSArray *)buttonTitles
+                                cancelButtonTitle:(NSString *)cancelButtonTitle
+                           destructiveButtonTitle:(NSString *)destructiveButtonTitle
+                                         delegate:(id<LGAlertViewDelegate>)delegate;
+
++ (instancetype)alertViewWithTextFieldsAndTitle:(NSString *)title
                                         message:(NSString *)message
-                                           view:(UIView *)view
+                             numberOfTextFields:(NSUInteger)numberOfTextFields
+                         textFieldsSetupHandler:(void(^)(UITextField *textField, NSUInteger index))textFieldsSetupHandler
                                    buttonTitles:(NSArray *)buttonTitles
                               cancelButtonTitle:(NSString *)cancelButtonTitle
                          destructiveButtonTitle:(NSString *)destructiveButtonTitle
                                        delegate:(id<LGAlertViewDelegate>)delegate;
-
-+ (instancetype)alertViewWithActivityIndicatorStyleWithTitle:(NSString *)title
-                                                     message:(NSString *)message
-                                                buttonTitles:(NSArray *)buttonTitles
-                                           cancelButtonTitle:(NSString *)cancelButtonTitle
-                                      destructiveButtonTitle:(NSString *)destructiveButtonTitle
-                                                    delegate:(id<LGAlertViewDelegate>)delegate;
-
-+ (instancetype)alertViewWithProgressViewStyleWithTitle:(NSString *)title
-                                                message:(NSString *)message
-                                      progressLabelText:(NSString *)progressLabelText
-                                           buttonTitles:(NSArray *)buttonTitles
-                                      cancelButtonTitle:(NSString *)cancelButtonTitle
-                                 destructiveButtonTitle:(NSString *)destructiveButtonTitle
-                                               delegate:(id<LGAlertViewDelegate>)delegate;
-
-+ (instancetype)alertViewWithTextFieldsStyleWithTitle:(NSString *)title
-                                              message:(NSString *)message
-                                   numberOfTextFields:(NSUInteger)numberOfTextFields
-                               textFieldsSetupHandler:(void(^)(UITextField *textField, NSUInteger index))textFieldsSetupHandler
-                                         buttonTitles:(NSArray *)buttonTitles
-                                    cancelButtonTitle:(NSString *)cancelButtonTitle
-                               destructiveButtonTitle:(NSString *)destructiveButtonTitle
-                                             delegate:(id<LGAlertViewDelegate>)delegate;
 
 #pragma mark -
 
@@ -427,6 +471,11 @@ static NSString *const kLGAlertViewDestructiveNotification = @"LGAlertViewDestru
 - (void)dismissAnimated:(BOOL)animated completionHandler:(void(^)())completionHandler;
 
 - (void)setProgress:(float)progress progressLabelText:(NSString *)progressLabelText;
+
+- (void)setButtonAtIndex:(NSUInteger)index enabled:(BOOL)enabled;
+- (BOOL)isButtonEnabledAtIndex:(NSUInteger)index;
+
+- (void)layoutInvalidateWithSize:(CGSize)size;
 
 #pragma mark -
 
