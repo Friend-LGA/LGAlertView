@@ -35,7 +35,8 @@
                          @"LGAlertView + A lot of buttons short",
                          @"LGAlertView + UIView",
                          @"LGAlertView + ActivityIndicator",
-                         @"LGAlertView + ProgressView"];
+                         @"LGAlertView + ActivityIndicator cancel",
+                         @"LGAlertView + ProgressView cancel"];
 
         [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"cell"];
         UIEdgeInsets contentInset = self.tableView.contentInset;
@@ -261,7 +262,7 @@
                                                                                 message:@"Waiting please"
                                                                                   style:LGAlertViewStyleActionSheet
                                                                            buttonTitles:nil
-                                                                      cancelButtonTitle:@"I'm hurry"
+                                                                      cancelButtonTitle:nil
                                                                  destructiveButtonTitle:nil
                                                                           actionHandler:nil
                                                                           cancelHandler:nil
@@ -274,6 +275,24 @@
                        });
     }
     else if (indexPath.row == 11)
+    {
+        LGAlertView *alertView = [[LGAlertView alloc] initWithActivityIndicatorAndTitle:@"Loading"
+                                                                                message:@"Waiting please"
+                                                                                  style:LGAlertViewStyleActionSheet
+                                                                           buttonTitles:nil
+                                                                      cancelButtonTitle:@"I'm hurry"
+                                                                 destructiveButtonTitle:nil
+                                                                          actionHandler:nil
+                                                                          cancelHandler:nil
+                                                                     destructiveHandler:nil];
+        [alertView showAnimated:YES completionHandler:nil];
+
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(5.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^(void)
+                       {
+                           [alertView dismissAnimated:YES completionHandler:nil];
+                       });
+    }
+    else if (indexPath.row == 12)
     {
         LGAlertView *alertView = [[LGAlertView alloc] initWithProgressViewAndTitle:@"Loading"
                                                                            message:@"Waiting please"

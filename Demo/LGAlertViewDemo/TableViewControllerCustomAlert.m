@@ -167,6 +167,7 @@
         alertView.width = MIN(self.view.bounds.size.width, self.view.bounds.size.height);
         alertView.titleTextAlignment = NSTextAlignmentLeft;
         alertView.messageTextAlignment = NSTextAlignmentLeft;
+        alertView.oneRowOneButton = YES;
         alertView.buttonsTextAlignment = NSTextAlignmentRight;
         alertView.cancelButtonTextAlignment = NSTextAlignmentRight;
         alertView.destructiveButtonTextAlignment = NSTextAlignmentRight;
@@ -194,6 +195,7 @@
         alertView.width = MIN(self.view.bounds.size.width, self.view.bounds.size.height);
         alertView.titleTextAlignment = NSTextAlignmentLeft;
         alertView.messageTextAlignment = NSTextAlignmentLeft;
+        alertView.oneRowOneButton = YES;
         alertView.destructiveButtonTextAlignment = NSTextAlignmentRight;
         alertView.buttonsTextAlignment = NSTextAlignmentRight;
         alertView.cancelButtonTextAlignment = NSTextAlignmentRight;
@@ -222,6 +224,7 @@
         alertView.width = MIN(self.view.bounds.size.width, self.view.bounds.size.height);
         alertView.titleTextAlignment = NSTextAlignmentLeft;
         alertView.messageTextAlignment = NSTextAlignmentLeft;
+        alertView.oneRowOneButton = YES;
         alertView.destructiveButtonTextAlignment = NSTextAlignmentRight;
         alertView.buttonsTextAlignment = NSTextAlignmentRight;
         alertView.cancelButtonTextAlignment = NSTextAlignmentRight;

@@ -163,6 +163,9 @@ LGAlertViewWindowLevel;
 
 @property (strong, nonatomic, readonly) NSMutableArray *textFieldsArray;
 
+@property (assign, nonatomic, getter=isPadShowActionSheetFromBottom) BOOL padShowActionSheetFromBottom;
+@property (assign, nonatomic, getter=isOneRowOneButton) BOOL oneRowOneButton;
+
 /** Do not forget about weak referens to self */
 @property (strong, nonatomic) void (^willShowHandler)(LGAlertView *alertView);
 /** Do not forget about weak referens to self */
@@ -175,7 +178,7 @@ LGAlertViewWindowLevel;
 /** Do not forget about weak referens to self */
 @property (strong, nonatomic) void (^actionHandler)(LGAlertView *alertView, NSString *title, NSUInteger index);
 /** Do not forget about weak referens to self */
-@property (strong, nonatomic) void (^cancelHandler)(LGAlertView *alertView, BOOL onButton);
+@property (strong, nonatomic) void (^cancelHandler)(LGAlertView *alertView);
 /** Do not forget about weak referens to self */
 @property (strong, nonatomic) void (^destructiveHandler)(LGAlertView *alertView);
 
@@ -267,7 +270,7 @@ LGAlertViewWindowLevel;
             cancelButtonTitle:(NSString *)cancelButtonTitle
        destructiveButtonTitle:(NSString *)destructiveButtonTitle
                 actionHandler:(void(^)(LGAlertView *alertView, NSString *title, NSUInteger index))actionHandler
-                cancelHandler:(void(^)(LGAlertView *alertView, BOOL onButton))cancelHandler
+                cancelHandler:(void(^)(LGAlertView *alertView))cancelHandler
            destructiveHandler:(void(^)(LGAlertView *alertView))destructiveHandler;
 
 /** Do not forget about weak referens to self for actionHandler, cancelHandler and destructiveHandler blocks */
@@ -279,7 +282,7 @@ LGAlertViewWindowLevel;
                    cancelButtonTitle:(NSString *)cancelButtonTitle
               destructiveButtonTitle:(NSString *)destructiveButtonTitle
                        actionHandler:(void(^)(LGAlertView *alertView, NSString *title, NSUInteger index))actionHandler
-                       cancelHandler:(void(^)(LGAlertView *alertView, BOOL onButton))cancelHandler
+                       cancelHandler:(void(^)(LGAlertView *alertView))cancelHandler
                   destructiveHandler:(void(^)(LGAlertView *alertView))destructiveHandler;
 
 /** Do not forget about weak referens to self for actionHandler, cancelHandler and destructiveHandler blocks */
@@ -290,7 +293,7 @@ LGAlertViewWindowLevel;
                                 cancelButtonTitle:(NSString *)cancelButtonTitle
                            destructiveButtonTitle:(NSString *)destructiveButtonTitle
                                     actionHandler:(void(^)(LGAlertView *alertView, NSString *title, NSUInteger index))actionHandler
-                                    cancelHandler:(void(^)(LGAlertView *alertView, BOOL onButton))cancelHandler
+                                    cancelHandler:(void(^)(LGAlertView *alertView))cancelHandler
                                destructiveHandler:(void(^)(LGAlertView *alertView))destructiveHandler;
 
 /** Do not forget about weak referens to self for actionHandler, cancelHandler and destructiveHandler blocks */
@@ -302,7 +305,7 @@ LGAlertViewWindowLevel;
                            cancelButtonTitle:(NSString *)cancelButtonTitle
                       destructiveButtonTitle:(NSString *)destructiveButtonTitle
                                actionHandler:(void(^)(LGAlertView *alertView, NSString *title, NSUInteger index))actionHandler
-                               cancelHandler:(void(^)(LGAlertView *alertView, BOOL onButton))cancelHandler
+                               cancelHandler:(void(^)(LGAlertView *alertView))cancelHandler
                           destructiveHandler:(void(^)(LGAlertView *alertView))destructiveHandler;
 
 /** Do not forget about weak referens to self for actionHandler, cancelHandler and destructiveHandler blocks */
@@ -314,7 +317,7 @@ LGAlertViewWindowLevel;
                          cancelButtonTitle:(NSString *)cancelButtonTitle
                     destructiveButtonTitle:(NSString *)destructiveButtonTitle
                              actionHandler:(void(^)(LGAlertView *alertView, NSString *title, NSUInteger index))actionHandler
-                             cancelHandler:(void(^)(LGAlertView *alertView, BOOL onButton))cancelHandler
+                             cancelHandler:(void(^)(LGAlertView *alertView))cancelHandler
                         destructiveHandler:(void(^)(LGAlertView *alertView))destructiveHandler;
 
 /** Do not forget about weak referens to self for actionHandler, cancelHandler and destructiveHandler blocks */
@@ -325,7 +328,7 @@ LGAlertViewWindowLevel;
                  cancelButtonTitle:(NSString *)cancelButtonTitle
             destructiveButtonTitle:(NSString *)destructiveButtonTitle
                      actionHandler:(void(^)(LGAlertView *alertView, NSString *title, NSUInteger index))actionHandler
-                     cancelHandler:(void(^)(LGAlertView *alertView, BOOL onButton))cancelHandler
+                     cancelHandler:(void(^)(LGAlertView *alertView))cancelHandler
                 destructiveHandler:(void(^)(LGAlertView *alertView))destructiveHandler;
 
 /** Do not forget about weak referens to self for actionHandler, cancelHandler and destructiveHandler blocks */
@@ -337,7 +340,7 @@ LGAlertViewWindowLevel;
                         cancelButtonTitle:(NSString *)cancelButtonTitle
                    destructiveButtonTitle:(NSString *)destructiveButtonTitle
                             actionHandler:(void(^)(LGAlertView *alertView, NSString *title, NSUInteger index))actionHandler
-                            cancelHandler:(void(^)(LGAlertView *alertView, BOOL onButton))cancelHandler
+                            cancelHandler:(void(^)(LGAlertView *alertView))cancelHandler
                        destructiveHandler:(void(^)(LGAlertView *alertView))destructiveHandler;
 
 /** Do not forget about weak referens to self for actionHandler, cancelHandler and destructiveHandler blocks */
@@ -348,7 +351,7 @@ LGAlertViewWindowLevel;
                                      cancelButtonTitle:(NSString *)cancelButtonTitle
                                 destructiveButtonTitle:(NSString *)destructiveButtonTitle
                                          actionHandler:(void(^)(LGAlertView *alertView, NSString *title, NSUInteger index))actionHandler
-                                         cancelHandler:(void(^)(LGAlertView *alertView, BOOL onButton))cancelHandler
+                                         cancelHandler:(void(^)(LGAlertView *alertView))cancelHandler
                                     destructiveHandler:(void(^)(LGAlertView *alertView))destructiveHandler;
 
 /** Do not forget about weak referens to self for actionHandler, cancelHandler and destructiveHandler blocks */
@@ -360,7 +363,7 @@ LGAlertViewWindowLevel;
                                 cancelButtonTitle:(NSString *)cancelButtonTitle
                            destructiveButtonTitle:(NSString *)destructiveButtonTitle
                                     actionHandler:(void(^)(LGAlertView *alertView, NSString *title, NSUInteger index))actionHandler
-                                    cancelHandler:(void(^)(LGAlertView *alertView, BOOL onButton))cancelHandler
+                                    cancelHandler:(void(^)(LGAlertView *alertView))cancelHandler
                                destructiveHandler:(void(^)(LGAlertView *alertView))destructiveHandler;
 
 /** Do not forget about weak referens to self for actionHandler, cancelHandler and destructiveHandler blocks */
@@ -372,7 +375,7 @@ LGAlertViewWindowLevel;
                               cancelButtonTitle:(NSString *)cancelButtonTitle
                          destructiveButtonTitle:(NSString *)destructiveButtonTitle
                                   actionHandler:(void(^)(LGAlertView *alertView, NSString *title, NSUInteger index))actionHandler
-                                  cancelHandler:(void(^)(LGAlertView *alertView, BOOL onButton))cancelHandler
+                                  cancelHandler:(void(^)(LGAlertView *alertView))cancelHandler
                              destructiveHandler:(void(^)(LGAlertView *alertView))destructiveHandler;
 
 #pragma mark -
@@ -476,6 +479,12 @@ LGAlertViewWindowLevel;
 - (BOOL)isButtonEnabledAtIndex:(NSUInteger)index;
 
 - (void)layoutInvalidateWithSize:(CGSize)size;
+
+- (void)forceCancel;
+- (void)forceDestructive;
+- (void)forceActionAtIndex:(NSUInteger)index;
+
++ (void)setTintColor:(UIColor *)color;
 
 #pragma mark -
 

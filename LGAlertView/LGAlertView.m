@@ -40,14 +40,17 @@
 #define kLGAlertViewOffsetVertical         (_offsetVertical >= 0 ? _offsetVertical : 8.f)
 #define kLGAlertViewOffsetHorizontal       8.f
 #define kLGAlertViewButtonTitleMarginH     8.f
-#define kLGAlertViewWidth                  (320.f - 20*2)
+#define kLGAlertViewWidthStyleAlert        (320.f - 20*2)
+#define kLGAlertViewWidthStyleActionSheet  (320.f - 16*2)
 #define kLGAlertViewInnerMarginH           (_style == LGAlertViewStyleAlert ? 16.f : 12.f)
-#define kLGAlertViewIsCancelButtonSeparate (_style == LGAlertViewStyleActionSheet && _cancelButtonOffset > 0.f)
+#define kLGAlertViewIsCancelButtonSeparate (_style == LGAlertViewStyleActionSheet && _cancelButtonOffset > 0.f && !kLGAlertViewPadAndNotForce)
 #define kLGAlertViewButtonWidthMin         64.f
 #define kLGAlertViewWindowPrevious(index)  (index > 0 && index < kLGAlertViewWindowsArray.count ? [kLGAlertViewWindowsArray objectAtIndex:(index-1)] : nil)
 #define kLGAlertViewWindowNext(index)      (kLGAlertViewWindowsArray.count > index+1 ? [kLGAlertViewWindowsArray objectAtIndex:(index+1)] : nil)
+#define kLGAlertViewPadAndNotForce         (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad && !self.isPadShowActionSheetFromBottom)
 
 static NSMutableArray *kLGAlertViewWindowsArray;
+static UIColor *kLGAlertViewTintColor;
 
 #pragma mark - Interface
 
@@ -372,7 +375,7 @@ LGAlertViewType;
             cancelButtonTitle:(NSString *)cancelButtonTitle
        destructiveButtonTitle:(NSString *)destructiveButtonTitle
                 actionHandler:(void(^)(LGAlertView *alertView, NSString *title, NSUInteger index))actionHandler
-                cancelHandler:(void(^)(LGAlertView *alertView, BOOL onButton))cancelHandler
+                cancelHandler:(void(^)(LGAlertView *alertView))cancelHandler
            destructiveHandler:(void(^)(LGAlertView *alertView))destructiveHandler
 {
     self = [self initWithTitle:title
@@ -398,7 +401,7 @@ LGAlertViewType;
                    cancelButtonTitle:(NSString *)cancelButtonTitle
               destructiveButtonTitle:(NSString *)destructiveButtonTitle
                        actionHandler:(void(^)(LGAlertView *alertView, NSString *title, NSUInteger index))actionHandler
-                       cancelHandler:(void(^)(LGAlertView *alertView, BOOL onButton))cancelHandler
+                       cancelHandler:(void(^)(LGAlertView *alertView))cancelHandler
                   destructiveHandler:(void(^)(LGAlertView *alertView))destructiveHandler
 {
     self = [self initWithViewAndTitle:title
@@ -424,7 +427,7 @@ LGAlertViewType;
                                 cancelButtonTitle:(NSString *)cancelButtonTitle
                            destructiveButtonTitle:(NSString *)destructiveButtonTitle
                                     actionHandler:(void(^)(LGAlertView *alertView, NSString *title, NSUInteger index))actionHandler
-                                    cancelHandler:(void(^)(LGAlertView *alertView, BOOL onButton))cancelHandler
+                                    cancelHandler:(void(^)(LGAlertView *alertView))cancelHandler
                                destructiveHandler:(void(^)(LGAlertView *alertView))destructiveHandler
 {
     self = [self initWithActivityIndicatorAndTitle:title
@@ -450,7 +453,7 @@ LGAlertViewType;
                            cancelButtonTitle:(NSString *)cancelButtonTitle
                       destructiveButtonTitle:(NSString *)destructiveButtonTitle
                                actionHandler:(void(^)(LGAlertView *alertView, NSString *title, NSUInteger index))actionHandler
-                               cancelHandler:(void(^)(LGAlertView *alertView, BOOL onButton))cancelHandler
+                               cancelHandler:(void(^)(LGAlertView *alertView))cancelHandler
                           destructiveHandler:(void(^)(LGAlertView *alertView))destructiveHandler
 {
     self = [self initWithProgressViewAndTitle:title
@@ -477,7 +480,7 @@ LGAlertViewType;
                          cancelButtonTitle:(NSString *)cancelButtonTitle
                     destructiveButtonTitle:(NSString *)destructiveButtonTitle
                              actionHandler:(void(^)(LGAlertView *alertView, NSString *title, NSUInteger index))actionHandler
-                             cancelHandler:(void(^)(LGAlertView *alertView, BOOL onButton))cancelHandler
+                             cancelHandler:(void(^)(LGAlertView *alertView))cancelHandler
                         destructiveHandler:(void(^)(LGAlertView *alertView))destructiveHandler
 {
     self = [self initWithTextFieldsAndTitle:title
@@ -503,7 +506,7 @@ LGAlertViewType;
                  cancelButtonTitle:(NSString *)cancelButtonTitle
             destructiveButtonTitle:(NSString *)destructiveButtonTitle
                      actionHandler:(void(^)(LGAlertView *alertView, NSString *title, NSUInteger index))actionHandler
-                     cancelHandler:(void(^)(LGAlertView *alertView, BOOL onButton))cancelHandler
+                     cancelHandler:(void(^)(LGAlertView *alertView))cancelHandler
                 destructiveHandler:(void(^)(LGAlertView *alertView))destructiveHandler
 {
     return [[self alloc] initWithTitle:title
@@ -525,7 +528,7 @@ LGAlertViewType;
                         cancelButtonTitle:(NSString *)cancelButtonTitle
                    destructiveButtonTitle:(NSString *)destructiveButtonTitle
                             actionHandler:(void(^)(LGAlertView *alertView, NSString *title, NSUInteger index))actionHandler
-                            cancelHandler:(void(^)(LGAlertView *alertView, BOOL onButton))cancelHandler
+                            cancelHandler:(void(^)(LGAlertView *alertView))cancelHandler
                        destructiveHandler:(void(^)(LGAlertView *alertView))destructiveHandler
 {
     return [[self alloc] initWithViewAndTitle:title
@@ -547,7 +550,7 @@ LGAlertViewType;
                                      cancelButtonTitle:(NSString *)cancelButtonTitle
                                 destructiveButtonTitle:(NSString *)destructiveButtonTitle
                                          actionHandler:(void(^)(LGAlertView *alertView, NSString *title, NSUInteger index))actionHandler
-                                         cancelHandler:(void(^)(LGAlertView *alertView, BOOL onButton))cancelHandler
+                                         cancelHandler:(void(^)(LGAlertView *alertView))cancelHandler
                                     destructiveHandler:(void(^)(LGAlertView *alertView))destructiveHandler
 {
     return [[self alloc] initWithActivityIndicatorAndTitle:title
@@ -569,7 +572,7 @@ LGAlertViewType;
                                 cancelButtonTitle:(NSString *)cancelButtonTitle
                            destructiveButtonTitle:(NSString *)destructiveButtonTitle
                                     actionHandler:(void(^)(LGAlertView *alertView, NSString *title, NSUInteger index))actionHandler
-                                    cancelHandler:(void(^)(LGAlertView *alertView, BOOL onButton))cancelHandler
+                                    cancelHandler:(void(^)(LGAlertView *alertView))cancelHandler
                                destructiveHandler:(void(^)(LGAlertView *alertView))destructiveHandler
 {
     return [[self alloc] initWithProgressViewAndTitle:title
@@ -592,19 +595,19 @@ LGAlertViewType;
                               cancelButtonTitle:(NSString *)cancelButtonTitle
                          destructiveButtonTitle:(NSString *)destructiveButtonTitle
                                   actionHandler:(void(^)(LGAlertView *alertView, NSString *title, NSUInteger index))actionHandler
-                                  cancelHandler:(void(^)(LGAlertView *alertView, BOOL onButton))cancelHandler
+                                  cancelHandler:(void(^)(LGAlertView *alertView))cancelHandler
                              destructiveHandler:(void(^)(LGAlertView *alertView))destructiveHandler
 {
-    return [[self alloc] alertViewWithTextFieldsAndTitle:title
-                                                 message:message
-                                      numberOfTextFields:numberOfTextFields
-                                  textFieldsSetupHandler:textFieldsSetupHandler
-                                            buttonTitles:buttonTitles
-                                       cancelButtonTitle:cancelButtonTitle
-                                  destructiveButtonTitle:destructiveButtonTitle
-                                           actionHandler:actionHandler
-                                           cancelHandler:cancelHandler
-                                      destructiveHandler:destructiveHandler];
+    return [[self alloc] initWithTextFieldsAndTitle:title
+                                            message:message
+                                 numberOfTextFields:numberOfTextFields
+                             textFieldsSetupHandler:textFieldsSetupHandler
+                                       buttonTitles:buttonTitles
+                                  cancelButtonTitle:cancelButtonTitle
+                             destructiveButtonTitle:destructiveButtonTitle
+                                      actionHandler:actionHandler
+                                      cancelHandler:cancelHandler
+                                 destructiveHandler:destructiveHandler];
 }
 
 #pragma mark -
@@ -826,7 +829,10 @@ LGAlertViewType;
 
     // -----
 
-    self.tintColor = [UIColor colorWithRed:0.f green:0.5 blue:1.f alpha:1.f];
+    if (!kLGAlertViewTintColor)
+        kLGAlertViewTintColor = [UIColor colorWithRed:0.f green:0.5 blue:1.f alpha:1.f];
+
+    self.tintColor = kLGAlertViewTintColor;
 
     _coverColor = [UIColor colorWithWhite:0.f alpha:0.5];
     _backgroundColor = [UIColor whiteColor];
@@ -1237,6 +1243,11 @@ LGAlertViewType;
     _userProgressViewProgressTintColor = YES;
 }
 
++ (void)setTintColor:(UIColor *)color
+{
+    kLGAlertViewTintColor = color;
+}
+
 #pragma mark -
 
 - (void)setProgress:(float)progress progressLabelText:(NSString *)progressLabelText
@@ -1265,16 +1276,15 @@ LGAlertViewType;
 
     if (_tableView)
     {
+        if (_destructiveButtonTitle.length)
+            index++;
+
         if (enabled)
             _disabledButtonIndex = -1;
         else
-        {
             _disabledButtonIndex = index;
-            if (_destructiveButtonTitle.length)
-                _disabledButtonIndex++;
-        }
 
-        LGAlertViewCell *cell = (LGAlertViewCell *)[_tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:_disabledButtonIndex inSection:0]];
+        LGAlertViewCell *cell = (LGAlertViewCell *)[_tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:index inSection:0]];
         cell.enabled = enabled;
     }
     else
@@ -1310,6 +1320,27 @@ LGAlertViewType;
 
         return !(index == _disabledButtonIndex);
     }
+}
+
+- (void)forceCancel
+{
+    NSAssert(_cancelButtonTitle.length > 0, @"Cancel button is not exists");
+
+    [self cancelAction:nil];
+}
+
+- (void)forceDestructive
+{
+    NSAssert(_destructiveButtonTitle.length > 0, @"Destructive button is not exists");
+
+    [self destructiveAction:nil];
+}
+
+- (void)forceActionAtIndex:(NSUInteger)index
+{
+    NSAssert(_buttonTitles.count > index, @"Button at index %lu is not exists", (long unsigned)index);
+
+    [self actionActionAtIndex:index title:_buttonTitles[index + (_tableView && _destructiveButtonTitle.length ? 1 : 0)]];
 }
 
 #pragma mark - Table View Data Source
@@ -1471,19 +1502,7 @@ LGAlertViewType;
 
         // -----
 
-        if (_actionHandler) _actionHandler(self, title, index);
-
-        if (_delegate && [_delegate respondsToSelector:@selector(alertView:buttonPressedWithTitle:index:)])
-            [_delegate alertView:self buttonPressedWithTitle:title index:index];
-
-        [[NSNotificationCenter defaultCenter] postNotificationName:kLGAlertViewActionNotification
-                                                            object:self
-                                                          userInfo:@{@"title" : title,
-                                                                     @"index" : [NSNumber numberWithInteger:index]}];
-
-        // -----
-
-        [self dismissAnimated:YES completionHandler:nil];
+        [self actionActionAtIndex:index title:title];
     }
 }
 
@@ -1520,7 +1539,10 @@ LGAlertViewType;
     // -----
 
     UIWindow *windowApp = [UIApplication sharedApplication].delegate.window;
+    NSAssert(windowApp != nil, @"Application needs to have at least one window");
+
     UIWindow *windowKey = [UIApplication sharedApplication].keyWindow;
+    NSAssert(windowKey != nil, @"Application needs to have at least one key and visible window");
 
     if (!kLGAlertViewWindowsArray.count)
         [kLGAlertViewWindowsArray addObject:windowApp];
@@ -1575,7 +1597,7 @@ LGAlertViewType;
 {
     _backgroundView.alpha = 1.f;
 
-    if (_style == LGAlertViewStyleAlert)
+    if (_style == LGAlertViewStyleAlert || kLGAlertViewPadAndNotForce)
     {
         _scrollView.transform = CGAffineTransformIdentity;
         _scrollView.alpha = 1.f;
@@ -1667,7 +1689,7 @@ LGAlertViewType;
 {
     _backgroundView.alpha = 0.f;
 
-    if (_style == LGAlertViewStyleAlert)
+    if (_style == LGAlertViewStyleAlert || kLGAlertViewPadAndNotForce)
     {
         _scrollView.transform = CGAffineTransformMakeScale(0.95, 0.95);
         _scrollView.alpha = 0.f;
@@ -1724,13 +1746,25 @@ LGAlertViewType;
 
 - (void)subviewsInvalidateWithSize:(CGSize)size
 {
-    CGFloat width = (_style == LGAlertViewStyleAlert ? kLGAlertViewWidth : MIN(size.width, size.height)-kLGAlertViewOffsetHorizontal*2);
+    CGFloat width = 0.f;
 
-    if (_width > 0)
+    if (_width > 0.f)
     {
         width = MIN(size.width, size.height);
 
         if (_width < width) width = _width;
+    }
+    else
+    {
+        if (_style == LGAlertViewStyleAlert)
+            width = kLGAlertViewWidthStyleAlert;
+        else
+        {
+            if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+                width = kLGAlertViewWidthStyleActionSheet;
+            else
+                width = MIN(size.width, size.height)-kLGAlertViewOffsetHorizontal*2;
+        }
     }
 
     // -----
@@ -1942,334 +1976,339 @@ LGAlertViewType;
 
         BOOL showTable = NO;
 
-        if ((_style == LGAlertViewStyleAlert && numberOfButtons < 4) ||
-            (_style == LGAlertViewStyleActionSheet && numberOfButtons == 1))
+        if (numberOfButtons)
         {
-            CGFloat buttonWidth = kLGAlertViewWidth/numberOfButtons;
-            if (buttonWidth < kLGAlertViewButtonWidthMin)
-                showTable = YES;
-
-            if (_destructiveButtonTitle.length && !showTable)
+            if (!self.isOneRowOneButton &&
+                ((_style == LGAlertViewStyleAlert && numberOfButtons < 4) ||
+                 (_style == LGAlertViewStyleActionSheet && numberOfButtons == 1)))
             {
-                _destructiveButton = [UIButton new];
-                _destructiveButton.backgroundColor = [UIColor clearColor];
-                _destructiveButton.titleLabel.numberOfLines = _destructiveButtonNumberOfLines;
-                _destructiveButton.titleLabel.lineBreakMode = _destructiveButtonLineBreakMode;
-                _destructiveButton.titleLabel.adjustsFontSizeToFitWidth = _destructiveButtonAdjustsFontSizeToFitWidth;
-                _destructiveButton.titleLabel.minimumScaleFactor = _destructiveButtonMinimumScaleFactor;
-                _destructiveButton.titleLabel.font = _destructiveButtonFont;
-                [_destructiveButton setTitle:_destructiveButtonTitle forState:UIControlStateNormal];
-                [_destructiveButton setTitleColor:_destructiveButtonTitleColor forState:UIControlStateNormal];
-                [_destructiveButton setTitleColor:_destructiveButtonTitleColorHighlighted forState:UIControlStateHighlighted];
-                [_destructiveButton setTitleColor:_destructiveButtonTitleColorHighlighted forState:UIControlStateSelected];
-                [_destructiveButton setBackgroundImage:[LGAlertView image1x1WithColor:_destructiveButtonBackgroundColor] forState:UIControlStateNormal];
-                [_destructiveButton setBackgroundImage:[LGAlertView image1x1WithColor:_destructiveButtonBackgroundColorHighlighted] forState:UIControlStateHighlighted];
-                [_destructiveButton setBackgroundImage:[LGAlertView image1x1WithColor:_destructiveButtonBackgroundColorHighlighted] forState:UIControlStateSelected];
-                _destructiveButton.contentEdgeInsets = UIEdgeInsetsMake(kLGAlertViewButtonTitleMarginH, kLGAlertViewPaddingW, kLGAlertViewButtonTitleMarginH, kLGAlertViewPaddingW);
-                _destructiveButton.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
-                if (_destructiveButtonTextAlignment == NSTextAlignmentCenter)
-                    _destructiveButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentCenter;
-                else if (_destructiveButtonTextAlignment == NSTextAlignmentLeft)
-                    _destructiveButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
-                else if (_destructiveButtonTextAlignment == NSTextAlignmentRight)
-                    _destructiveButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
-                [_destructiveButton addTarget:self action:@selector(destructiveAction:) forControlEvents:UIControlEventTouchUpInside];
-
-                CGSize size = [_destructiveButton sizeThatFits:CGSizeMake(CGFLOAT_MAX, CGFLOAT_MAX)];
-
-                if (size.width > buttonWidth)
-                    showTable = YES;
-            }
-
-            if (_cancelButtonTitle.length && !kLGAlertViewIsCancelButtonSeparate && !showTable)
-            {
-                [self cancelButtonInit];
-
-                CGSize size = [_cancelButton sizeThatFits:CGSizeMake(CGFLOAT_MAX, CGFLOAT_MAX)];
-
-                if (size.width > buttonWidth)
-                    showTable = YES;
-            }
-
-            if (_buttonTitles.count > 0 && !showTable)
-            {
-                _firstButton = [UIButton new];
-                _firstButton.backgroundColor = [UIColor clearColor];
-                _firstButton.titleLabel.numberOfLines = _buttonsNumberOfLines;
-                _firstButton.titleLabel.lineBreakMode = _buttonsLineBreakMode;
-                _firstButton.titleLabel.adjustsFontSizeToFitWidth = _buttonsAdjustsFontSizeToFitWidth;
-                _firstButton.titleLabel.minimumScaleFactor = _buttonsMinimumScaleFactor;
-                _firstButton.titleLabel.font = _buttonsFont;
-                [_firstButton setTitle:_buttonTitles[0] forState:UIControlStateNormal];
-                [_firstButton setTitleColor:_buttonsTitleColor forState:UIControlStateNormal];
-                [_firstButton setTitleColor:_buttonsTitleColorHighlighted forState:UIControlStateHighlighted];
-                [_firstButton setTitleColor:_buttonsTitleColorHighlighted forState:UIControlStateSelected];
-                [_firstButton setTitleColor:_buttonsTitleColorDisabled forState:UIControlStateDisabled];
-                [_firstButton setBackgroundImage:[LGAlertView image1x1WithColor:_buttonsBackgroundColor] forState:UIControlStateNormal];
-                [_firstButton setBackgroundImage:[LGAlertView image1x1WithColor:_buttonsBackgroundColorHighlighted] forState:UIControlStateHighlighted];
-                [_firstButton setBackgroundImage:[LGAlertView image1x1WithColor:_buttonsBackgroundColorHighlighted] forState:UIControlStateSelected];
-                [_firstButton setBackgroundImage:[LGAlertView image1x1WithColor:_buttonsBackgroundColorDisabled] forState:UIControlStateDisabled];
-                _firstButton.contentEdgeInsets = UIEdgeInsetsMake(kLGAlertViewButtonTitleMarginH, kLGAlertViewPaddingW, kLGAlertViewButtonTitleMarginH, kLGAlertViewPaddingW);
-                _firstButton.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
-                if (_buttonsTextAlignment == NSTextAlignmentCenter)
-                    _firstButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentCenter;
-                else if (_buttonsTextAlignment == NSTextAlignmentLeft)
-                    _firstButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
-                else if (_buttonsTextAlignment == NSTextAlignmentRight)
-                    _firstButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
-                _firstButton.enabled = (_disabledButtonIndex != 0);
-                [_firstButton addTarget:self action:@selector(firstButtonAction) forControlEvents:UIControlEventTouchUpInside];
-
-                CGSize size = [_firstButton sizeThatFits:CGSizeMake(CGFLOAT_MAX, CGFLOAT_MAX)];
-
-                if (size.width > buttonWidth)
+                CGFloat buttonWidth = width/numberOfButtons;
+                if (buttonWidth < kLGAlertViewButtonWidthMin)
                     showTable = YES;
 
-                if (_buttonTitles.count > 1  && !showTable)
+                if (_destructiveButtonTitle.length && !showTable)
                 {
-                    _secondButton = [UIButton new];
-                    _secondButton.backgroundColor = [UIColor clearColor];
-                    _secondButton.titleLabel.numberOfLines = _buttonsNumberOfLines;
-                    _secondButton.titleLabel.lineBreakMode = _buttonsLineBreakMode;
-                    _secondButton.titleLabel.adjustsFontSizeToFitWidth = _buttonsAdjustsFontSizeToFitWidth;
-                    _secondButton.titleLabel.minimumScaleFactor = _buttonsMinimumScaleFactor;
-                    _secondButton.titleLabel.font = _buttonsFont;
-                    [_secondButton setTitle:_buttonTitles[1] forState:UIControlStateNormal];
-                    [_secondButton setTitleColor:_buttonsTitleColor forState:UIControlStateNormal];
-                    [_secondButton setTitleColor:_buttonsTitleColorHighlighted forState:UIControlStateHighlighted];
-                    [_secondButton setTitleColor:_buttonsTitleColorHighlighted forState:UIControlStateSelected];
-                    [_secondButton setTitleColor:_buttonsTitleColorDisabled forState:UIControlStateDisabled];
-                    [_secondButton setBackgroundImage:[LGAlertView image1x1WithColor:_buttonsBackgroundColor] forState:UIControlStateNormal];
-                    [_secondButton setBackgroundImage:[LGAlertView image1x1WithColor:_buttonsBackgroundColorHighlighted] forState:UIControlStateHighlighted];
-                    [_secondButton setBackgroundImage:[LGAlertView image1x1WithColor:_buttonsBackgroundColorHighlighted] forState:UIControlStateSelected];
-                    [_secondButton setBackgroundImage:[LGAlertView image1x1WithColor:_buttonsBackgroundColorDisabled] forState:UIControlStateDisabled];
-                    _secondButton.contentEdgeInsets = UIEdgeInsetsMake(kLGAlertViewButtonTitleMarginH, kLGAlertViewPaddingW, kLGAlertViewButtonTitleMarginH, kLGAlertViewPaddingW);
-                    _secondButton.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
-                    if (_buttonsTextAlignment == NSTextAlignmentCenter)
-                        _secondButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentCenter;
-                    else if (_buttonsTextAlignment == NSTextAlignmentLeft)
-                        _secondButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
-                    else if (_buttonsTextAlignment == NSTextAlignmentRight)
-                        _secondButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
-                    _secondButton.enabled = (_disabledButtonIndex != 1);
-                    [_secondButton addTarget:self action:@selector(secondButtonAction) forControlEvents:UIControlEventTouchUpInside];
+                    _destructiveButton = [UIButton new];
+                    _destructiveButton.backgroundColor = [UIColor clearColor];
+                    _destructiveButton.titleLabel.numberOfLines = _destructiveButtonNumberOfLines;
+                    _destructiveButton.titleLabel.lineBreakMode = _destructiveButtonLineBreakMode;
+                    _destructiveButton.titleLabel.adjustsFontSizeToFitWidth = _destructiveButtonAdjustsFontSizeToFitWidth;
+                    _destructiveButton.titleLabel.minimumScaleFactor = _destructiveButtonMinimumScaleFactor;
+                    _destructiveButton.titleLabel.font = _destructiveButtonFont;
+                    [_destructiveButton setTitle:_destructiveButtonTitle forState:UIControlStateNormal];
+                    [_destructiveButton setTitleColor:_destructiveButtonTitleColor forState:UIControlStateNormal];
+                    [_destructiveButton setTitleColor:_destructiveButtonTitleColorHighlighted forState:UIControlStateHighlighted];
+                    [_destructiveButton setTitleColor:_destructiveButtonTitleColorHighlighted forState:UIControlStateSelected];
+                    [_destructiveButton setBackgroundImage:[LGAlertView image1x1WithColor:_destructiveButtonBackgroundColor] forState:UIControlStateNormal];
+                    [_destructiveButton setBackgroundImage:[LGAlertView image1x1WithColor:_destructiveButtonBackgroundColorHighlighted] forState:UIControlStateHighlighted];
+                    [_destructiveButton setBackgroundImage:[LGAlertView image1x1WithColor:_destructiveButtonBackgroundColorHighlighted] forState:UIControlStateSelected];
+                    _destructiveButton.contentEdgeInsets = UIEdgeInsetsMake(kLGAlertViewButtonTitleMarginH, kLGAlertViewPaddingW, kLGAlertViewButtonTitleMarginH, kLGAlertViewPaddingW);
+                    _destructiveButton.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
+                    if (_destructiveButtonTextAlignment == NSTextAlignmentCenter)
+                        _destructiveButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentCenter;
+                    else if (_destructiveButtonTextAlignment == NSTextAlignmentLeft)
+                        _destructiveButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+                    else if (_destructiveButtonTextAlignment == NSTextAlignmentRight)
+                        _destructiveButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
+                    [_destructiveButton addTarget:self action:@selector(destructiveAction:) forControlEvents:UIControlEventTouchUpInside];
 
-                    CGSize size = [_secondButton sizeThatFits:CGSizeMake(CGFLOAT_MAX, CGFLOAT_MAX)];
+                    CGSize size = [_destructiveButton sizeThatFits:CGSizeMake(CGFLOAT_MAX, CGFLOAT_MAX)];
+
+                    if (size.width > buttonWidth)
+                        showTable = YES;
+                }
+
+                if (_cancelButtonTitle.length && !kLGAlertViewIsCancelButtonSeparate && !showTable)
+                {
+                    [self cancelButtonInit];
+
+                    CGSize size = [_cancelButton sizeThatFits:CGSizeMake(CGFLOAT_MAX, CGFLOAT_MAX)];
+
+                    if (size.width > buttonWidth)
+                        showTable = YES;
+                }
+
+                if (_buttonTitles.count > 0 && !showTable)
+                {
+                    _firstButton = [UIButton new];
+                    _firstButton.backgroundColor = [UIColor clearColor];
+                    _firstButton.titleLabel.numberOfLines = _buttonsNumberOfLines;
+                    _firstButton.titleLabel.lineBreakMode = _buttonsLineBreakMode;
+                    _firstButton.titleLabel.adjustsFontSizeToFitWidth = _buttonsAdjustsFontSizeToFitWidth;
+                    _firstButton.titleLabel.minimumScaleFactor = _buttonsMinimumScaleFactor;
+                    _firstButton.titleLabel.font = _buttonsFont;
+                    [_firstButton setTitle:_buttonTitles[0] forState:UIControlStateNormal];
+                    [_firstButton setTitleColor:_buttonsTitleColor forState:UIControlStateNormal];
+                    [_firstButton setTitleColor:_buttonsTitleColorHighlighted forState:UIControlStateHighlighted];
+                    [_firstButton setTitleColor:_buttonsTitleColorHighlighted forState:UIControlStateSelected];
+                    [_firstButton setTitleColor:_buttonsTitleColorDisabled forState:UIControlStateDisabled];
+                    [_firstButton setBackgroundImage:[LGAlertView image1x1WithColor:_buttonsBackgroundColor] forState:UIControlStateNormal];
+                    [_firstButton setBackgroundImage:[LGAlertView image1x1WithColor:_buttonsBackgroundColorHighlighted] forState:UIControlStateHighlighted];
+                    [_firstButton setBackgroundImage:[LGAlertView image1x1WithColor:_buttonsBackgroundColorHighlighted] forState:UIControlStateSelected];
+                    [_firstButton setBackgroundImage:[LGAlertView image1x1WithColor:_buttonsBackgroundColorDisabled] forState:UIControlStateDisabled];
+                    _firstButton.contentEdgeInsets = UIEdgeInsetsMake(kLGAlertViewButtonTitleMarginH, kLGAlertViewPaddingW, kLGAlertViewButtonTitleMarginH, kLGAlertViewPaddingW);
+                    _firstButton.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
+                    if (_buttonsTextAlignment == NSTextAlignmentCenter)
+                        _firstButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentCenter;
+                    else if (_buttonsTextAlignment == NSTextAlignmentLeft)
+                        _firstButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+                    else if (_buttonsTextAlignment == NSTextAlignmentRight)
+                        _firstButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
+                    _firstButton.enabled = (_disabledButtonIndex != 0);
+                    [_firstButton addTarget:self action:@selector(firstButtonAction:) forControlEvents:UIControlEventTouchUpInside];
+
+                    CGSize size = [_firstButton sizeThatFits:CGSizeMake(CGFLOAT_MAX, CGFLOAT_MAX)];
 
                     if (size.width > buttonWidth)
                         showTable = YES;
 
-                    if (_buttonTitles.count > 2  && !showTable)
+                    if (_buttonTitles.count > 1 && !showTable)
                     {
-                        _thirdButton = [UIButton new];
-                        _thirdButton.backgroundColor = [UIColor clearColor];
-                        _thirdButton.titleLabel.numberOfLines = _buttonsNumberOfLines;
-                        _thirdButton.titleLabel.lineBreakMode = _buttonsLineBreakMode;
-                        _thirdButton.titleLabel.adjustsFontSizeToFitWidth = _buttonsAdjustsFontSizeToFitWidth;
-                        _thirdButton.titleLabel.minimumScaleFactor = _buttonsMinimumScaleFactor;
-                        _thirdButton.titleLabel.font = _buttonsFont;
-                        [_thirdButton setTitle:_buttonTitles[2] forState:UIControlStateNormal];
-                        [_thirdButton setTitleColor:_buttonsTitleColor forState:UIControlStateNormal];
-                        [_thirdButton setTitleColor:_buttonsTitleColorHighlighted forState:UIControlStateHighlighted];
-                        [_thirdButton setTitleColor:_buttonsTitleColorHighlighted forState:UIControlStateSelected];
-                        [_thirdButton setTitleColor:_buttonsTitleColorDisabled forState:UIControlStateDisabled];
-                        [_thirdButton setBackgroundImage:[LGAlertView image1x1WithColor:_buttonsBackgroundColor] forState:UIControlStateNormal];
-                        [_thirdButton setBackgroundImage:[LGAlertView image1x1WithColor:_buttonsBackgroundColorHighlighted] forState:UIControlStateHighlighted];
-                        [_thirdButton setBackgroundImage:[LGAlertView image1x1WithColor:_buttonsBackgroundColorHighlighted] forState:UIControlStateSelected];
-                        [_thirdButton setBackgroundImage:[LGAlertView image1x1WithColor:_buttonsBackgroundColorDisabled] forState:UIControlStateDisabled];
-                        _thirdButton.contentEdgeInsets = UIEdgeInsetsMake(kLGAlertViewButtonTitleMarginH, kLGAlertViewPaddingW, kLGAlertViewButtonTitleMarginH, kLGAlertViewPaddingW);
-                        _thirdButton.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
+                        _secondButton = [UIButton new];
+                        _secondButton.backgroundColor = [UIColor clearColor];
+                        _secondButton.titleLabel.numberOfLines = _buttonsNumberOfLines;
+                        _secondButton.titleLabel.lineBreakMode = _buttonsLineBreakMode;
+                        _secondButton.titleLabel.adjustsFontSizeToFitWidth = _buttonsAdjustsFontSizeToFitWidth;
+                        _secondButton.titleLabel.minimumScaleFactor = _buttonsMinimumScaleFactor;
+                        _secondButton.titleLabel.font = _buttonsFont;
+                        [_secondButton setTitle:_buttonTitles[1] forState:UIControlStateNormal];
+                        [_secondButton setTitleColor:_buttonsTitleColor forState:UIControlStateNormal];
+                        [_secondButton setTitleColor:_buttonsTitleColorHighlighted forState:UIControlStateHighlighted];
+                        [_secondButton setTitleColor:_buttonsTitleColorHighlighted forState:UIControlStateSelected];
+                        [_secondButton setTitleColor:_buttonsTitleColorDisabled forState:UIControlStateDisabled];
+                        [_secondButton setBackgroundImage:[LGAlertView image1x1WithColor:_buttonsBackgroundColor] forState:UIControlStateNormal];
+                        [_secondButton setBackgroundImage:[LGAlertView image1x1WithColor:_buttonsBackgroundColorHighlighted] forState:UIControlStateHighlighted];
+                        [_secondButton setBackgroundImage:[LGAlertView image1x1WithColor:_buttonsBackgroundColorHighlighted] forState:UIControlStateSelected];
+                        [_secondButton setBackgroundImage:[LGAlertView image1x1WithColor:_buttonsBackgroundColorDisabled] forState:UIControlStateDisabled];
+                        _secondButton.contentEdgeInsets = UIEdgeInsetsMake(kLGAlertViewButtonTitleMarginH, kLGAlertViewPaddingW, kLGAlertViewButtonTitleMarginH, kLGAlertViewPaddingW);
+                        _secondButton.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
                         if (_buttonsTextAlignment == NSTextAlignmentCenter)
-                            _thirdButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentCenter;
+                            _secondButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentCenter;
                         else if (_buttonsTextAlignment == NSTextAlignmentLeft)
-                            _thirdButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+                            _secondButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
                         else if (_buttonsTextAlignment == NSTextAlignmentRight)
-                            _thirdButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
-                        _thirdButton.enabled = (_disabledButtonIndex != 2);
-                        [_thirdButton addTarget:self action:@selector(secondButtonAction) forControlEvents:UIControlEventTouchUpInside];
+                            _secondButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
+                        _secondButton.enabled = (_disabledButtonIndex != 1);
+                        [_secondButton addTarget:self action:@selector(secondButtonAction:) forControlEvents:UIControlEventTouchUpInside];
 
-                        CGSize size = [_thirdButton sizeThatFits:CGSizeMake(CGFLOAT_MAX, CGFLOAT_MAX)];
+                        CGSize size = [_secondButton sizeThatFits:CGSizeMake(CGFLOAT_MAX, CGFLOAT_MAX)];
 
                         if (size.width > buttonWidth)
                             showTable = YES;
-                    }
-                }
-            }
 
-            if (!showTable)
-            {
-                UIButton *firstButton = nil;
-                UIButton *secondButton = nil;
-                UIButton *thirdButton = nil;
-
-                if (_cancelButton && !kLGAlertViewIsCancelButtonSeparate)
-                {
-                    [_scrollView addSubview:_cancelButton];
-
-                    firstButton = _cancelButton;
-                }
-
-                if (_destructiveButton)
-                {
-                    [_scrollView addSubview:_destructiveButton];
-
-                    if (!firstButton) firstButton = _destructiveButton;
-                    else secondButton = _destructiveButton;
-                }
-
-                if (_firstButton)
-                {
-                    [_scrollView addSubview:_firstButton];
-
-                    if (!firstButton) firstButton = _firstButton;
-                    else if (!secondButton) secondButton = _firstButton;
-                    else thirdButton = _firstButton;
-
-                    if (_secondButton)
-                    {
-                        [_scrollView addSubview:_secondButton];
-
-                        if (!secondButton) secondButton = _secondButton;
-                        else thirdButton = _secondButton;
-
-                        if (_thirdButton)
+                        if (_buttonTitles.count > 2 && !showTable)
                         {
-                            [_scrollView addSubview:_thirdButton];
+                            _thirdButton = [UIButton new];
+                            _thirdButton.backgroundColor = [UIColor clearColor];
+                            _thirdButton.titleLabel.numberOfLines = _buttonsNumberOfLines;
+                            _thirdButton.titleLabel.lineBreakMode = _buttonsLineBreakMode;
+                            _thirdButton.titleLabel.adjustsFontSizeToFitWidth = _buttonsAdjustsFontSizeToFitWidth;
+                            _thirdButton.titleLabel.minimumScaleFactor = _buttonsMinimumScaleFactor;
+                            _thirdButton.titleLabel.font = _buttonsFont;
+                            [_thirdButton setTitle:_buttonTitles[2] forState:UIControlStateNormal];
+                            [_thirdButton setTitleColor:_buttonsTitleColor forState:UIControlStateNormal];
+                            [_thirdButton setTitleColor:_buttonsTitleColorHighlighted forState:UIControlStateHighlighted];
+                            [_thirdButton setTitleColor:_buttonsTitleColorHighlighted forState:UIControlStateSelected];
+                            [_thirdButton setTitleColor:_buttonsTitleColorDisabled forState:UIControlStateDisabled];
+                            [_thirdButton setBackgroundImage:[LGAlertView image1x1WithColor:_buttonsBackgroundColor] forState:UIControlStateNormal];
+                            [_thirdButton setBackgroundImage:[LGAlertView image1x1WithColor:_buttonsBackgroundColorHighlighted] forState:UIControlStateHighlighted];
+                            [_thirdButton setBackgroundImage:[LGAlertView image1x1WithColor:_buttonsBackgroundColorHighlighted] forState:UIControlStateSelected];
+                            [_thirdButton setBackgroundImage:[LGAlertView image1x1WithColor:_buttonsBackgroundColorDisabled] forState:UIControlStateDisabled];
+                            _thirdButton.contentEdgeInsets = UIEdgeInsetsMake(kLGAlertViewButtonTitleMarginH, kLGAlertViewPaddingW, kLGAlertViewButtonTitleMarginH, kLGAlertViewPaddingW);
+                            _thirdButton.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
+                            if (_buttonsTextAlignment == NSTextAlignmentCenter)
+                                _thirdButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentCenter;
+                            else if (_buttonsTextAlignment == NSTextAlignmentLeft)
+                                _thirdButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+                            else if (_buttonsTextAlignment == NSTextAlignmentRight)
+                                _thirdButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
+                            _thirdButton.enabled = (_disabledButtonIndex != 2);
+                            [_thirdButton addTarget:self action:@selector(secondButtonAction:) forControlEvents:UIControlEventTouchUpInside];
 
-                            thirdButton = _thirdButton;
+                            CGSize size = [_thirdButton sizeThatFits:CGSizeMake(CGFLOAT_MAX, CGFLOAT_MAX)];
+
+                            if (size.width > buttonWidth)
+                                showTable = YES;
                         }
                     }
                 }
 
-                // -----
+                if (!showTable)
+                {
+                    UIButton *firstButton = nil;
+                    UIButton *secondButton = nil;
+                    UIButton *thirdButton = nil;
 
-                if (offsetY)
+                    if (_cancelButton && !kLGAlertViewIsCancelButtonSeparate)
+                    {
+                        [_scrollView addSubview:_cancelButton];
+
+                        firstButton = _cancelButton;
+                    }
+
+                    if (_destructiveButton)
+                    {
+                        [_scrollView addSubview:_destructiveButton];
+
+                        if (!firstButton) firstButton = _destructiveButton;
+                        else secondButton = _destructiveButton;
+                    }
+
+                    if (_firstButton)
+                    {
+                        [_scrollView addSubview:_firstButton];
+
+                        if (!firstButton) firstButton = _firstButton;
+                        else if (!secondButton) secondButton = _firstButton;
+                        else thirdButton = _firstButton;
+
+                        if (_secondButton)
+                        {
+                            [_scrollView addSubview:_secondButton];
+
+                            if (!secondButton) secondButton = _secondButton;
+                            else thirdButton = _secondButton;
+
+                            if (_thirdButton)
+                            {
+                                [_scrollView addSubview:_thirdButton];
+
+                                thirdButton = _thirdButton;
+                            }
+                        }
+                    }
+
+                    // -----
+
+                    if (offsetY)
+                    {
+                        _separatorHorizontalView = [UIView new];
+                        _separatorHorizontalView.backgroundColor = _separatorsColor;
+
+                        CGRect separatorHorizontalViewFrame = CGRectMake(0.f, offsetY+kLGAlertViewInnerMarginH, width, kLGAlertViewSeparatorHeight);
+                        if ([UIScreen mainScreen].scale == 1.f)
+                            separatorHorizontalViewFrame = CGRectIntegral(separatorHorizontalViewFrame);
+
+                        _separatorHorizontalView.frame = separatorHorizontalViewFrame;
+                        [_scrollView addSubview:_separatorHorizontalView];
+
+                        offsetY = _separatorHorizontalView.frame.origin.y+_separatorHorizontalView.frame.size.height;
+                    }
+
+                    // -----
+
+                    CGRect firstButtonFrame = CGRectMake(0.f, offsetY, width/numberOfButtons, _buttonsHeight);
+                    if ([UIScreen mainScreen].scale == 1.f)
+                        firstButtonFrame = CGRectIntegral(firstButtonFrame);
+                    firstButton.frame = firstButtonFrame;
+
+                    CGRect secondButtonFrame = CGRectZero;
+                    CGRect thirdButtonFrame = CGRectZero;
+                    if (secondButton)
+                    {
+                        secondButtonFrame = CGRectMake(firstButtonFrame.origin.x+firstButtonFrame.size.width+kLGAlertViewSeparatorHeight, offsetY, width/numberOfButtons-kLGAlertViewSeparatorHeight, _buttonsHeight);
+                        if ([UIScreen mainScreen].scale == 1.f)
+                            secondButtonFrame = CGRectIntegral(secondButtonFrame);
+                        secondButton.frame = secondButtonFrame;
+
+                        if (thirdButton)
+                        {
+                            thirdButtonFrame = CGRectMake(secondButtonFrame.origin.x+secondButtonFrame.size.width+kLGAlertViewSeparatorHeight, offsetY, width/numberOfButtons-kLGAlertViewSeparatorHeight, _buttonsHeight);
+                            if ([UIScreen mainScreen].scale == 1.f)
+                                thirdButtonFrame = CGRectIntegral(thirdButtonFrame);
+                            thirdButton.frame = thirdButtonFrame;
+                        }
+                    }
+
+                    // -----
+
+                    if (secondButton)
+                    {
+                        _separatorVerticalView1 = [UIView new];
+                        _separatorVerticalView1.backgroundColor = _separatorsColor;
+
+                        CGRect separatorVerticalView1Frame = CGRectMake(firstButtonFrame.origin.x+firstButtonFrame.size.width, offsetY, kLGAlertViewSeparatorHeight, MAX(UIScreen.mainScreen.bounds.size.width, UIScreen.mainScreen.bounds.size.height));
+                        if ([UIScreen mainScreen].scale == 1.f)
+                            separatorVerticalView1Frame = CGRectIntegral(separatorVerticalView1Frame);
+
+                        _separatorVerticalView1.frame = separatorVerticalView1Frame;
+                        [_scrollView addSubview:_separatorVerticalView1];
+
+                        if (thirdButton)
+                        {
+                            _separatorVerticalView2 = [UIView new];
+                            _separatorVerticalView2.backgroundColor = _separatorsColor;
+
+                            CGRect separatorVerticalView2Frame = CGRectMake(secondButtonFrame.origin.x+secondButtonFrame.size.width, offsetY, kLGAlertViewSeparatorHeight, MAX(UIScreen.mainScreen.bounds.size.width, UIScreen.mainScreen.bounds.size.height));
+                            if ([UIScreen mainScreen].scale == 1.f)
+                                separatorVerticalView2Frame = CGRectIntegral(separatorVerticalView2Frame);
+
+                            _separatorVerticalView2.frame = separatorVerticalView2Frame;
+                            [_scrollView addSubview:_separatorVerticalView2];
+                        }
+                    }
+
+                    // -----
+
+                    offsetY += _buttonsHeight;
+                }
+            }
+            else showTable = YES;
+
+            if (showTable)
+            {
+                if (!kLGAlertViewIsCancelButtonSeparate)
+                    _cancelButton = nil;
+                _destructiveButton = nil;
+                _firstButton = nil;
+                _secondButton = nil;
+                _thirdButton = nil;
+
+                if (!_buttonTitles)
+                    _buttonTitles = [NSMutableArray new];
+
+                if (_destructiveButtonTitle.length)
+                    [_buttonTitles insertObject:_destructiveButtonTitle atIndex:0];
+
+                if (_cancelButtonTitle.length && !kLGAlertViewIsCancelButtonSeparate)
+                    [_buttonTitles addObject:_cancelButtonTitle];
+
+                _tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStylePlain];
+                _tableView.clipsToBounds = NO;
+                _tableView.backgroundColor = [UIColor clearColor];
+                _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+                _tableView.dataSource = self;
+                _tableView.delegate = self;
+                _tableView.scrollEnabled = NO;
+                [_tableView registerClass:[LGAlertViewCell class] forCellReuseIdentifier:@"cell"];
+                _tableView.frame = CGRectMake(0.f, 0.f, width, CGFLOAT_MAX);
+                [_tableView reloadData];
+
+                if (!offsetY) offsetY = -kLGAlertViewInnerMarginH;
+                else
                 {
                     _separatorHorizontalView = [UIView new];
                     _separatorHorizontalView.backgroundColor = _separatorsColor;
 
-                    CGRect separatorHorizontalViewFrame = CGRectMake(0.f, offsetY+kLGAlertViewInnerMarginH, width, kLGAlertViewSeparatorHeight);
+                    CGRect separatorTitleViewFrame = CGRectMake(0.f, 0.f, width, kLGAlertViewSeparatorHeight);
                     if ([UIScreen mainScreen].scale == 1.f)
-                        separatorHorizontalViewFrame = CGRectIntegral(separatorHorizontalViewFrame);
+                        separatorTitleViewFrame = CGRectIntegral(separatorTitleViewFrame);
 
-                    _separatorHorizontalView.frame = separatorHorizontalViewFrame;
-                    [_scrollView addSubview:_separatorHorizontalView];
-
-                    offsetY = _separatorHorizontalView.frame.origin.y+_separatorHorizontalView.frame.size.height;
+                    _separatorHorizontalView.frame = separatorTitleViewFrame;
+                    _tableView.tableHeaderView = _separatorHorizontalView;
                 }
 
-                // -----
-
-                CGRect firstButtonFrame = CGRectMake(0.f, offsetY, width/numberOfButtons, _buttonsHeight);
+                CGRect tableViewFrame = CGRectMake(0.f, offsetY+kLGAlertViewInnerMarginH, width, _tableView.contentSize.height);
                 if ([UIScreen mainScreen].scale == 1.f)
-                    firstButtonFrame = CGRectIntegral(firstButtonFrame);
-                firstButton.frame = firstButtonFrame;
+                    tableViewFrame = CGRectIntegral(tableViewFrame);
+                _tableView.frame = tableViewFrame;
 
-                CGRect secondButtonFrame = CGRectZero;
-                CGRect thirdButtonFrame = CGRectZero;
-                if (secondButton)
-                {
-                    secondButtonFrame = CGRectMake(firstButtonFrame.origin.x+firstButtonFrame.size.width+kLGAlertViewSeparatorHeight, offsetY, width/numberOfButtons-kLGAlertViewSeparatorHeight, _buttonsHeight);
-                    if ([UIScreen mainScreen].scale == 1.f)
-                        secondButtonFrame = CGRectIntegral(secondButtonFrame);
-                    secondButton.frame = secondButtonFrame;
+                [_scrollView addSubview:_tableView];
 
-                    if (thirdButton)
-                    {
-                        thirdButtonFrame = CGRectMake(secondButtonFrame.origin.x+secondButtonFrame.size.width+kLGAlertViewSeparatorHeight, offsetY, width/numberOfButtons-kLGAlertViewSeparatorHeight, _buttonsHeight);
-                        if ([UIScreen mainScreen].scale == 1.f)
-                            thirdButtonFrame = CGRectIntegral(thirdButtonFrame);
-                        thirdButton.frame = thirdButtonFrame;
-                    }
-                }
-
-                // -----
-
-                if (secondButton)
-                {
-                    _separatorVerticalView1 = [UIView new];
-                    _separatorVerticalView1.backgroundColor = _separatorsColor;
-
-                    CGRect separatorVerticalView1Frame = CGRectMake(firstButtonFrame.origin.x+firstButtonFrame.size.width, offsetY, kLGAlertViewSeparatorHeight, MAX(UIScreen.mainScreen.bounds.size.width, UIScreen.mainScreen.bounds.size.height));
-                    if ([UIScreen mainScreen].scale == 1.f)
-                        separatorVerticalView1Frame = CGRectIntegral(separatorVerticalView1Frame);
-
-                    _separatorVerticalView1.frame = separatorVerticalView1Frame;
-                    [_scrollView addSubview:_separatorVerticalView1];
-
-                    if (thirdButton)
-                    {
-                        _separatorVerticalView2 = [UIView new];
-                        _separatorVerticalView2.backgroundColor = _separatorsColor;
-
-                        CGRect separatorVerticalView2Frame = CGRectMake(secondButtonFrame.origin.x+secondButtonFrame.size.width, offsetY, kLGAlertViewSeparatorHeight, MAX(UIScreen.mainScreen.bounds.size.width, UIScreen.mainScreen.bounds.size.height));
-                        if ([UIScreen mainScreen].scale == 1.f)
-                            separatorVerticalView2Frame = CGRectIntegral(separatorVerticalView2Frame);
-
-                        _separatorVerticalView2.frame = separatorVerticalView2Frame;
-                        [_scrollView addSubview:_separatorVerticalView2];
-                    }
-                }
-
-                // -----
-
-                offsetY += _buttonsHeight;
+                offsetY = _tableView.frame.origin.y+_tableView.frame.size.height;
             }
         }
-        else showTable = YES;
-
-        if (showTable)
-        {
-            if (!kLGAlertViewIsCancelButtonSeparate)
-                _cancelButton = nil;
-            _destructiveButton = nil;
-            _firstButton = nil;
-            _secondButton = nil;
-            _thirdButton = nil;
-
-            if (!_buttonTitles)
-                _buttonTitles = [NSMutableArray new];
-
-            if (_destructiveButtonTitle.length)
-                [_buttonTitles insertObject:_destructiveButtonTitle atIndex:0];
-
-            if (_cancelButtonTitle.length && !kLGAlertViewIsCancelButtonSeparate)
-                [_buttonTitles addObject:_cancelButtonTitle];
-
-            _tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStylePlain];
-            _tableView.clipsToBounds = NO;
-            _tableView.backgroundColor = [UIColor clearColor];
-            _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-            _tableView.dataSource = self;
-            _tableView.delegate = self;
-            _tableView.scrollEnabled = NO;
-            [_tableView registerClass:[LGAlertViewCell class] forCellReuseIdentifier:@"cell"];
-            _tableView.frame = CGRectMake(0.f, 0.f, width, CGFLOAT_MAX);
-            [_tableView reloadData];
-
-            if (!offsetY) offsetY = -kLGAlertViewInnerMarginH;
-            else
-            {
-                _separatorHorizontalView = [UIView new];
-                _separatorHorizontalView.backgroundColor = _separatorsColor;
-
-                CGRect separatorTitleViewFrame = CGRectMake(0.f, 0.f, width, kLGAlertViewSeparatorHeight);
-                if ([UIScreen mainScreen].scale == 1.f)
-                    separatorTitleViewFrame = CGRectIntegral(separatorTitleViewFrame);
-
-                _separatorHorizontalView.frame = separatorTitleViewFrame;
-                _tableView.tableHeaderView = _separatorHorizontalView;
-            }
-
-            CGRect tableViewFrame = CGRectMake(0.f, offsetY+kLGAlertViewInnerMarginH, width, _tableView.contentSize.height);
-            if ([UIScreen mainScreen].scale == 1.f)
-                tableViewFrame = CGRectIntegral(tableViewFrame);
-            _tableView.frame = tableViewFrame;
-
-            [_scrollView addSubview:_tableView];
-
-            offsetY = _tableView.frame.origin.y+_tableView.frame.size.height;
-        }
+        else offsetY += kLGAlertViewInnerMarginH;
 
         // -----
 
@@ -2285,13 +2324,25 @@ LGAlertViewType;
 
     // -----
 
-    CGFloat width = (_style == LGAlertViewStyleAlert ? kLGAlertViewWidth : MIN(size.width, size.height)-kLGAlertViewOffsetHorizontal*2);
+    CGFloat width = 0.f;
 
-    if (_width > 0)
+    if (_width > 0.f)
     {
         width = MIN(size.width, size.height);
 
         if (_width < width) width = _width;
+    }
+    else
+    {
+        if (_style == LGAlertViewStyleAlert)
+            width = kLGAlertViewWidthStyleAlert;
+        else
+        {
+            if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+                width = kLGAlertViewWidthStyleActionSheet;
+            else
+                width = MIN(size.width, size.height)-kLGAlertViewOffsetHorizontal*2;
+        }
     }
 
     // -----
@@ -2301,7 +2352,7 @@ LGAlertViewType;
     if (_windowLevel == LGAlertViewWindowLevelBelowStatusBar)
         heightMax -= kLGAlertViewStatusBarHeight;
 
-    if (_heightMax > 0 && _heightMax < heightMax)
+    if (_heightMax > 0.f && _heightMax < heightMax)
         heightMax = _heightMax;
 
     if (kLGAlertViewIsCancelButtonSeparate && _cancelButton)
@@ -2320,7 +2371,7 @@ LGAlertViewType;
     CGAffineTransform scrollViewTransform = CGAffineTransformIdentity;
     CGFloat scrollViewAlpha = 1.f;
 
-    if (_style == LGAlertViewStyleAlert)
+    if (_style == LGAlertViewStyleAlert || kLGAlertViewPadAndNotForce)
     {
         scrollViewFrame = CGRectMake(size.width/2-width/2, size.height/2-_keyboardHeight/2-heightMax/2, width, heightMax);
 
@@ -2345,33 +2396,11 @@ LGAlertViewType;
 
     // -----
 
-    if ([UIScreen mainScreen].scale == 1.f)
-    {
-        scrollViewFrame = CGRectIntegral(scrollViewFrame);
-
-        if (_tableView)
-        {
-            if (_tableView.frame.origin.y+_tableView.frame.size.height < scrollViewFrame.size.height)
-                scrollViewFrame.size.height = _tableView.frame.origin.y+_tableView.frame.size.height;
-        }
-        else
-        {
-            if (_separatorVerticalView1 && _separatorVerticalView1.frame.origin.y+_buttonsHeight < scrollViewFrame.size.height)
-                scrollViewFrame.size.height = _separatorVerticalView1.frame.origin.y+_buttonsHeight;
-        }
-    }
-
-    // -----
-
-    if (_style == LGAlertViewStyleActionSheet)
+    if (_style == LGAlertViewStyleActionSheet && !kLGAlertViewPadAndNotForce)
     {
         CGRect cancelButtonFrame = CGRectZero;
         if (kLGAlertViewIsCancelButtonSeparate && _cancelButton)
-        {
             cancelButtonFrame = CGRectMake(size.width/2-width/2, size.height-_cancelButtonOffset-_buttonsHeight, width, _buttonsHeight);
-            if ([UIScreen mainScreen].scale == 1.f)
-                cancelButtonFrame = CGRectIntegral(cancelButtonFrame);
-        }
 
         _scrollViewCenterShowed = CGPointMake(scrollViewFrame.origin.x+scrollViewFrame.size.width/2, scrollViewFrame.origin.y+scrollViewFrame.size.height/2);
         _cancelButtonCenterShowed = CGPointMake(cancelButtonFrame.origin.x+cancelButtonFrame.size.width/2, cancelButtonFrame.origin.y+cancelButtonFrame.size.height/2);
@@ -2388,26 +2417,33 @@ LGAlertViewType;
         if (!self.isShowing)
         {
             scrollViewFrame.origin.y += commonHeight;
-            if ([UIScreen mainScreen].scale == 1.f)
-                scrollViewFrame = CGRectIntegral(scrollViewFrame);
 
             if (kLGAlertViewIsCancelButtonSeparate && _cancelButton)
-            {
                 cancelButtonFrame.origin.y += commonHeight;
-                if ([UIScreen mainScreen].scale == 1.f)
-                    cancelButtonFrame = CGRectIntegral(cancelButtonFrame);
-            }
         }
 
         // -----
 
         if (kLGAlertViewIsCancelButtonSeparate && _cancelButton)
         {
+            if ([UIScreen mainScreen].scale == 1.f)
+                cancelButtonFrame = CGRectIntegral(cancelButtonFrame);
+
             _cancelButton.frame = cancelButtonFrame;
 
             CGFloat borderWidth = _layerBorderWidth;
             _styleCancelView.frame = CGRectMake(cancelButtonFrame.origin.x-borderWidth, cancelButtonFrame.origin.y-borderWidth, cancelButtonFrame.size.width+borderWidth*2, cancelButtonFrame.size.height+borderWidth*2);
         }
+    }
+
+    // -----
+
+    if ([UIScreen mainScreen].scale == 1.f)
+    {
+        scrollViewFrame = CGRectIntegral(scrollViewFrame);
+
+        if (scrollViewFrame.size.height - _scrollView.contentSize.height == 1.f)
+            scrollViewFrame.size.height -= 2.f;
     }
 
     // -----
@@ -2453,21 +2489,17 @@ LGAlertViewType;
 
 - (void)cancelAction:(id)sender
 {
-    BOOL onButton = ![sender isKindOfClass:[UIGestureRecognizer class]];
-
-    if (onButton)
+    if (sender && [sender isKindOfClass:[UIButton class]])
         [(UIButton *)sender setSelected:YES];
 
     // -----
 
-    if (_cancelHandler) _cancelHandler(self, onButton);
+    if (_cancelHandler) _cancelHandler(self);
 
     if (_delegate && [_delegate respondsToSelector:@selector(alertViewCancelled:)])
         [_delegate alertViewCancelled:self];
 
-    [[NSNotificationCenter defaultCenter] postNotificationName:kLGAlertViewCancelNotification
-                                                        object:self
-                                                      userInfo:@{@"onButton" : [NSNumber numberWithBool:onButton]}];
+    [[NSNotificationCenter defaultCenter] postNotificationName:kLGAlertViewCancelNotification object:self userInfo:nil];
 
     // -----
 
@@ -2493,79 +2525,69 @@ LGAlertViewType;
     [self dismissAnimated:YES completionHandler:nil];
 }
 
-- (void)firstButtonAction
+- (void)actionActionAtIndex:(NSUInteger)index title:(NSString *)title
 {
-    _firstButton.selected = YES;
+    if (_actionHandler) _actionHandler(self, title, index);
 
+    if (_delegate && [_delegate respondsToSelector:@selector(alertView:buttonPressedWithTitle:index:)])
+        [_delegate alertView:self buttonPressedWithTitle:title index:index];
+
+    [[NSNotificationCenter defaultCenter] postNotificationName:kLGAlertViewActionNotification
+                                                        object:self
+                                                      userInfo:@{@"title" : title,
+                                                                 @"index" : [NSNumber numberWithInteger:index]}];
+
+    // -----
+
+    [self dismissAnimated:YES completionHandler:nil];
+}
+
+- (void)firstButtonAction:(id)sender
+{
+    if (sender && [sender isKindOfClass:[UIButton class]])
+        [(UIButton *)sender setSelected:YES];
+    
+    // -----
+    
     NSUInteger index = 0;
-
+    
     NSString *title = _buttonTitles[0];
-
+    
     // -----
-
-    if (_actionHandler) _actionHandler(self, title, index);
-
-    if (_delegate && [_delegate respondsToSelector:@selector(alertView:buttonPressedWithTitle:index:)])
-        [_delegate alertView:self buttonPressedWithTitle:title index:index];
-
-    [[NSNotificationCenter defaultCenter] postNotificationName:kLGAlertViewActionNotification
-                                                        object:self
-                                                      userInfo:@{@"title" : title,
-                                                                 @"index" : [NSNumber numberWithInteger:index]}];
-
-    // -----
-
-    [self dismissAnimated:YES completionHandler:nil];
+    
+    [self actionActionAtIndex:index title:title];
 }
 
-- (void)secondButtonAction
+- (void)secondButtonAction:(id)sender
 {
-    _secondButton.selected = YES;
-
+    if (sender && [sender isKindOfClass:[UIButton class]])
+        [(UIButton *)sender setSelected:YES];
+    
+    // -----
+    
     NSUInteger index = 1;
-
+    
     NSString *title = _buttonTitles[1];
-
+    
     // -----
-
-    if (_actionHandler) _actionHandler(self, title, index);
-
-    if (_delegate && [_delegate respondsToSelector:@selector(alertView:buttonPressedWithTitle:index:)])
-        [_delegate alertView:self buttonPressedWithTitle:title index:index];
-
-    [[NSNotificationCenter defaultCenter] postNotificationName:kLGAlertViewActionNotification
-                                                        object:self
-                                                      userInfo:@{@"title" : title,
-                                                                 @"index" : [NSNumber numberWithInteger:index]}];
-
-    // -----
-
-    [self dismissAnimated:YES completionHandler:nil];
+    
+    [self actionActionAtIndex:index title:title];
 }
 
-- (void)thirdButtonAction
+- (void)thirdButtonAction:(id)sender
 {
-    _thirdButton.selected = YES;
-
+    if (sender && [sender isKindOfClass:[UIButton class]])
+        [(UIButton *)sender setSelected:YES];
+    
+    // -----
+    
     NSUInteger index = 2;
-
+    
     NSString *title = _buttonTitles[2];
-
-    // -----
-    
-    if (_actionHandler) _actionHandler(self, title, index);
-    
-    if (_delegate && [_delegate respondsToSelector:@selector(alertView:buttonPressedWithTitle:index:)])
-        [_delegate alertView:self buttonPressedWithTitle:title index:index];
-    
-    [[NSNotificationCenter defaultCenter] postNotificationName:kLGAlertViewActionNotification
-                                                        object:self
-                                                      userInfo:@{@"title" : title,
-                                                                 @"index" : [NSNumber numberWithInteger:index]}];
     
     // -----
     
-    [self dismissAnimated:YES completionHandler:nil];
+    [self actionActionAtIndex:index title:title];
 }
 
 #pragma mark - Support
