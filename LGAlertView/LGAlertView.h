@@ -473,6 +473,8 @@ LGAlertViewWindowLevel;
 - (void)showAnimated:(BOOL)animated completionHandler:(void(^)())completionHandler;
 - (void)dismissAnimated:(BOOL)animated completionHandler:(void(^)())completionHandler;
 
+- (void)transitionToAlertView:(LGAlertView *)alertView completionHandler:(void(^)())completionHandler;
+
 - (void)setProgress:(float)progress progressLabelText:(NSString *)progressLabelText;
 
 - (void)setButtonAtIndex:(NSUInteger)index enabled:(BOOL)enabled;

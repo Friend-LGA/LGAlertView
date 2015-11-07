@@ -42,7 +42,8 @@
                          @"LGAlertView + UIView",
                          @"LGAlertView + ActivityIndicator",
                          @"LGAlertView + ActivityIndicator cancel",
-                         @"LGAlertView + ProgressView cancel"];
+                         @"LGAlertView + ProgressView cancel",
+                         @"LGAlertView + Transition"];
 
         [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"cell"];
         UIEdgeInsets contentInset = self.tableView.contentInset;
@@ -397,6 +398,34 @@
         [alertView showAnimated:YES completionHandler:nil];
 
         [self updateProgressWithAlertView:alertView];
+    }
+    else if (indexPath.row == 18)
+    {
+        LGAlertView *alertView1 = [[LGAlertView alloc] initWithActivityIndicatorAndTitle:@"Loading"
+                                                                           message:@"Waiting please"
+                                                                             style:LGAlertViewStyleAlert
+                                                                      buttonTitles:nil
+                                                                 cancelButtonTitle:@"I'm hurry"
+                                                            destructiveButtonTitle:nil
+                                                                     actionHandler:nil
+                                                                     cancelHandler:nil
+                                                                destructiveHandler:nil];
+        [alertView1 showAnimated:YES completionHandler:nil];
+
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(3.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^(void)
+                       {
+                           LGAlertView *alertView2 = [[LGAlertView alloc] initWithTitle:@"Title"
+                                                                                message:@"Message"
+                                                                                  style:LGAlertViewStyleActionSheet
+                                                                           buttonTitles:@[@"Button 1", @"Button 2"]
+                                                                      cancelButtonTitle:@"Cancel"
+                                                                 destructiveButtonTitle:@"Destructive"
+                                                                          actionHandler:nil
+                                                                          cancelHandler:nil
+                                                                     destructiveHandler:nil];
+
+                           [alertView1 transitionToAlertView:alertView2 completionHandler:nil];
+                       });
     }
 
     [tableView deselectRowAtIndexPath:indexPath animated:YES];

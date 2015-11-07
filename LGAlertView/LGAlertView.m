@@ -35,19 +35,19 @@
 #import "LGAlertViewShared.h"
 #import "UIWindow+LGAlertView.h"
 
-#define kLGAlertViewStatusBarHeight        ([UIApplication sharedApplication].isStatusBarHidden ? 0.f : 20.f)
-#define kLGAlertViewSeparatorHeight        ([UIScreen mainScreen].scale == 1.f || [UIDevice currentDevice].systemVersion.floatValue < 7.0 ? 1.f : 0.5)
-#define kLGAlertViewOffsetVertical         (_offsetVertical >= 0 ? _offsetVertical : 8.f)
-#define kLGAlertViewOffsetHorizontal       8.f
-#define kLGAlertViewButtonTitleMarginH     8.f
-#define kLGAlertViewWidthStyleAlert        (320.f - 20*2)
-#define kLGAlertViewWidthStyleActionSheet  (320.f - 16*2)
-#define kLGAlertViewInnerMarginH           (_style == LGAlertViewStyleAlert ? 16.f : 12.f)
-#define kLGAlertViewIsCancelButtonSeparate (_style == LGAlertViewStyleActionSheet && _cancelButtonOffset > 0.f && !kLGAlertViewPadAndNotForce)
-#define kLGAlertViewButtonWidthMin         64.f
-#define kLGAlertViewWindowPrevious(index)  (index > 0 && index < kLGAlertViewWindowsArray.count ? [kLGAlertViewWindowsArray objectAtIndex:(index-1)] : nil)
-#define kLGAlertViewWindowNext(index)      (kLGAlertViewWindowsArray.count > index+1 ? [kLGAlertViewWindowsArray objectAtIndex:(index+1)] : nil)
-#define kLGAlertViewPadAndNotForce         (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad && !self.isPadShowActionSheetFromBottom)
+#define kLGAlertViewStatusBarHeight                   ([UIApplication sharedApplication].isStatusBarHidden ? 0.f : 20.f)
+#define kLGAlertViewSeparatorHeight                   ([UIScreen mainScreen].scale == 1.f || [UIDevice currentDevice].systemVersion.floatValue < 7.0 ? 1.f : 0.5)
+#define kLGAlertViewOffsetVertical                    (_offsetVertical >= 0 ? _offsetVertical : 8.f)
+#define kLGAlertViewOffsetHorizontal                  8.f
+#define kLGAlertViewButtonTitleMarginH                8.f
+#define kLGAlertViewWidthStyleAlert                   (320.f - 20*2)
+#define kLGAlertViewWidthStyleActionSheet             (320.f - 16*2)
+#define kLGAlertViewInnerMarginH                      (_style == LGAlertViewStyleAlert ? 16.f : 12.f)
+#define kLGAlertViewIsCancelButtonSeparate(alertView) (alertView.style == LGAlertViewStyleActionSheet && alertView.cancelButtonOffset > 0.f && !kLGAlertViewPadAndNotForce(alertView))
+#define kLGAlertViewButtonWidthMin                    64.f
+#define kLGAlertViewWindowPrevious(index)             (index > 0 && index < kLGAlertViewWindowsArray.count ? [kLGAlertViewWindowsArray objectAtIndex:(index-1)] : nil)
+#define kLGAlertViewWindowNext(index)                 (kLGAlertViewWindowsArray.count > index+1 ? [kLGAlertViewWindowsArray objectAtIndex:(index+1)] : nil)
+#define kLGAlertViewPadAndNotForce(alertView)         (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad && !alertView.isPadShowActionSheetFromBottom)
 
 static NSMutableArray *kLGAlertViewWindowsArray;
 static UIColor *kLGAlertViewTintColor;
@@ -1376,7 +1376,7 @@ LGAlertViewType;
         cell.adjustsFontSizeToFitWidth  = _destructiveButtonAdjustsFontSizeToFitWidth;
         cell.minimumScaleFactor         = _destructiveButtonMinimumScaleFactor;
     }
-    else if (_cancelButtonTitle.length && !kLGAlertViewIsCancelButtonSeparate && indexPath.row == _buttonTitles.count-1)
+    else if (_cancelButtonTitle.length && !kLGAlertViewIsCancelButtonSeparate(self) && indexPath.row == _buttonTitles.count-1)
     {
         cell.titleColor                 = _cancelButtonTitleColor;
         cell.titleColorHighlighted      = _cancelButtonTitleColorHighlighted;
@@ -1438,7 +1438,7 @@ LGAlertViewType;
 
         return size.height;
     }
-    else if (_cancelButtonTitle.length && !kLGAlertViewIsCancelButtonSeparate && indexPath.row == _buttonTitles.count-1 && _cancelButtonNumberOfLines != 1)
+    else if (_cancelButtonTitle.length && !kLGAlertViewIsCancelButtonSeparate(self) && indexPath.row == _buttonTitles.count-1 && _cancelButtonNumberOfLines != 1)
     {
         NSString *title = _buttonTitles[indexPath.row];
 
@@ -1510,12 +1510,17 @@ LGAlertViewType;
 
 - (void)showAnimated:(BOOL)animated completionHandler:(void(^)())completionHandler
 {
+    [self showAnimated:animated hidden:NO completionHandler:completionHandler];
+}
+
+- (void)showAnimated:(BOOL)animated hidden:(BOOL)hidden completionHandler:(void(^)())completionHandler
+{
     if (self.isShowing) return;
 
     _window.windowLevel = UIWindowLevelStatusBar + (_windowLevel == LGAlertViewWindowLevelAboveStatusBar ? 1 : -1);
     _window.userInteractionEnabled = NO;
 
-    CGSize size = _viewController.view.frame.size;
+    CGSize size = _viewController.view.bounds.size;
 
     if ([UIDevice currentDevice].systemVersion.floatValue < 8.0)
     {
@@ -1554,8 +1559,11 @@ LGAlertViewType;
     if (![kLGAlertViewWindowsArray containsObject:_window])
         [kLGAlertViewWindowsArray addObject:_window];
 
-    if (![windowKey isEqual:windowApp])
-        windowKey.hidden = YES;
+    if (!hidden)
+    {
+        if (![windowKey isEqual:windowApp])
+            windowKey.hidden = YES;
+    }
 
     [_window makeKeyAndVisible];
 
@@ -1570,6 +1578,21 @@ LGAlertViewType;
 
     // -----
 
+    if (hidden)
+    {
+        _backgroundView.hidden = YES;
+        _scrollView.hidden = YES;
+        _styleView.hidden = YES;
+
+        if (kLGAlertViewIsCancelButtonSeparate(self))
+        {
+            _cancelButton.hidden = YES;
+            _styleCancelView.hidden = YES;
+        }
+    }
+
+    // -----
+
     if (animated)
     {
         [LGAlertView animateStandardWithAnimations:^(void)
@@ -1578,7 +1601,8 @@ LGAlertViewType;
          }
                                         completion:^(BOOL finished)
          {
-             [self showComplete];
+             if (!hidden)
+                 [self showComplete];
 
              if (completionHandler) completionHandler();
          }];
@@ -1587,7 +1611,8 @@ LGAlertViewType;
     {
         [self showAnimations];
 
-        [self showComplete];
+        if (!hidden)
+            [self showComplete];
 
         if (completionHandler) completionHandler();
     }
@@ -1597,7 +1622,7 @@ LGAlertViewType;
 {
     _backgroundView.alpha = 1.f;
 
-    if (_style == LGAlertViewStyleAlert || kLGAlertViewPadAndNotForce)
+    if (_style == LGAlertViewStyleAlert || kLGAlertViewPadAndNotForce(self))
     {
         _scrollView.transform = CGAffineTransformIdentity;
         _scrollView.alpha = 1.f;
@@ -1612,7 +1637,7 @@ LGAlertViewType;
         _styleView.center = _scrollViewCenterShowed;
     }
 
-    if (kLGAlertViewIsCancelButtonSeparate && _cancelButton)
+    if (kLGAlertViewIsCancelButtonSeparate(self) && _cancelButton)
     {
         _cancelButton.center = _cancelButtonCenterShowed;
 
@@ -1689,7 +1714,7 @@ LGAlertViewType;
 {
     _backgroundView.alpha = 0.f;
 
-    if (_style == LGAlertViewStyleAlert || kLGAlertViewPadAndNotForce)
+    if (_style == LGAlertViewStyleAlert || kLGAlertViewPadAndNotForce(self))
     {
         _scrollView.transform = CGAffineTransformMakeScale(0.95, 0.95);
         _scrollView.alpha = 0.f;
@@ -1704,7 +1729,7 @@ LGAlertViewType;
         _styleView.center = _scrollViewCenterHidden;
     }
 
-    if (kLGAlertViewIsCancelButtonSeparate && _cancelButton)
+    if (kLGAlertViewIsCancelButtonSeparate(self) && _cancelButton)
     {
         _cancelButton.center = _cancelButtonCenterHidden;
 
@@ -1740,6 +1765,100 @@ LGAlertViewType;
     _viewController = nil;
     _window = nil;
     _delegate = nil;
+}
+
+- (void)transitionToAlertView:(LGAlertView *)alertView completionHandler:(void(^)())completionHandler
+{
+    self.window.userInteractionEnabled = NO;
+
+    [alertView showAnimated:NO hidden:YES completionHandler:^(void)
+     {
+         NSTimeInterval duration = 0.3;
+
+         // -----
+
+         [UIView animateWithDuration:duration
+                          animations:^(void)
+          {
+              _scrollView.alpha = 0.f;
+
+              if (kLGAlertViewIsCancelButtonSeparate(self))
+              {
+                  _cancelButton.alpha = 0.f;
+
+                  if (!kLGAlertViewIsCancelButtonSeparate(alertView))
+                      _styleCancelView.alpha = 0.f;
+              }
+          }
+                          completion:^(BOOL finished)
+          {
+              alertView.backgroundView.alpha = 0.f;
+              alertView.backgroundView.hidden = NO;
+
+              [UIView animateWithDuration:duration*2.f
+                               animations:^(void)
+               {
+                   _backgroundView.alpha = 0.f;
+                   alertView.backgroundView.alpha = 1.f;
+               }];
+
+              // -----
+
+              CGRect styleViewFrame = alertView.styleView.frame;
+
+              alertView.styleView.frame = _styleView.frame;
+
+              alertView.styleView.hidden = NO;
+              _styleView.hidden = YES;
+
+              [UIView animateWithDuration:duration
+                               animations:^(void)
+               {
+                   alertView.styleView.frame = styleViewFrame;
+               }
+                               completion:^(BOOL finished)
+               {
+                   alertView.scrollView.alpha = 0.f;
+                   alertView.scrollView.hidden = NO;
+
+                   if (kLGAlertViewIsCancelButtonSeparate(alertView))
+                   {
+                       alertView.cancelButton.alpha = 0.f;
+                       alertView.cancelButton.hidden = NO;
+
+                       if (!_styleCancelView.alpha)
+                       {
+                           alertView.styleCancelView.alpha = 0.f;
+                           alertView.styleCancelView.hidden = NO;
+                       }
+                   }
+
+                   [UIView animateWithDuration:duration
+                                    animations:^(void)
+                    {
+                        _scrollView.alpha = 0.f;
+                        alertView.scrollView.alpha = 1.f;
+
+                        if (kLGAlertViewIsCancelButtonSeparate(alertView))
+                        {
+                            alertView.cancelButton.alpha = 1.f;
+
+                            if (!alertView.styleCancelView.alpha)
+                                alertView.styleCancelView.alpha = 1.f;
+                        }
+                    }
+                                    completion:^(BOOL finished)
+                    {
+                        [self dismissAnimated:NO completionHandler:^(void)
+                        {
+                            [alertView showComplete];
+
+                            if (completionHandler) completionHandler();
+                        }];
+                    }];
+               }];
+          }];
+     }];
 }
 
 #pragma mark -
@@ -1945,7 +2064,7 @@ LGAlertViewType;
 
         // -----
 
-        if (kLGAlertViewIsCancelButtonSeparate && _cancelButtonTitle)
+        if (kLGAlertViewIsCancelButtonSeparate(self) && _cancelButtonTitle)
         {
             _styleCancelView = [UIView new];
             _styleCancelView.backgroundColor = _backgroundColor;
@@ -1971,7 +2090,7 @@ LGAlertViewType;
 
         if (_destructiveButtonTitle.length)
             numberOfButtons++;
-        if (_cancelButtonTitle.length && !kLGAlertViewIsCancelButtonSeparate)
+        if (_cancelButtonTitle.length && !kLGAlertViewIsCancelButtonSeparate(self))
             numberOfButtons++;
 
         BOOL showTable = NO;
@@ -2018,7 +2137,7 @@ LGAlertViewType;
                         showTable = YES;
                 }
 
-                if (_cancelButtonTitle.length && !kLGAlertViewIsCancelButtonSeparate && !showTable)
+                if (_cancelButtonTitle.length && !kLGAlertViewIsCancelButtonSeparate(self) && !showTable)
                 {
                     [self cancelButtonInit];
 
@@ -2139,7 +2258,7 @@ LGAlertViewType;
                     UIButton *secondButton = nil;
                     UIButton *thirdButton = nil;
 
-                    if (_cancelButton && !kLGAlertViewIsCancelButtonSeparate)
+                    if (_cancelButton && !kLGAlertViewIsCancelButtonSeparate(self))
                     {
                         [_scrollView addSubview:_cancelButton];
 
@@ -2257,7 +2376,7 @@ LGAlertViewType;
 
             if (showTable)
             {
-                if (!kLGAlertViewIsCancelButtonSeparate)
+                if (!kLGAlertViewIsCancelButtonSeparate(self))
                     _cancelButton = nil;
                 _destructiveButton = nil;
                 _firstButton = nil;
@@ -2270,7 +2389,7 @@ LGAlertViewType;
                 if (_destructiveButtonTitle.length)
                     [_buttonTitles insertObject:_destructiveButtonTitle atIndex:0];
 
-                if (_cancelButtonTitle.length && !kLGAlertViewIsCancelButtonSeparate)
+                if (_cancelButtonTitle.length && !kLGAlertViewIsCancelButtonSeparate(self))
                     [_buttonTitles addObject:_cancelButtonTitle];
 
                 _tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStylePlain];
@@ -2355,7 +2474,7 @@ LGAlertViewType;
     if (_heightMax > 0.f && _heightMax < heightMax)
         heightMax = _heightMax;
 
-    if (kLGAlertViewIsCancelButtonSeparate && _cancelButton)
+    if (kLGAlertViewIsCancelButtonSeparate(self) && _cancelButton)
         heightMax -= (_buttonsHeight+_cancelButtonOffset);
     else if (_cancelOnTouch &&
              !_cancelButtonTitle.length &&
@@ -2371,7 +2490,7 @@ LGAlertViewType;
     CGAffineTransform scrollViewTransform = CGAffineTransformIdentity;
     CGFloat scrollViewAlpha = 1.f;
 
-    if (_style == LGAlertViewStyleAlert || kLGAlertViewPadAndNotForce)
+    if (_style == LGAlertViewStyleAlert || kLGAlertViewPadAndNotForce(self))
     {
         scrollViewFrame = CGRectMake(size.width/2-width/2, size.height/2-_keyboardHeight/2-heightMax/2, width, heightMax);
 
@@ -2388,7 +2507,7 @@ LGAlertViewType;
     else
     {
         CGFloat bottomShift = kLGAlertViewOffsetVertical;
-        if (kLGAlertViewIsCancelButtonSeparate && _cancelButton)
+        if (kLGAlertViewIsCancelButtonSeparate(self) && _cancelButton)
             bottomShift += _buttonsHeight+_cancelButtonOffset;
 
         scrollViewFrame = CGRectMake(size.width/2-width/2, size.height-bottomShift-heightMax, width, heightMax);
@@ -2396,10 +2515,10 @@ LGAlertViewType;
 
     // -----
 
-    if (_style == LGAlertViewStyleActionSheet && !kLGAlertViewPadAndNotForce)
+    if (_style == LGAlertViewStyleActionSheet && !kLGAlertViewPadAndNotForce(self))
     {
         CGRect cancelButtonFrame = CGRectZero;
-        if (kLGAlertViewIsCancelButtonSeparate && _cancelButton)
+        if (kLGAlertViewIsCancelButtonSeparate(self) && _cancelButton)
             cancelButtonFrame = CGRectMake(size.width/2-width/2, size.height-_cancelButtonOffset-_buttonsHeight, width, _buttonsHeight);
 
         _scrollViewCenterShowed = CGPointMake(scrollViewFrame.origin.x+scrollViewFrame.size.width/2, scrollViewFrame.origin.y+scrollViewFrame.size.height/2);
@@ -2408,7 +2527,7 @@ LGAlertViewType;
         // -----
 
         CGFloat commonHeight = scrollViewFrame.size.height+kLGAlertViewOffsetVertical;
-        if (kLGAlertViewIsCancelButtonSeparate && _cancelButton)
+        if (kLGAlertViewIsCancelButtonSeparate(self) && _cancelButton)
             commonHeight += _buttonsHeight+_cancelButtonOffset;
 
         _scrollViewCenterHidden = CGPointMake(scrollViewFrame.origin.x+scrollViewFrame.size.width/2, scrollViewFrame.origin.y+scrollViewFrame.size.height/2+commonHeight+_layerBorderWidth+_layerShadowRadius);
@@ -2418,13 +2537,13 @@ LGAlertViewType;
         {
             scrollViewFrame.origin.y += commonHeight;
 
-            if (kLGAlertViewIsCancelButtonSeparate && _cancelButton)
+            if (kLGAlertViewIsCancelButtonSeparate(self) && _cancelButton)
                 cancelButtonFrame.origin.y += commonHeight;
         }
 
         // -----
 
-        if (kLGAlertViewIsCancelButtonSeparate && _cancelButton)
+        if (kLGAlertViewIsCancelButtonSeparate(self) && _cancelButton)
         {
             if ([UIScreen mainScreen].scale == 1.f)
                 cancelButtonFrame = CGRectIntegral(cancelButtonFrame);

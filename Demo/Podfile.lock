@@ -1,5 +1,5 @@
 PODS:
-  - LGAlertView (2.0.0)
+  - LGAlertView (2.0.2)
 
 DEPENDENCIES:
   - LGAlertView (from `../`)
@@ -9,6 +9,6 @@ EXTERNAL SOURCES:
     :path: ../
 
 SPEC CHECKSUMS:
-  LGAlertView: a70295bb08ecb940da71b6009b14199a3b580453
+  LGAlertView: 044299d2a66674a13c04d397555ffc5e4a666831
 
 COCOAPODS: 0.39.0

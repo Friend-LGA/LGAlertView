@@ -33,6 +33,8 @@
                          @"Custom ActionSheet Styles"];
 
         [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"cell"];
+
+        self.clearsSelectionOnViewWillAppear = YES;
     }
     return self;
 }
@@ -90,8 +92,6 @@
         TableViewControllerCustomActionSheet *tableViewController = [TableViewControllerCustomActionSheet new];
         [self.navigationController pushViewController:tableViewController animated:YES];
     }
-
-    [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
 @end
