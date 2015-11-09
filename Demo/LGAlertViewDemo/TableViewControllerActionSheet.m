@@ -37,7 +37,13 @@
                          @"LGAlertView + ActivityIndicator",
                          @"LGAlertView + ActivityIndicator cancel",
                          @"LGAlertView + ProgressView cancel",
-                         @"LGAlertView + Transition"];
+                         @"",
+                         @"LGAlertView + Transition 1",
+                         @"LGAlertView + Transition 2",
+                         @"LGAlertView + Transition 3",
+                         @"LGAlertView + Transition 4",
+                         @"LGAlertView + Transition 5",
+                         @"LGAlertView + Transition 6"];
 
         [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"cell"];
         UIEdgeInsets contentInset = self.tableView.contentInset;
@@ -120,9 +126,15 @@
                                buttonTitles:@[@"Button 1", @"Button 2"]
                           cancelButtonTitle:@"Cancel"
                      destructiveButtonTitle:@"Destructive"
-                              actionHandler:nil
-                              cancelHandler:nil
-                         destructiveHandler:nil] showAnimated:YES completionHandler:nil];
+                              actionHandler:^(LGAlertView *alertView, NSString *title, NSUInteger index) {
+                                  NSLog(@"actionHandler, %@, %lu", title, (long unsigned)index);
+                              }
+                              cancelHandler:^(LGAlertView *alertView) {
+                                  NSLog(@"cancelHandler");
+                              }
+                         destructiveHandler:^(LGAlertView *alertView) {
+                             NSLog(@"destructiveHandler");
+                         }] showAnimated:YES completionHandler:nil];
     }
     else if (indexPath.row == 4)
     {
@@ -133,9 +145,15 @@
                                               @"Other button 2 with longest title text ever exists. For iPhone 6 and 6 Plus is even longer."]
                           cancelButtonTitle:@"Cancel"
                      destructiveButtonTitle:@"Destructive"
-                              actionHandler:nil
-                              cancelHandler:nil
-                         destructiveHandler:nil] showAnimated:YES completionHandler:nil];
+                              actionHandler:^(LGAlertView *alertView, NSString *title, NSUInteger index) {
+                                  NSLog(@"actionHandler, %@, %lu", title, (long unsigned)index);
+                              }
+                              cancelHandler:^(LGAlertView *alertView) {
+                                  NSLog(@"cancelHandler");
+                              }
+                         destructiveHandler:^(LGAlertView *alertView) {
+                             NSLog(@"destructiveHandler");
+                         }] showAnimated:YES completionHandler:nil];
     }
     else if (indexPath.row == 5)
     {
@@ -146,9 +164,15 @@
                                                                       @"Other button 2 with longest title text ever exists. For iPhone 6 and 6 Plus is even longer."]
                                                   cancelButtonTitle:@"Cancel"
                                              destructiveButtonTitle:@"Destructive"
-                                                      actionHandler:nil
-                                                      cancelHandler:nil
-                                                 destructiveHandler:nil];
+                                                      actionHandler:^(LGAlertView *alertView, NSString *title, NSUInteger index) {
+                                                          NSLog(@"actionHandler, %@, %lu", title, (long unsigned)index);
+                                                      }
+                                                      cancelHandler:^(LGAlertView *alertView) {
+                                                          NSLog(@"cancelHandler");
+                                                      }
+                                                 destructiveHandler:^(LGAlertView *alertView) {
+                                                     NSLog(@"destructiveHandler");
+                                                 }];
         alertView.buttonsNumberOfLines = 0;
         [alertView showAnimated:YES completionHandler:nil];
     }
@@ -160,9 +184,15 @@
                                                        buttonTitles:@[@"Blue pill"]
                                                   cancelButtonTitle:nil
                                              destructiveButtonTitle:@"Red pill"
-                                                      actionHandler:nil
-                                                      cancelHandler:nil
-                                                 destructiveHandler:nil];
+                                                      actionHandler:^(LGAlertView *alertView, NSString *title, NSUInteger index) {
+                                                          NSLog(@"actionHandler, %@, %lu", title, (long unsigned)index);
+                                                      }
+                                                      cancelHandler:^(LGAlertView *alertView) {
+                                                          NSLog(@"cancelHandler");
+                                                      }
+                                                 destructiveHandler:^(LGAlertView *alertView) {
+                                                     NSLog(@"destructiveHandler");
+                                                 }];
         alertView.cancelOnTouch = NO;
         [alertView showAnimated:YES completionHandler:nil];
     }
@@ -197,9 +227,15 @@
                                                                       @"Button 25"]
                                                   cancelButtonTitle:@"Cancel"
                                              destructiveButtonTitle:@"Destructive"
-                                                      actionHandler:nil
-                                                      cancelHandler:nil
-                                                 destructiveHandler:nil];
+                                                      actionHandler:^(LGAlertView *alertView, NSString *title, NSUInteger index) {
+                                                          NSLog(@"actionHandler, %@, %lu", title, (long unsigned)index);
+                                                      }
+                                                      cancelHandler:^(LGAlertView *alertView) {
+                                                          NSLog(@"cancelHandler");
+                                                      }
+                                                 destructiveHandler:^(LGAlertView *alertView) {
+                                                     NSLog(@"destructiveHandler");
+                                                 }];
         alertView.windowLevel = LGAlertViewWindowLevelBelowStatusBar;
         [alertView showAnimated:YES completionHandler:nil];
     }
@@ -234,9 +270,15 @@
                                                                       @"Button 25"]
                                                   cancelButtonTitle:@"Cancel"
                                              destructiveButtonTitle:@"Destructive"
-                                                      actionHandler:nil
-                                                      cancelHandler:nil
-                                                 destructiveHandler:nil];
+                                                      actionHandler:^(LGAlertView *alertView, NSString *title, NSUInteger index) {
+                                                          NSLog(@"actionHandler, %@, %lu", title, (long unsigned)index);
+                                                      }
+                                                      cancelHandler:^(LGAlertView *alertView) {
+                                                          NSLog(@"cancelHandler");
+                                                      }
+                                                 destructiveHandler:^(LGAlertView *alertView) {
+                                                     NSLog(@"destructiveHandler");
+                                                 }];
         alertView.heightMax = 256.f;
         [alertView showAnimated:YES completionHandler:nil];
     }
@@ -253,9 +295,15 @@
                                       buttonTitles:@[@"Done"]
                                  cancelButtonTitle:@"Cancel"
                             destructiveButtonTitle:nil
-                                     actionHandler:nil
-                                     cancelHandler:nil
-                                destructiveHandler:nil] showAnimated:YES completionHandler:nil];
+                                     actionHandler:^(LGAlertView *alertView, NSString *title, NSUInteger index) {
+                                         NSLog(@"actionHandler, %@, %lu", title, (long unsigned)index);
+                                     }
+                                     cancelHandler:^(LGAlertView *alertView) {
+                                         NSLog(@"cancelHandler");
+                                     }
+                                destructiveHandler:^(LGAlertView *alertView) {
+                                    NSLog(@"destructiveHandler");
+                                }] showAnimated:YES completionHandler:nil];
     }
     else if (indexPath.row == 10)
     {
@@ -283,9 +331,15 @@
                                                                            buttonTitles:nil
                                                                       cancelButtonTitle:@"I'm hurry"
                                                                  destructiveButtonTitle:nil
-                                                                          actionHandler:nil
-                                                                          cancelHandler:nil
-                                                                     destructiveHandler:nil];
+                                                                          actionHandler:^(LGAlertView *alertView, NSString *title, NSUInteger index) {
+                                                                              NSLog(@"actionHandler, %@, %lu", title, (long unsigned)index);
+                                                                          }
+                                                                          cancelHandler:^(LGAlertView *alertView) {
+                                                                              NSLog(@"cancelHandler");
+                                                                          }
+                                                                     destructiveHandler:^(LGAlertView *alertView) {
+                                                                         NSLog(@"destructiveHandler");
+                                                                     }];
         [alertView showAnimated:YES completionHandler:nil];
 
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(5.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^(void)
@@ -302,14 +356,20 @@
                                                                       buttonTitles:nil
                                                                  cancelButtonTitle:@"I'm hurry"
                                                             destructiveButtonTitle:nil
-                                                                     actionHandler:nil
-                                                                     cancelHandler:nil
-                                                                destructiveHandler:nil];
+                                                                     actionHandler:^(LGAlertView *alertView, NSString *title, NSUInteger index) {
+                                                                         NSLog(@"actionHandler, %@, %lu", title, (long unsigned)index);
+                                                                     }
+                                                                     cancelHandler:^(LGAlertView *alertView) {
+                                                                         NSLog(@"cancelHandler");
+                                                                     }
+                                                                destructiveHandler:^(LGAlertView *alertView) {
+                                                                    NSLog(@"destructiveHandler");
+                                                                }];
         [alertView showAnimated:YES completionHandler:nil];
 
         [self updateProgressWithAlertView:alertView];
     }
-    else if (indexPath.row == 13)
+    else if (indexPath.row == 14)
     {
         LGAlertView *alertView1 = [[LGAlertView alloc] initWithActivityIndicatorAndTitle:@"Loading"
                                                                                  message:@"Waiting please"
@@ -317,9 +377,175 @@
                                                                             buttonTitles:nil
                                                                        cancelButtonTitle:@"I'm hurry"
                                                                   destructiveButtonTitle:nil
-                                                                           actionHandler:nil
-                                                                           cancelHandler:nil
-                                                                      destructiveHandler:nil];
+                                                                           actionHandler:^(LGAlertView *alertView, NSString *title, NSUInteger index) {
+                                                                               NSLog(@"actionHandler, %@, %lu", title, (long unsigned)index);
+                                                                           }
+                                                                           cancelHandler:^(LGAlertView *alertView) {
+                                                                               NSLog(@"cancelHandler");
+                                                                           }
+                                                                      destructiveHandler:^(LGAlertView *alertView) {
+                                                                          NSLog(@"destructiveHandler");
+                                                                      }];
+        [alertView1 showAnimated:YES completionHandler:nil];
+
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(3.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^(void)
+                       {
+                           LGAlertView *alertView2 = [[LGAlertView alloc] initWithTitle:@"Title"
+                                                                                message:@"Message"
+                                                                                  style:LGAlertViewStyleActionSheet
+                                                                           buttonTitles:@[@"Button 1", @"Button 2"]
+                                                                      cancelButtonTitle:@"Cancel"
+                                                                 destructiveButtonTitle:@"Destructive"
+                                                                          actionHandler:^(LGAlertView *alertView, NSString *title, NSUInteger index) {
+                                                                              NSLog(@"actionHandler, %@, %lu", title, (long unsigned)index);
+                                                                          }
+                                                                          cancelHandler:^(LGAlertView *alertView) {
+                                                                              NSLog(@"cancelHandler");
+                                                                          }
+                                                                     destructiveHandler:^(LGAlertView *alertView) {
+                                                                         NSLog(@"destructiveHandler");
+                                                                     }];
+
+                           [alertView1 transitionToAlertView:alertView2 completionHandler:nil];
+                       });
+    }
+    else if (indexPath.row == 15)
+    {
+        LGAlertView *alertView1 = [[LGAlertView alloc] initWithActivityIndicatorAndTitle:@"Loading"
+                                                                                 message:@"Waiting please"
+                                                                                   style:LGAlertViewStyleActionSheet
+                                                                            buttonTitles:nil
+                                                                       cancelButtonTitle:nil
+                                                                  destructiveButtonTitle:nil
+                                                                           actionHandler:^(LGAlertView *alertView, NSString *title, NSUInteger index) {
+                                                                               NSLog(@"actionHandler, %@, %lu", title, (long unsigned)index);
+                                                                           }
+                                                                           cancelHandler:^(LGAlertView *alertView) {
+                                                                               NSLog(@"cancelHandler");
+                                                                           }
+                                                                      destructiveHandler:^(LGAlertView *alertView) {
+                                                                          NSLog(@"destructiveHandler");
+                                                                      }];
+        [alertView1 showAnimated:YES completionHandler:nil];
+
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(3.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^(void)
+                       {
+                           LGAlertView *alertView2 = [[LGAlertView alloc] initWithTitle:@"Title"
+                                                                                message:@"Message"
+                                                                                  style:LGAlertViewStyleActionSheet
+                                                                           buttonTitles:@[@"Button 1", @"Button 2"]
+                                                                      cancelButtonTitle:nil
+                                                                 destructiveButtonTitle:@"Destructive"
+                                                                          actionHandler:^(LGAlertView *alertView, NSString *title, NSUInteger index) {
+                                                                              NSLog(@"actionHandler, %@, %lu", title, (long unsigned)index);
+                                                                          }
+                                                                          cancelHandler:^(LGAlertView *alertView) {
+                                                                              NSLog(@"cancelHandler");
+                                                                          }
+                                                                     destructiveHandler:^(LGAlertView *alertView) {
+                                                                         NSLog(@"destructiveHandler");
+                                                                     }];
+
+                           [alertView1 transitionToAlertView:alertView2 completionHandler:nil];
+                       });
+    }
+    else if (indexPath.row == 16)
+    {
+        LGAlertView *alertView1 = [[LGAlertView alloc] initWithActivityIndicatorAndTitle:@"Loading"
+                                                                                 message:@"Waiting please"
+                                                                                   style:LGAlertViewStyleActionSheet
+                                                                            buttonTitles:nil
+                                                                       cancelButtonTitle:@"I'm hurry"
+                                                                  destructiveButtonTitle:nil
+                                                                           actionHandler:^(LGAlertView *alertView, NSString *title, NSUInteger index) {
+                                                                               NSLog(@"actionHandler, %@, %lu", title, (long unsigned)index);
+                                                                           }
+                                                                           cancelHandler:^(LGAlertView *alertView) {
+                                                                               NSLog(@"cancelHandler");
+                                                                           }
+                                                                      destructiveHandler:^(LGAlertView *alertView) {
+                                                                          NSLog(@"destructiveHandler");
+                                                                      }];
+        [alertView1 showAnimated:YES completionHandler:nil];
+
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(3.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^(void)
+                       {
+                           LGAlertView *alertView2 = [[LGAlertView alloc] initWithTitle:@"Title"
+                                                                                message:@"Message"
+                                                                                  style:LGAlertViewStyleActionSheet
+                                                                           buttonTitles:@[@"Button 1", @"Button 2"]
+                                                                      cancelButtonTitle:nil
+                                                                 destructiveButtonTitle:@"Destructive"
+                                                                          actionHandler:^(LGAlertView *alertView, NSString *title, NSUInteger index) {
+                                                                              NSLog(@"actionHandler, %@, %lu", title, (long unsigned)index);
+                                                                          }
+                                                                          cancelHandler:^(LGAlertView *alertView) {
+                                                                              NSLog(@"cancelHandler");
+                                                                          }
+                                                                     destructiveHandler:^(LGAlertView *alertView) {
+                                                                         NSLog(@"destructiveHandler");
+                                                                     }];
+
+                           [alertView1 transitionToAlertView:alertView2 completionHandler:nil];
+                       });
+    }
+    else if (indexPath.row == 17)
+    {
+        LGAlertView *alertView1 = [[LGAlertView alloc] initWithActivityIndicatorAndTitle:@"Loading"
+                                                                                 message:@"Waiting please"
+                                                                                   style:LGAlertViewStyleActionSheet
+                                                                            buttonTitles:nil
+                                                                       cancelButtonTitle:nil
+                                                                  destructiveButtonTitle:nil
+                                                                           actionHandler:^(LGAlertView *alertView, NSString *title, NSUInteger index) {
+                                                                               NSLog(@"actionHandler, %@, %lu", title, (long unsigned)index);
+                                                                           }
+                                                                           cancelHandler:^(LGAlertView *alertView) {
+                                                                               NSLog(@"cancelHandler");
+                                                                           }
+                                                                      destructiveHandler:^(LGAlertView *alertView) {
+                                                                          NSLog(@"destructiveHandler");
+                                                                      }];
+        [alertView1 showAnimated:YES completionHandler:nil];
+
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(3.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^(void)
+                       {
+                           LGAlertView *alertView2 = [[LGAlertView alloc] initWithTitle:@"Title"
+                                                                                message:@"Message"
+                                                                                  style:LGAlertViewStyleActionSheet
+                                                                           buttonTitles:@[@"Button 1", @"Button 2"]
+                                                                      cancelButtonTitle:@"Cancel"
+                                                                 destructiveButtonTitle:@"Destructive"
+                                                                          actionHandler:^(LGAlertView *alertView, NSString *title, NSUInteger index) {
+                                                                              NSLog(@"actionHandler, %@, %lu", title, (long unsigned)index);
+                                                                          }
+                                                                          cancelHandler:^(LGAlertView *alertView) {
+                                                                              NSLog(@"cancelHandler");
+                                                                          }
+                                                                     destructiveHandler:^(LGAlertView *alertView) {
+                                                                         NSLog(@"destructiveHandler");
+                                                                     }];
+
+                           [alertView1 transitionToAlertView:alertView2 completionHandler:nil];
+                       });
+    }
+    else if (indexPath.row == 18)
+    {
+        LGAlertView *alertView1 = [[LGAlertView alloc] initWithActivityIndicatorAndTitle:@"Loading"
+                                                                                 message:@"Waiting please"
+                                                                                   style:LGAlertViewStyleActionSheet
+                                                                            buttonTitles:nil
+                                                                       cancelButtonTitle:@"I'm hurry"
+                                                                  destructiveButtonTitle:nil
+                                                                           actionHandler:^(LGAlertView *alertView, NSString *title, NSUInteger index) {
+                                                                               NSLog(@"actionHandler, %@, %lu", title, (long unsigned)index);
+                                                                           }
+                                                                           cancelHandler:^(LGAlertView *alertView) {
+                                                                               NSLog(@"cancelHandler");
+                                                                           }
+                                                                      destructiveHandler:^(LGAlertView *alertView) {
+                                                                          NSLog(@"destructiveHandler");
+                                                                      }];
         [alertView1 showAnimated:YES completionHandler:nil];
 
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(3.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^(void)
@@ -330,9 +556,55 @@
                                                                            buttonTitles:@[@"Button 1", @"Button 2"]
                                                                       cancelButtonTitle:@"Cancel"
                                                                  destructiveButtonTitle:@"Destructive"
-                                                                          actionHandler:nil
-                                                                          cancelHandler:nil
-                                                                     destructiveHandler:nil];
+                                                                          actionHandler:^(LGAlertView *alertView, NSString *title, NSUInteger index) {
+                                                                              NSLog(@"actionHandler, %@, %lu", title, (long unsigned)index);
+                                                                          }
+                                                                          cancelHandler:^(LGAlertView *alertView) {
+                                                                              NSLog(@"cancelHandler");
+                                                                          }
+                                                                     destructiveHandler:^(LGAlertView *alertView) {
+                                                                         NSLog(@"destructiveHandler");
+                                                                     }];
+
+                           [alertView1 transitionToAlertView:alertView2 completionHandler:nil];
+                       });
+    }
+    else if (indexPath.row == 19)
+    {
+        LGAlertView *alertView1 = [[LGAlertView alloc] initWithActivityIndicatorAndTitle:@"Loading"
+                                                                                 message:@"Waiting please"
+                                                                                   style:LGAlertViewStyleActionSheet
+                                                                            buttonTitles:nil
+                                                                       cancelButtonTitle:nil
+                                                                  destructiveButtonTitle:nil
+                                                                           actionHandler:^(LGAlertView *alertView, NSString *title, NSUInteger index) {
+                                                                               NSLog(@"actionHandler, %@, %lu", title, (long unsigned)index);
+                                                                           }
+                                                                           cancelHandler:^(LGAlertView *alertView) {
+                                                                               NSLog(@"cancelHandler");
+                                                                           }
+                                                                      destructiveHandler:^(LGAlertView *alertView) {
+                                                                          NSLog(@"destructiveHandler");
+                                                                      }];
+        [alertView1 showAnimated:YES completionHandler:nil];
+
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(3.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^(void)
+                       {
+                           LGAlertView *alertView2 = [[LGAlertView alloc] initWithTitle:@"Title"
+                                                                                message:@"Message"
+                                                                                  style:LGAlertViewStyleAlert
+                                                                           buttonTitles:@[@"Button 1", @"Button 2"]
+                                                                      cancelButtonTitle:@"Cancel"
+                                                                 destructiveButtonTitle:@"Destructive"
+                                                                          actionHandler:^(LGAlertView *alertView, NSString *title, NSUInteger index) {
+                                                                              NSLog(@"actionHandler, %@, %lu", title, (long unsigned)index);
+                                                                          }
+                                                                          cancelHandler:^(LGAlertView *alertView) {
+                                                                              NSLog(@"cancelHandler");
+                                                                          }
+                                                                     destructiveHandler:^(LGAlertView *alertView) {
+                                                                         NSLog(@"destructiveHandler");
+                                                                     }];
 
                            [alertView1 transitionToAlertView:alertView2 completionHandler:nil];
                        });
@@ -355,7 +627,7 @@
                                progress = 1.f;
 
                            [alertView setProgress:progress progressLabelText:[NSString stringWithFormat:@"%.0f %%", progress*100]];
-
+                           
                            [self updateProgressWithAlertView:alertView];
                        }
                    });

@@ -28,6 +28,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "LGAlertViewButtonProperties.h"
 
 @class LGAlertView;
 
@@ -55,19 +56,17 @@ static NSString *const kLGAlertViewDestructiveNotification = @"LGAlertViewDestru
 
 @interface LGAlertView : NSObject
 
-typedef enum
+typedef NS_ENUM(NSUInteger, LGAlertViewStyle)
 {
     LGAlertViewStyleAlert       = 0,
     LGAlertViewStyleActionSheet = 1
-}
-LGAlertViewStyle;
+};
 
-typedef enum
+typedef NS_ENUM(NSUInteger, LGAlertViewWindowLevel)
 {
     LGAlertViewWindowLevelAboveStatusBar = 0,
     LGAlertViewWindowLevelBelowStatusBar = 1
-}
-LGAlertViewWindowLevel;
+};
 
 @property (assign, nonatomic, getter=isShowing) BOOL showing;
 /** Default is LGAlertViewWindowLevelAboveStatusBar */
@@ -119,28 +118,35 @@ LGAlertViewWindowLevel;
 @property (assign, nonatomic) NSLineBreakMode buttonsLineBreakMode;
 @property (assign, nonatomic) CGFloat         buttonsMinimumScaleFactor;
 @property (assign, nonatomic, getter=isButtonsAdjustsFontSizeToFitWidth) BOOL buttonsAdjustsFontSizeToFitWidth;
+@property (assign, nonatomic, getter=isCancelButtonEnabled) BOOL buttonsEnabled;
 
 @property (strong, nonatomic) UIColor         *cancelButtonTitleColor;
 @property (strong, nonatomic) UIColor         *cancelButtonTitleColorHighlighted;
+@property (strong, nonatomic) UIColor         *cancelButtonTitleColorDisabled;
 @property (assign, nonatomic) NSTextAlignment cancelButtonTextAlignment;
 @property (strong, nonatomic) UIFont          *cancelButtonFont;
 @property (strong, nonatomic) UIColor         *cancelButtonBackgroundColor;
 @property (strong, nonatomic) UIColor         *cancelButtonBackgroundColorHighlighted;
+@property (strong, nonatomic) UIColor         *cancelButtonBackgroundColorDisabled;
 @property (assign, nonatomic) NSUInteger      cancelButtonNumberOfLines;
 @property (assign, nonatomic) NSLineBreakMode cancelButtonLineBreakMode;
 @property (assign, nonatomic) CGFloat         cancelButtonMinimumScaleFactor;
 @property (assign, nonatomic, getter=isCancelButtonAdjustsFontSizeToFitWidth) BOOL cancelButtonAdjustsFontSizeToFitWidth;
+@property (assign, nonatomic, getter=isCancelButtonEnabled) BOOL cancelButtonEnabled;
 
 @property (strong, nonatomic) UIColor         *destructiveButtonTitleColor;
 @property (strong, nonatomic) UIColor         *destructiveButtonTitleColorHighlighted;
+@property (strong, nonatomic) UIColor         *destructiveButtonTitleColorDisabled;
 @property (assign, nonatomic) NSTextAlignment destructiveButtonTextAlignment;
 @property (strong, nonatomic) UIFont          *destructiveButtonFont;
 @property (strong, nonatomic) UIColor         *destructiveButtonBackgroundColor;
 @property (strong, nonatomic) UIColor         *destructiveButtonBackgroundColorHighlighted;
+@property (strong, nonatomic) UIColor         *destructiveButtonBackgroundColorDisabled;
 @property (assign, nonatomic) NSUInteger      destructiveButtonNumberOfLines;
 @property (assign, nonatomic) NSLineBreakMode destructiveButtonLineBreakMode;
 @property (assign, nonatomic) CGFloat         destructiveButtonMinimumScaleFactor;
 @property (assign, nonatomic, getter=isDestructiveButtonAdjustsFontSizeToFitWidth) BOOL destructiveButtonAdjustsFontSizeToFitWidth;
+@property (assign, nonatomic, getter=isDestructiveButtonEnabled) BOOL destructiveButtonEnabled;
 
 @property (assign, nonatomic) UIActivityIndicatorViewStyle activityIndicatorViewStyle;
 @property (strong, nonatomic) UIColor                      *activityIndicatorViewColor;
@@ -477,6 +483,8 @@ LGAlertViewWindowLevel;
 
 - (void)setProgress:(float)progress progressLabelText:(NSString *)progressLabelText;
 
+- (void)setButtonPropertiesAtIndex:(NSUInteger)index handler:(void(^)(LGAlertViewButtonProperties *properties))handler;
+
 - (void)setButtonAtIndex:(NSUInteger)index enabled:(BOOL)enabled;
 - (BOOL)isButtonEnabledAtIndex:(NSUInteger)index;
 
@@ -487,6 +495,7 @@ LGAlertViewWindowLevel;
 - (void)forceActionAtIndex:(NSUInteger)index;
 
 + (void)setTintColor:(UIColor *)color;
++ (void)setColorful:(BOOL)colorful;
 
 #pragma mark -
 
