@@ -1489,7 +1489,7 @@ LGAlertViewType;
     {
         [self destructiveAction:nil];
     }
-    else if (_cancelButtonTitle.length && indexPath.row == _buttonTitles.count-1)
+    else if (_cancelButtonTitle.length && indexPath.row == _buttonTitles.count-1 && !kLGAlertViewIsCancelButtonSeparate(self))
     {
         [self cancelAction:nil];
     }
@@ -1811,6 +1811,13 @@ LGAlertViewType;
               alertView.styleView.hidden = NO;
               _styleView.hidden = YES;
 
+              if (kLGAlertViewIsCancelButtonSeparate(self) &&
+                  kLGAlertViewIsCancelButtonSeparate(alertView))
+              {
+                  alertView.styleCancelView.hidden = NO;
+                  _styleCancelView.hidden = YES;
+              }
+
               [UIView animateWithDuration:duration
                                animations:^(void)
                {
@@ -1826,11 +1833,8 @@ LGAlertViewType;
                        alertView.cancelButton.alpha = 0.f;
                        alertView.cancelButton.hidden = NO;
 
-                       if (!_styleCancelView.alpha)
-                       {
+                       if (!kLGAlertViewIsCancelButtonSeparate(self))
                            alertView.styleCancelView.alpha = 0.f;
-                           alertView.styleCancelView.hidden = NO;
-                       }
                    }
 
                    [UIView animateWithDuration:duration
@@ -1843,7 +1847,7 @@ LGAlertViewType;
                         {
                             alertView.cancelButton.alpha = 1.f;
 
-                            if (!alertView.styleCancelView.alpha)
+                            if (!kLGAlertViewIsCancelButtonSeparate(self))
                                 alertView.styleCancelView.alpha = 1.f;
                         }
                     }
