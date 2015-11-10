@@ -1339,7 +1339,7 @@ LGAlertViewType;
 
 - (BOOL)isButtonEnabledAtIndex:(NSUInteger)index
 {
-    return _buttonsEnabledArray[index];
+    return (BOOL)_buttonsEnabledArray[index];
 }
 
 - (void)setButtonPropertiesAtIndex:(NSUInteger)index
@@ -1350,17 +1350,15 @@ LGAlertViewType;
         if (!_buttonsPropertiesDictionary)
             _buttonsPropertiesDictionary = [NSMutableDictionary new];
 
-        for (NSUInteger index=0; index<_buttonTitles.count; index++)
-        {
-            LGAlertViewButtonProperties *properties = [LGAlertViewButtonProperties new];
+        LGAlertViewButtonProperties *properties = _buttonsPropertiesDictionary[[NSNumber numberWithInteger:index]];
+        if (!properties) properties = [LGAlertViewButtonProperties new];
 
-            handler(properties);
+        handler(properties);
 
-            if (properties.isUserEnabled)
-                _buttonsEnabledArray[index] = [NSNumber numberWithBool:properties.enabled];
+        if (properties.isUserEnabled)
+            _buttonsEnabledArray[index] = [NSNumber numberWithBool:properties.enabled];
 
-            [_buttonsPropertiesDictionary setObject:properties forKey:[NSNumber numberWithInteger:index]];
-        }
+        [_buttonsPropertiesDictionary setObject:properties forKey:[NSNumber numberWithInteger:index]];
     }
 }
 
@@ -1459,7 +1457,7 @@ LGAlertViewType;
         cell.lineBreakMode              = (properties.isUserLineBreakMode ? properties.lineBreakMode : _buttonsLineBreakMode);
         cell.adjustsFontSizeToFitWidth  = (properties.isUserAdjustsFontSizeTofitWidth ? properties.adjustsFontSizeToFitWidth : _buttonsAdjustsFontSizeToFitWidth);
         cell.minimumScaleFactor         = (properties.isUserMinimimScaleFactor ? properties.minimumScaleFactor : _buttonsMinimumScaleFactor);
-        cell.enabled                    = _buttonsEnabledArray[indexPath.row - (_destructiveButtonTitle.length ? 1 : 0)];
+        cell.enabled                    = (BOOL)_buttonsEnabledArray[indexPath.row - (_destructiveButtonTitle.length ? 1 : 0)];
     }
 
     return cell;
@@ -2247,7 +2245,7 @@ LGAlertViewType;
                         _firstButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
                     else if (textAlignment == NSTextAlignmentRight)
                         _firstButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
-                    _firstButton.enabled = _buttonsEnabledArray[0];
+                    _firstButton.enabled = (BOOL)_buttonsEnabledArray[0];
                     [_firstButton addTarget:self action:@selector(firstButtonAction:) forControlEvents:UIControlEventTouchUpInside];
 
                     CGSize size = [_firstButton sizeThatFits:CGSizeMake(CGFLOAT_MAX, CGFLOAT_MAX)];
@@ -2286,7 +2284,7 @@ LGAlertViewType;
                             _secondButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
                         else if (textAlignment == NSTextAlignmentRight)
                             _secondButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
-                        _secondButton.enabled = _buttonsEnabledArray[1];
+                        _secondButton.enabled = (BOOL)_buttonsEnabledArray[1];
                         [_secondButton addTarget:self action:@selector(secondButtonAction:) forControlEvents:UIControlEventTouchUpInside];
 
                         CGSize size = [_secondButton sizeThatFits:CGSizeMake(CGFLOAT_MAX, CGFLOAT_MAX)];
@@ -2325,7 +2323,7 @@ LGAlertViewType;
                                 _thirdButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
                             else if (textAlignment == NSTextAlignmentRight)
                                 _thirdButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
-                            _thirdButton.enabled = _buttonsEnabledArray[2];
+                            _thirdButton.enabled = (BOOL)_buttonsEnabledArray[2];
                             [_thirdButton addTarget:self action:@selector(thirdButtonAction:) forControlEvents:UIControlEventTouchUpInside];
 
                             CGSize size = [_thirdButton sizeThatFits:CGSizeMake(CGFLOAT_MAX, CGFLOAT_MAX)];
