@@ -443,7 +443,7 @@
 
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(5.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^(void)
                        {
-                           [alertView dismissAnimated:YES completionHandler:nil];
+                           if (alertView && alertView.isShowing) [alertView dismissAnimated:YES completionHandler:nil];
                        });
     }
     else if (indexPath.row == 16)
@@ -467,7 +467,7 @@
 
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(5.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^(void)
                        {
-                           [alertView dismissAnimated:YES completionHandler:nil];
+                           if (alertView && alertView.isShowing) [alertView dismissAnimated:YES completionHandler:nil];
                        });
     }
     else if (indexPath.row == 17)
@@ -529,7 +529,7 @@
                                                                          NSLog(@"destructiveHandler");
                                                                      }];
 
-                           [alertView1 transitionToAlertView:alertView2 completionHandler:nil];
+                           if (alertView1 && alertView1.isShowing) [alertView1 transitionToAlertView:alertView2 completionHandler:nil];
                        });
     }
     else if (indexPath.row == 20)
@@ -569,7 +569,7 @@
                                                                          NSLog(@"destructiveHandler");
                                                                      }];
 
-                           [alertView1 transitionToAlertView:alertView2 completionHandler:nil];
+                           if (alertView1 && alertView1.isShowing) [alertView1 transitionToAlertView:alertView2 completionHandler:nil];
                        });
     }
     else if (indexPath.row == 21)
@@ -609,7 +609,7 @@
                                                                          NSLog(@"destructiveHandler");
                                                                      }];
 
-                           [alertView1 transitionToAlertView:alertView2 completionHandler:nil];
+                           if (alertView1 && alertView1.isShowing) [alertView1 transitionToAlertView:alertView2 completionHandler:nil];
                        });
     }
 
