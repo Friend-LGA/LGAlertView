@@ -60,7 +60,7 @@ CocoaPods is a dependency manager for Objective-C, which automates and simplifie
 #### Podfile
 ```ruby
 platform :ios, '6.0'
-pod 'LGAlertView', '~> 2.0'
+pod 'LGAlertView', '~> 2.0.0'
 ```
 
 ### With Carthage
@@ -69,7 +69,7 @@ Carthage is a lightweight dependency manager for Swift and Objective-C. It lever
 
 #### Cartfile
 ```
-github "Friend-LGA/LGAlertView" ~> 2.0
+github "Friend-LGA/LGAlertView" ~> 2.0.0
 ```
 
 ## Usage
