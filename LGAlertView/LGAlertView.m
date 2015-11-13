@@ -1317,7 +1317,7 @@ LGAlertViewType;
             LGAlertViewCell *cell = (LGAlertViewCell *)[_tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:index inSection:0]];
             cell.enabled = enabled;
         }
-        else
+        else if (_scrollView)
         {
             switch (index)
             {
@@ -1339,7 +1339,7 @@ LGAlertViewType;
 
 - (BOOL)isButtonEnabledAtIndex:(NSUInteger)index
 {
-    return (BOOL)_buttonsEnabledArray[index];
+    return [_buttonsEnabledArray[index] boolValue];
 }
 
 - (void)setButtonPropertiesAtIndex:(NSUInteger)index
@@ -1457,7 +1457,7 @@ LGAlertViewType;
         cell.lineBreakMode              = (properties.isUserLineBreakMode ? properties.lineBreakMode : _buttonsLineBreakMode);
         cell.adjustsFontSizeToFitWidth  = (properties.isUserAdjustsFontSizeTofitWidth ? properties.adjustsFontSizeToFitWidth : _buttonsAdjustsFontSizeToFitWidth);
         cell.minimumScaleFactor         = (properties.isUserMinimimScaleFactor ? properties.minimumScaleFactor : _buttonsMinimumScaleFactor);
-        cell.enabled                    = (BOOL)_buttonsEnabledArray[indexPath.row - (_destructiveButtonTitle.length ? 1 : 0)];
+        cell.enabled                    = [_buttonsEnabledArray[indexPath.row - (_destructiveButtonTitle.length ? 1 : 0)] boolValue];
     }
 
     return cell;
@@ -2245,7 +2245,7 @@ LGAlertViewType;
                         _firstButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
                     else if (textAlignment == NSTextAlignmentRight)
                         _firstButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
-                    _firstButton.enabled = (BOOL)_buttonsEnabledArray[0];
+                    _firstButton.enabled = [_buttonsEnabledArray[0] boolValue];
                     [_firstButton addTarget:self action:@selector(firstButtonAction:) forControlEvents:UIControlEventTouchUpInside];
 
                     CGSize size = [_firstButton sizeThatFits:CGSizeMake(CGFLOAT_MAX, CGFLOAT_MAX)];
@@ -2284,7 +2284,7 @@ LGAlertViewType;
                             _secondButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
                         else if (textAlignment == NSTextAlignmentRight)
                             _secondButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
-                        _secondButton.enabled = (BOOL)_buttonsEnabledArray[1];
+                        _secondButton.enabled = [_buttonsEnabledArray[1] boolValue];
                         [_secondButton addTarget:self action:@selector(secondButtonAction:) forControlEvents:UIControlEventTouchUpInside];
 
                         CGSize size = [_secondButton sizeThatFits:CGSizeMake(CGFLOAT_MAX, CGFLOAT_MAX)];
@@ -2323,7 +2323,7 @@ LGAlertViewType;
                                 _thirdButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
                             else if (textAlignment == NSTextAlignmentRight)
                                 _thirdButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
-                            _thirdButton.enabled = (BOOL)_buttonsEnabledArray[2];
+                            _thirdButton.enabled = [_buttonsEnabledArray[2] boolValue];
                             [_thirdButton addTarget:self action:@selector(thirdButtonAction:) forControlEvents:UIControlEventTouchUpInside];
 
                             CGSize size = [_thirdButton sizeThatFits:CGSizeMake(CGFLOAT_MAX, CGFLOAT_MAX)];
