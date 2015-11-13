@@ -494,8 +494,12 @@ typedef NS_ENUM(NSUInteger, LGAlertViewWindowLevel)
 - (void)forceDestructive;
 - (void)forceActionAtIndex:(NSUInteger)index;
 
+/** Set tint color globally for all LGAlertViews */
 + (void)setTintColor:(UIColor *)color;
+/** Set colorful globally for all LGAlertViews */
 + (void)setColorful:(BOOL)colorful;
+/** Get array of all existings LGAlertViews */
++ (NSArray *)getAlertViewsArray;
 
 #pragma mark -
 

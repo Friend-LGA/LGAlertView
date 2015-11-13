@@ -52,6 +52,7 @@
 static NSMutableArray *kLGAlertViewWindowsArray;
 static UIColor *kLGAlertViewTintColor;
 static BOOL kLGAlertViewColorful = YES;
+static NSMutableArray *kLGAlertViewArray;
 
 #pragma mark - Interface
 
@@ -823,6 +824,9 @@ LGAlertViewType;
     if (!kLGAlertViewWindowsArray)
         kLGAlertViewWindowsArray = [NSMutableArray new];
 
+    if (!kLGAlertViewArray)
+        kLGAlertViewArray = [NSMutableArray new];
+
     // -----
 
     _buttonsEnabledArray = [NSMutableArray new];
@@ -1271,6 +1275,13 @@ LGAlertViewType;
     _userProgressViewProgressTintColor = YES;
 }
 
+- (BOOL)isShowing
+{
+    return (_showing && _window.isKeyWindow && !_window.isHidden);
+}
+
+#pragma mark - Class methods
+
 + (void)setTintColor:(UIColor *)color
 {
     kLGAlertViewTintColor = color;
@@ -1279,6 +1290,14 @@ LGAlertViewType;
 + (void)setColorful:(BOOL)colorful
 {
     kLGAlertViewColorful = colorful;
+}
+
++ (NSArray *)getAlertViewsArray
+{
+    if (!kLGAlertViewArray)
+        kLGAlertViewArray = [NSMutableArray new];
+
+    return kLGAlertViewArray;
 }
 
 #pragma mark -
@@ -1587,6 +1606,9 @@ LGAlertViewType;
 
     _showing = YES;
 
+    if (![kLGAlertViewArray containsObject:self])
+        [kLGAlertViewArray addObject:self];
+
     // -----
 
     [self addObservers];
@@ -1809,7 +1831,11 @@ LGAlertViewType;
 
     // -----
 
-    [kLGAlertViewWindowsArray removeObject:_window];
+    if ([kLGAlertViewWindowsArray containsObject:_window])
+        [kLGAlertViewWindowsArray removeObject:_window];
+
+    if ([kLGAlertViewArray containsObject:self])
+        [kLGAlertViewArray removeObject:self];
 
     _view = nil;
     _viewController = nil;
