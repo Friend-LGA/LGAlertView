@@ -86,7 +86,7 @@ typedef NS_ENUM(NSUInteger, LGAlertViewWindowLevel)
 /** Top and bottom offsets from borders of the screen */
 @property (assign, nonatomic) CGFloat offsetVertical;
 /** Offset between cancel button and main view when style is LGAlertViewStyleActionSheet. Default is 8.f */
-@property (assign, nonatomic) CGFloat cancelButtonOffset;
+@property (assign, nonatomic) CGFloat cancelButtonOffsetY;
 @property (assign, nonatomic) CGFloat heightMax;
 @property (assign, nonatomic) CGFloat width;
 

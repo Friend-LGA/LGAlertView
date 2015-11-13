@@ -43,7 +43,7 @@
 #define kLGAlertViewWidthStyleAlert                   (320.f - 20*2)
 #define kLGAlertViewWidthStyleActionSheet             (320.f - 16*2)
 #define kLGAlertViewInnerMarginH                      (_style == LGAlertViewStyleAlert ? 16.f : 12.f)
-#define kLGAlertViewIsCancelButtonSeparate(alertView) (alertView.style == LGAlertViewStyleActionSheet && alertView.cancelButtonOffset > 0.f && !kLGAlertViewPadAndNotForce(alertView))
+#define kLGAlertViewIsCancelButtonSeparate(alertView) (alertView.style == LGAlertViewStyleActionSheet && alertView.cancelButtonOffsetY > 0.f && !kLGAlertViewPadAndNotForce(alertView))
 #define kLGAlertViewButtonWidthMin                    64.f
 #define kLGAlertViewWindowPrevious(index)             (index > 0 && index < kLGAlertViewWindowsArray.count ? [kLGAlertViewWindowsArray objectAtIndex:(index-1)] : nil)
 #define kLGAlertViewWindowNext(index)                 (kLGAlertViewWindowsArray.count > index+1 ? [kLGAlertViewWindowsArray objectAtIndex:(index+1)] : nil)
@@ -848,7 +848,7 @@ LGAlertViewType;
     _buttonsHeight = (([UIDevice currentDevice].systemVersion.floatValue < 9.0 || _style == LGAlertViewStyleAlert) ? 44.f : 56.f);
     _textFieldsHeight = 44.f;
     _offsetVertical = -1;
-    _cancelButtonOffset = kLGAlertViewOffsetHorizontal;
+    _cancelButtonOffsetY = kLGAlertViewOffsetHorizontal;
     _heightMax = -1.f;
     _width = -1.f;
 
@@ -2583,7 +2583,7 @@ LGAlertViewType;
         heightMax = _heightMax;
 
     if (kLGAlertViewIsCancelButtonSeparate(self) && _cancelButton)
-        heightMax -= (_buttonsHeight+_cancelButtonOffset);
+        heightMax -= (_buttonsHeight+_cancelButtonOffsetY);
     else if (_cancelOnTouch &&
              !_cancelButtonTitle.length &&
              size.width < width+_buttonsHeight*2)
@@ -2616,7 +2616,7 @@ LGAlertViewType;
     {
         CGFloat bottomShift = kLGAlertViewOffsetVertical;
         if (kLGAlertViewIsCancelButtonSeparate(self) && _cancelButton)
-            bottomShift += _buttonsHeight+_cancelButtonOffset;
+            bottomShift += _buttonsHeight+_cancelButtonOffsetY;
 
         scrollViewFrame = CGRectMake(size.width/2-width/2, size.height-bottomShift-heightMax, width, heightMax);
     }
@@ -2627,7 +2627,7 @@ LGAlertViewType;
     {
         CGRect cancelButtonFrame = CGRectZero;
         if (kLGAlertViewIsCancelButtonSeparate(self) && _cancelButton)
-            cancelButtonFrame = CGRectMake(size.width/2-width/2, size.height-_cancelButtonOffset-_buttonsHeight, width, _buttonsHeight);
+            cancelButtonFrame = CGRectMake(size.width/2-width/2, size.height-_cancelButtonOffsetY-_buttonsHeight, width, _buttonsHeight);
 
         _scrollViewCenterShowed = CGPointMake(scrollViewFrame.origin.x+scrollViewFrame.size.width/2, scrollViewFrame.origin.y+scrollViewFrame.size.height/2);
         _cancelButtonCenterShowed = CGPointMake(cancelButtonFrame.origin.x+cancelButtonFrame.size.width/2, cancelButtonFrame.origin.y+cancelButtonFrame.size.height/2);
@@ -2636,7 +2636,7 @@ LGAlertViewType;
 
         CGFloat commonHeight = scrollViewFrame.size.height+kLGAlertViewOffsetVertical;
         if (kLGAlertViewIsCancelButtonSeparate(self) && _cancelButton)
-            commonHeight += _buttonsHeight+_cancelButtonOffset;
+            commonHeight += _buttonsHeight+_cancelButtonOffsetY;
 
         _scrollViewCenterHidden = CGPointMake(scrollViewFrame.origin.x+scrollViewFrame.size.width/2, scrollViewFrame.origin.y+scrollViewFrame.size.height/2+commonHeight+_layerBorderWidth+_layerShadowRadius);
         _cancelButtonCenterHidden = CGPointMake(cancelButtonFrame.origin.x+cancelButtonFrame.size.width/2, cancelButtonFrame.origin.y+cancelButtonFrame.size.height/2+commonHeight);

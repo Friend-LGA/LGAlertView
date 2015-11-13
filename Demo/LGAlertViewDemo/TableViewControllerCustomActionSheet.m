@@ -156,7 +156,7 @@
         alertView.messageTextColor = [UIColor blackColor];
         alertView.width = MIN(self.view.bounds.size.width, self.view.bounds.size.height);
         alertView.offsetVertical = 0.f;
-        alertView.cancelButtonOffset = 0.f;
+        alertView.cancelButtonOffsetY = 0.f;
         [alertView showAnimated:YES completionHandler:nil];
     }
     else if (indexPath.row == 5)
@@ -184,7 +184,7 @@
         alertView.messageTextColor = [UIColor blackColor];
         alertView.width = MIN(self.view.bounds.size.width, self.view.bounds.size.height);
         alertView.offsetVertical = 0.f;
-        alertView.cancelButtonOffset = 0.f;
+        alertView.cancelButtonOffsetY = 0.f;
         alertView.titleTextAlignment = NSTextAlignmentLeft;
         alertView.messageTextAlignment = NSTextAlignmentLeft;
         alertView.buttonsTextAlignment = NSTextAlignmentRight;
@@ -217,7 +217,7 @@
         alertView.messageTextColor = [UIColor blackColor];
         alertView.width = MIN(self.view.bounds.size.width, self.view.bounds.size.height);
         alertView.offsetVertical = 0.f;
-        alertView.cancelButtonOffset = 0.f;
+        alertView.cancelButtonOffsetY = 0.f;
         alertView.titleTextAlignment = NSTextAlignmentLeft;
         alertView.messageTextAlignment = NSTextAlignmentLeft;
         alertView.destructiveButtonTextAlignment = NSTextAlignmentRight;
@@ -251,7 +251,7 @@
         alertView.messageTextColor = [UIColor blackColor];
         alertView.width = MIN(self.view.bounds.size.width, self.view.bounds.size.height);
         alertView.offsetVertical = 0.f;
-        alertView.cancelButtonOffset = 0.f;
+        alertView.cancelButtonOffsetY = 0.f;
         alertView.titleTextAlignment = NSTextAlignmentLeft;
         alertView.messageTextAlignment = NSTextAlignmentLeft;
         alertView.destructiveButtonTextAlignment = NSTextAlignmentRight;
