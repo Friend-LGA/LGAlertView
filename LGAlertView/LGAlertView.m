@@ -1584,7 +1584,7 @@ LGAlertViewType;
 
 - (void)showAnimated:(BOOL)animated hidden:(BOOL)hidden completionHandler:(void(^)())completionHandler
 {
-    if (self.isShowing) return;
+    if (_showing) return;
 
     _window.windowLevel = UIWindowLevelStatusBar + (_windowLevel == LGAlertViewWindowLevelAboveStatusBar ? 1 : -1);
     _view.userInteractionEnabled = NO;
@@ -1738,7 +1738,7 @@ LGAlertViewType;
 
 - (void)dismissAnimated:(BOOL)animated completionHandler:(void(^)())completionHandler
 {
-    if (!self.isShowing) return;
+    if (!_showing) return;
 
     _view.userInteractionEnabled = NO;
 
@@ -1847,7 +1847,9 @@ LGAlertViewType;
 {
     _view.userInteractionEnabled = NO;
 
-    [alertView showAnimated:NO hidden:YES completionHandler:^(void)
+    [alertView showAnimated:NO
+                     hidden:YES
+          completionHandler:^(void)
      {
          NSTimeInterval duration = 0.3;
 
@@ -1939,7 +1941,8 @@ LGAlertViewType;
                     }
                                     completion:^(BOOL finished)
                     {
-                        [self dismissAnimated:NO completionHandler:^(void)
+                        [self dismissAnimated:NO
+                            completionHandler:^(void)
                         {
                             [alertView showComplete];
 
