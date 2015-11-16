@@ -1356,6 +1356,38 @@ LGAlertViewType;
     }
 }
 
+- (void)setCancelButtonEnabled:(BOOL)cancelButtonEnabled
+{
+    _cancelButtonEnabled = cancelButtonEnabled;
+
+    if (_cancelButtonTitle.length)
+    {
+        if (_tableView)
+        {
+            LGAlertViewCell *cell = (LGAlertViewCell *)[_tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:(_buttonTitles.count-1) inSection:0]];
+            cell.enabled = cancelButtonEnabled;
+        }
+        else if (_scrollView)
+            _cancelButton.enabled = cancelButtonEnabled;
+    }
+}
+
+- (void)setDestructiveButtonEnabled:(BOOL)destructiveButtonEnabled
+{
+    _destructiveButtonEnabled = destructiveButtonEnabled;
+
+    if (_destructiveButtonTitle.length)
+    {
+        if (_tableView)
+        {
+            LGAlertViewCell *cell = (LGAlertViewCell *)[_tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
+            cell.enabled = destructiveButtonEnabled;
+        }
+        else if (_scrollView)
+            _destructiveButton.enabled = destructiveButtonEnabled;
+    }
+}
+
 - (BOOL)isButtonEnabledAtIndex:(NSUInteger)index
 {
     return [_buttonsEnabledArray[index] boolValue];
