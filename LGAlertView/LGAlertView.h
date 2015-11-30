@@ -71,12 +71,12 @@ typedef NS_ENUM(NSUInteger, LGAlertViewWindowLevel)
 @property (assign, nonatomic, getter=isShowing) BOOL showing;
 /** Default is LGAlertViewWindowLevelAboveStatusBar */
 @property (assign, nonatomic) LGAlertViewWindowLevel windowLevel;
-
 /** Default is YES */
 @property (assign, nonatomic, getter=isCancelOnTouch) BOOL cancelOnTouch;
+/** Dismiss alert view on action, cancel and destructive */
+@property (assign, nonatomic, getter=isDismissOnAction) BOOL dismissOnAction;
 /** Set highlighted buttons background color to blue, and set highlighted destructive button background color to red. Default is YES */
 @property (assign, nonatomic, getter=isColorful) BOOL colorful;
-
 /** Set colors of buttons title and background, cancel button title and background, activity indicator and progress view */
 @property (strong, nonatomic) UIColor *tintColor;
 @property (strong, nonatomic) UIColor *coverColor;
@@ -151,26 +151,22 @@ typedef NS_ENUM(NSUInteger, LGAlertViewWindowLevel)
 @property (assign, nonatomic) UIActivityIndicatorViewStyle activityIndicatorViewStyle;
 @property (strong, nonatomic) UIColor                      *activityIndicatorViewColor;
 
-@property (strong, nonatomic) UIColor *progressViewProgressTintColor;
-@property (strong, nonatomic) UIColor *progressViewTrackTintColor;
-@property (strong, nonatomic) UIImage *progressViewProgressImage;
-@property (strong, nonatomic) UIImage *progressViewTrackImage;
-
-@property (assign, nonatomic, readonly) float progress;
-
+@property (strong, nonatomic) UIColor         *progressViewProgressTintColor;
+@property (strong, nonatomic) UIColor         *progressViewTrackTintColor;
+@property (strong, nonatomic) UIImage         *progressViewProgressImage;
+@property (strong, nonatomic) UIImage         *progressViewTrackImage;
 @property (strong, nonatomic) UIColor         *progressLabelTextColor;
 @property (assign, nonatomic) NSTextAlignment progressLabelTextAlignment;
 @property (strong, nonatomic) UIFont          *progressLabelFont;
+@property (assign, nonatomic, readonly) float progress;
 
 @property (strong, nonatomic) UIColor *separatorsColor;
-
 @property (assign, nonatomic) UIScrollViewIndicatorStyle indicatorStyle;
 @property (assign, nonatomic, getter=isShowsVerticalScrollIndicator) BOOL showsVerticalScrollIndicator;
+@property (assign, nonatomic, getter=isPadShowActionSheetFromBottom) BOOL padShowsActionSheetFromBottom;
+@property (assign, nonatomic, getter=isOneRowOneButton) BOOL oneRowOneButton;
 
 @property (strong, nonatomic, readonly) NSMutableArray *textFieldsArray;
-
-@property (assign, nonatomic, getter=isPadShowActionSheetFromBottom) BOOL padShowActionSheetFromBottom;
-@property (assign, nonatomic, getter=isOneRowOneButton) BOOL oneRowOneButton;
 
 /** Do not forget about weak referens to self */
 @property (strong, nonatomic) void (^willShowHandler)(LGAlertView *alertView);
@@ -494,12 +490,168 @@ typedef NS_ENUM(NSUInteger, LGAlertViewWindowLevel)
 - (void)forceDestructive;
 - (void)forceActionAtIndex:(NSUInteger)index;
 
-/** Set tint color globally for all LGAlertViews */
-+ (void)setTintColor:(UIColor *)color;
-/** Set colorful globally for all LGAlertViews */
+#pragma mark - Class methods
+
+/** Setup LGAlertView globally for all instances of LGAlertViews */
++ (void)setWindowLevel:(LGAlertViewWindowLevel)windowLevel;
++ (LGAlertViewWindowLevel)windowLevel;
 + (void)setColorful:(BOOL)colorful;
-/** Get array of all existings LGAlertViews */
-+ (NSArray *)getAlertViewsArray;
++ (BOOL)colorful;
++ (void)setTintColor:(UIColor *)tintColor;
++ (UIColor *)tintColor;
++ (void)setCoverColor:(UIColor *)coverColor;
++ (UIColor *)coverColor;
++ (void)setBackgroundColor:(UIColor *)backgroundColor;
++ (UIColor *)backgroundColor;
++ (void)setButtonsHeight:(CGFloat)buttonsHeight;
++ (CGFloat)buttonsHeight;
++ (void)setTextFieldsHeight:(CGFloat)textFieldsHeight;
++ (CGFloat)textFieldsHeight;
++ (void)setOffsetVertical:(CGFloat)offsetVertical;
++ (CGFloat)offsetVertical;
++ (void)setCancelButtonOffsetY:(CGFloat)cancelButtonOffsetY;
++ (CGFloat)cancelButtonOffsetY;
++ (void)setHeightMax:(CGFloat)heightMax;
++ (CGFloat)heightMax;
++ (void)setWidth:(CGFloat)width;
++ (CGFloat)width;
+
++ (void)setLayerCornerRadius:(CGFloat)layerCornerRadius;
++ (CGFloat)layerCornerRadius;
++ (void)setLayerBorderColor:(UIColor *)layerBorderColor;
++ (UIColor *)layerBorderColor;
++ (void)setLayerBorderWidth:(CGFloat)layerBorderWidth;
++ (CGFloat)layerBorderWidth;
++ (void)setLayerShadowColor:(UIColor *)layerShadowColor;
++ (UIColor *)layerShadowColor;
++ (void)setLayerShadowRadius:(CGFloat)layerShadowRadius;
++ (CGFloat)layerShadowRadius;
++ (void)setLayerShadowOpacity:(CGFloat)layerShadowOpacity;
++ (CGFloat)layerShadowOpacity;
++ (void)setLayerShadowOffset:(CGSize)layerShadowOffset;
++ (CGSize)layerShadowOffset;
+
++ (void)setTitleTextColor:(UIColor *)titleTextColor;
++ (UIColor *)titleTextColor;
++ (void)setTitleTextAlignment:(NSTextAlignment)titleTextAlignment;
++ (NSTextAlignment)titleTextAlignment;
++ (void)setTitleFont:(UIFont *)titleFont;
++ (UIFont *)titleFont;
+
++ (void)setMessageTextColor:(UIColor *)messageTextColor;
++ (UIColor *)messageTextColor;
++ (void)setMessageTextAlignment:(NSTextAlignment)messageTextAlignment;
++ (NSTextAlignment)messageTextAlignment;
++ (void)setMessageFont:(UIFont *)messageFont;
++ (UIFont *)messageFont;
+
++ (void)setButtonsTitleColor:(UIColor *)buttonsTitleColor;
++ (UIColor *)buttonsTitleColor;
++ (void)setButtonsTitleColorHighlighted:(UIColor *)buttonsTitleColorHighlighted;
++ (UIColor *)buttonsTitleColorHighlighted;
++ (void)setButtonsTitleColorDisabled:(UIColor *)buttonsTitleColorDisabled;
++ (UIColor *)buttonsTitleColorDisabled;
++ (void)setButtonsTextAlignment:(NSTextAlignment)buttonsTextAlignment;
++ (NSTextAlignment)buttonsTextAlignment;
++ (void)setButtonsFont:(UIFont *)buttonsFont;
++ (UIFont *)buttonsFont;
++ (void)setButtonsBackgroundColor:(UIColor *)buttonsBackgroundColor;
++ (UIColor *)buttonsBackgroundColor;
++ (void)setButtonsBackgroundColorHighlighted:(UIColor *)buttonsBackgroundColorHighlighted;
++ (UIColor *)buttonsBackgroundColorHighlighted;
++ (void)setButtonsBackgroundColorDisabled:(UIColor *)buttonsBackgroundColorDisabled;
++ (UIColor *)buttonsBackgroundColorDisabled;
++ (void)setButtonsNumberOfLines:(NSUInteger)buttonsNumberOfLines;
++ (NSUInteger)buttonsNumberOfLines;
++ (void)setButtonsLineBreakMode:(NSLineBreakMode)buttonsLineBreakMode;
++ (NSLineBreakMode)buttonsLineBreakMode;
++ (void)setButtonsMinimumScaleFactor:(CGFloat)buttonsMinimumScaleFactor;
++ (CGFloat)buttonsMinimumScaleFactor;
++ (void)setButtonsAdjustsFontSizeToFitWidth:(BOOL)buttonsAdjustsFontSizeToFitWidth;
++ (BOOL)buttonsAdjustsFontSizeToFitWidth;
+
++ (void)setCancelButtonTitleColor:(UIColor *)cancelButtonTitleColor;
++ (UIColor *)cancelButtonTitleColor;
++ (void)setCancelButtonTitleColorHighlighted:(UIColor *)cancelButtonTitleColorHighlighted;
++ (UIColor *)cancelButtonTitleColorHighlighted;
++ (void)setCancelButtonTitleColorDisabled:(UIColor *)cancelButtonTitleColorDisabled;
++ (UIColor *)cancelButtonTitleColorDisabled;
++ (void)setCancelButtonTextAlignment:(NSTextAlignment)cancelButtonTextAlignment;
++ (NSTextAlignment)cancelButtonTextAlignment;
++ (void)setCancelButtonFont:(UIFont *)cancelButtonFont;
++ (UIFont *)cancelButtonFont;
++ (void)setCancelButtonBackgroundColor:(UIColor *)cancelButtonBackgroundColor;
++ (UIColor *)cancelButtonBackgroundColor;
++ (void)setCancelButtonBackgroundColorHighlighted:(UIColor *)cancelButtonBackgroundColorHighlighted;
++ (UIColor *)cancelButtonBackgroundColorHighlighted;
++ (void)setCancelButtonBackgroundColorDisabled:(UIColor *)cancelButtonBackgroundColorDisabled;
++ (UIColor *)cancelButtonBackgroundColorDisabled;
++ (void)setCancelButtonNumberOfLines:(NSUInteger)cancelButtonNumberOfLines;
++ (NSUInteger)cancelButtonNumberOfLines;
++ (void)setCancelButtonLineBreakMode:(NSLineBreakMode)cancelButtonLineBreakMode;
++ (NSLineBreakMode)cancelButtonLineBreakMode;
++ (void)setCancelButtonMinimumScaleFactor:(CGFloat)cancelButtonMinimumScaleFactor;
++ (CGFloat)cancelButtonMinimumScaleFactor;
++ (void)setCancelButtonAdjustsFontSizeToFitWidth:(BOOL)cancelButtonAdjustsFontSizeToFitWidth;
++ (BOOL)cancelButtonAdjustsFontSizeToFitWidth;
+
++ (void)setDestructiveButtonTitleColor:(UIColor *)destructiveButtonTitleColor;
++ (UIColor *)destructiveButtonTitleColor;
++ (void)setDestructiveButtonTitleColorHighlighted:(UIColor *)destructiveButtonTitleColorHighlighted;
++ (UIColor *)destructiveButtonTitleColorHighlighted;
++ (void)setDestructiveButtonTitleColorDisabled:(UIColor *)destructiveButtonTitleColorDisabled;
++ (UIColor *)destructiveButtonTitleColorDisabled;
++ (void)setDestructiveButtonTextAlignment:(NSTextAlignment)destructiveButtonTextAlignment;
++ (NSTextAlignment)destructiveButtonTextAlignment;
++ (void)setDestructiveButtonFont:(UIFont *)destructiveButtonFont;
++ (UIFont *)destructiveButtonFont;
++ (void)setDestructiveButtonBackgroundColor:(UIColor *)destructiveButtonBackgroundColor;
++ (UIColor *)destructiveButtonBackgroundColor;
++ (void)setDestructiveButtonBackgroundColorHighlighted:(UIColor *)destructiveButtonBackgroundColorHighlighted;
++ (UIColor *)destructiveButtonBackgroundColorHighlighted;
++ (void)setDestructiveButtonBackgroundColorDisabled:(UIColor *)destructiveButtonBackgroundColorDisabled;
++ (UIColor *)destructiveButtonBackgroundColorDisabled;
++ (void)setDestructiveButtonNumberOfLines:(NSUInteger)destructiveButtonNumberOfLines;
++ (NSUInteger)destructiveButtonNumberOfLines;
++ (void)setDestructiveButtonLineBreakMode:(NSLineBreakMode)destructiveButtonLineBreakMode;
++ (NSLineBreakMode)destructiveButtonLineBreakMode;
++ (void)setDestructiveButtonMinimumScaleFactor:(CGFloat)destructiveButtonMinimumScaleFactor;
++ (CGFloat)destructiveButtonMinimumScaleFactor;
++ (void)setDestructiveButtonAdjustsFontSizeToFitWidth:(BOOL)destructiveButtonAdjustsFontSizeToFitWidth;
++ (BOOL)destructiveButtonAdjustsFontSizeToFitWidth;
+
++ (void)setActivityIndicatorViewStyle:(UIActivityIndicatorViewStyle)activityIndicatorViewStyle;
++ (UIActivityIndicatorViewStyle)activityIndicatorViewStyle;
++ (void)setActivityIndicatorViewColor:(UIColor *)activityIndicatorViewColor;
++ (UIColor *)activityIndicatorViewColor;
+
++ (void)setProgressViewProgressTintColor:(UIColor *)progressViewProgressTintColor;
++ (UIColor *)progressViewProgressTintColor;
++ (void)setProgressViewTrackTintColor:(UIColor *)progressViewTrackTintColor;
++ (UIColor *)progressViewTrackTintColor;
++ (void)setProgressViewProgressImage:(UIImage *)progressViewProgressImage;
++ (UIImage *)progressViewProgressImage;
++ (void)setProgressViewTrackImage:(UIImage *)progressViewTrackImage;
++ (UIImage *)progressViewTrackImage;
++ (void)setProgressLabelTextColor:(UIColor *)progressLabelTextColor;
++ (UIColor *)progressLabelTextColor;
++ (void)setProgressLabelTextAlignment:(NSTextAlignment)progressLabelTextAlignment;
++ (NSTextAlignment)progressLabelTextAlignment;
++ (void)setProgressLabelFont:(UIFont *)progressLabelFont;
++ (UIFont *)progressLabelFont;
+
++ (void)setSeparatorsColor:(UIColor *)separatorsColor;
++ (UIColor *)separatorsColor;
++ (void)setIndicatorStyle:(UIScrollViewIndicatorStyle)indicatorStyle;
++ (UIScrollViewIndicatorStyle)indicatorStyle;
++ (void)setShowsVerticalScrollIndicator:(BOOL)showsVerticalScrollIndicator;
++ (BOOL)showsVerticalScrollIndicator;
++ (void)setPadShowsActionSheetFromBottom:(BOOL)padShowActionSheetFromBottom;
++ (BOOL)padShowsActionSheetFromBottom;
++ (void)setOneRowOneButton:(BOOL)oneRowOneButton;
++ (BOOL)oneRowOneButton;
+
++ (NSArray *)alertViewsArray;
 
 #pragma mark -
 

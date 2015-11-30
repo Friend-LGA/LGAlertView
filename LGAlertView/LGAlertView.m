@@ -37,22 +37,107 @@
 
 #define kLGAlertViewStatusBarHeight                   ([UIApplication sharedApplication].isStatusBarHidden ? 0.f : 20.f)
 #define kLGAlertViewSeparatorHeight                   ([UIScreen mainScreen].scale == 1.f || [UIDevice currentDevice].systemVersion.floatValue < 7.0 ? 1.f : 0.5)
-#define kLGAlertViewOffsetVertical                    (_offsetVertical >= 0 ? _offsetVertical : 8.f)
-#define kLGAlertViewOffsetHorizontal                  8.f
+#define kLGAlertViewOffsetV                           (_offsetVertical != NSNotFound ? _offsetVertical : 8.f)
+#define kLGAlertViewOffsetH                           8.f
 #define kLGAlertViewButtonTitleMarginH                8.f
 #define kLGAlertViewWidthStyleAlert                   (320.f - 20*2)
 #define kLGAlertViewWidthStyleActionSheet             (320.f - 16*2)
 #define kLGAlertViewInnerMarginH                      (_style == LGAlertViewStyleAlert ? 16.f : 12.f)
-#define kLGAlertViewIsCancelButtonSeparate(alertView) (alertView.style == LGAlertViewStyleActionSheet && alertView.cancelButtonOffsetY > 0.f && !kLGAlertViewPadAndNotForce(alertView))
+#define kLGAlertViewIsCancelButtonSeparate(alertView) (alertView.style == LGAlertViewStyleActionSheet && alertView.cancelButtonOffsetY != NSNotFound && !kLGAlertViewPadAndNotForce(alertView))
 #define kLGAlertViewButtonWidthMin                    64.f
 #define kLGAlertViewWindowPrevious(index)             (index > 0 && index < kLGAlertViewWindowsArray.count ? [kLGAlertViewWindowsArray objectAtIndex:(index-1)] : nil)
 #define kLGAlertViewWindowNext(index)                 (kLGAlertViewWindowsArray.count > index+1 ? [kLGAlertViewWindowsArray objectAtIndex:(index+1)] : nil)
 #define kLGAlertViewPadAndNotForce(alertView)         (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad && !alertView.isPadShowActionSheetFromBottom)
 
+#define kLGAlertViewPointIsNil(point) CGPointEqualToPoint(point, CGPointMake(NSNotFound, NSNotFound))
+
 static NSMutableArray *kLGAlertViewWindowsArray;
-static UIColor *kLGAlertViewTintColor;
-static BOOL kLGAlertViewColorful = YES;
 static NSMutableArray *kLGAlertViewArray;
+
+static LGAlertViewWindowLevel kLGAlertViewWindowLevel = NSNotFound;
+
+static NSNumber *kLGAlertViewColorful;
+static UIColor  *kLGAlertViewTintColor;
+static UIColor  *kLGAlertViewCoverColor;
+static UIColor  *kLGAlertViewBackgroundColor;
+static CGFloat  kLGAlertViewButtonsHeight = NSNotFound;
+static CGFloat  kLGAlertViewTextFieldsHeight = NSNotFound;
+static CGFloat  kLGAlertViewOffsetVertical = NSNotFound;
+static CGFloat  kLGAlertViewCancelButtonOffsetY = NSNotFound;
+static CGFloat  kLGAlertViewHeightMax = NSNotFound;
+static CGFloat  kLGAlertViewWidth = NSNotFound;
+
+static CGFloat  kLGAlertViewLayerCornerRadius = NSNotFound;
+static UIColor  *kLGAlertViewLayerBorderColor;
+static CGFloat  kLGAlertViewLayerBorderWidth = NSNotFound;
+static UIColor  *kLGAlertViewLayerShadowColor;
+static CGFloat  kLGAlertViewLayerShadowRadius = NSNotFound;
+static CGFloat  kLGAlertViewLayerShadowOpacity = NSNotFound;
+static NSString *kLGAlertViewLayerShadowOffset;
+
+static UIColor         *kLGAlertViewTitleTextColor;
+static NSTextAlignment kLGAlertViewTitleTextAlignment = NSNotFound;
+static UIFont          *kLGAlertViewTitleFont;
+
+static UIColor         *kLGAlertViewMessageTextColor;
+static NSTextAlignment kLGAlertViewMessageTextAlignment = NSNotFound;
+static UIFont          *kLGAlertViewMessageFont;
+
+static UIColor         *kLGAlertViewButtonsTitleColor;
+static UIColor         *kLGAlertViewButtonsTitleColorHighlighted;
+static UIColor         *kLGAlertViewButtonsTitleColorDisabled;
+static NSTextAlignment kLGAlertViewButtonsTextAlignment = NSNotFound;
+static UIFont          *kLGAlertViewButtonsFont;
+static UIColor         *kLGAlertViewButtonsBackgroundColor;
+static UIColor         *kLGAlertViewButtonsBackgroundColorHighlighted;
+static UIColor         *kLGAlertViewButtonsBackgroundColorDisabled;
+static NSUInteger      kLGAlertViewButtonsNumberOfLines = NSNotFound;
+static NSLineBreakMode kLGAlertViewButtonsLineBreakMode = NSNotFound;
+static CGFloat         kLGAlertViewButtonsMinimumScaleFactor = NSNotFound;
+static NSNumber        *kLGAlertViewButtonsAdjustsFontSizeToFitWidth;
+
+static UIColor         *kLGAlertViewCancelButtonTitleColor;
+static UIColor         *kLGAlertViewCancelButtonTitleColorHighlighted;
+static UIColor         *kLGAlertViewCancelButtonTitleColorDisabled;
+static NSTextAlignment kLGAlertViewCancelButtonTextAlignment = NSNotFound;
+static UIFont          *kLGAlertViewCancelButtonFont;
+static UIColor         *kLGAlertViewCancelButtonBackgroundColor;
+static UIColor         *kLGAlertViewCancelButtonBackgroundColorHighlighted;
+static UIColor         *kLGAlertViewCancelButtonBackgroundColorDisabled;
+static NSUInteger      kLGAlertViewCancelButtonNumberOfLines = NSNotFound;
+static NSLineBreakMode kLGAlertViewCancelButtonLineBreakMode = NSNotFound;
+static CGFloat         kLGAlertViewCancelButtonMinimumScaleFactor = NSNotFound;
+static NSNumber        *kLGAlertViewCancelButtonAdjustsFontSizeToFitWidth;
+
+static UIColor         *kLGAlertViewDestructiveButtonTitleColor;
+static UIColor         *kLGAlertViewDestructiveButtonTitleColorHighlighted;
+static UIColor         *kLGAlertViewDestructiveButtonTitleColorDisabled;
+static NSTextAlignment kLGAlertViewDestructiveButtonTextAlignment = NSNotFound;
+static UIFont          *kLGAlertViewDestructiveButtonFont;
+static UIColor         *kLGAlertViewDestructiveButtonBackgroundColor;
+static UIColor         *kLGAlertViewDestructiveButtonBackgroundColorHighlighted;
+static UIColor         *kLGAlertViewDestructiveButtonBackgroundColorDisabled;
+static NSUInteger      kLGAlertViewDestructiveButtonNumberOfLines = NSNotFound;
+static NSLineBreakMode kLGAlertViewDestructiveButtonLineBreakMode = NSNotFound;
+static CGFloat         kLGAlertViewDestructiveButtonMinimumScaleFactor = NSNotFound;
+static NSNumber        *kLGAlertViewDestructiveButtonAdjustsFontSizeToFitWidth;
+
+static UIActivityIndicatorViewStyle kLGAlertViewActivityIndicatorViewStyle = NSNotFound;
+static UIColor                      *kLGAlertViewActivityIndicatorViewColor;
+
+static UIColor         *kLGAlertViewProgressViewProgressTintColor;
+static UIColor         *kLGAlertViewProgressViewTrackTintColor;
+static UIImage         *kLGAlertViewProgressViewProgressImage;
+static UIImage         *kLGAlertViewProgressViewTrackImage;
+static UIColor         *kLGAlertViewProgressLabelTextColor;
+static NSTextAlignment kLGAlertViewProgressLabelTextAlignment = NSNotFound;
+static UIFont          *kLGAlertViewProgressLabelFont;
+
+static UIColor                    *kLGAlertViewSeparatorsColor;
+static UIScrollViewIndicatorStyle kLGAlertViewIndicatorStyle = NSNotFound;
+static NSNumber                   *kLGAlertViewShowsVerticalScrollIndicator;
+static NSNumber                   *kLGAlertViewPadShowActionSheetFromBottom;
+static NSNumber                   *kLGAlertViewOneRowOneButton;
 
 #pragma mark - Interface
 
@@ -836,133 +921,97 @@ LGAlertViewType;
 
     // -----
 
-    _cancelOnTouch = !(_type == LGAlertViewTypeActivityIndicator || _type == LGAlertViewTypeProgressView || _type == LGAlertViewTypeTextFields);
+    _windowLevel = (kLGAlertViewWindowLevel != NSNotFound ? kLGAlertViewWindowLevel : LGAlertViewWindowLevelAboveStatusBar);
 
-    // -----
+    _cancelOnTouch       = !(_type == LGAlertViewTypeActivityIndicator || _type == LGAlertViewTypeProgressView || _type == LGAlertViewTypeTextFields);
+    _dismissOnAction     = YES;
+    _coverColor          = (kLGAlertViewCoverColor ? kLGAlertViewCoverColor : [UIColor colorWithWhite:0.f alpha:0.5]);
+    _backgroundColor     = (kLGAlertViewBackgroundColor ? kLGAlertViewBackgroundColor : [UIColor whiteColor]);
+    _buttonsHeight       = (kLGAlertViewButtonsHeight != NSNotFound ? kLGAlertViewButtonsHeight : ([UIDevice currentDevice].systemVersion.floatValue < 9.0 || _style == LGAlertViewStyleAlert) ? 44.f : 56.f);
+    _textFieldsHeight    = (kLGAlertViewTextFieldsHeight != NSNotFound ? kLGAlertViewTextFieldsHeight : 44.f);
+    _offsetVertical      = (kLGAlertViewOffsetVertical != NSNotFound ? kLGAlertViewOffsetVertical : NSNotFound);
+    _cancelButtonOffsetY = (kLGAlertViewCancelButtonOffsetY != NSNotFound ? kLGAlertViewCancelButtonOffsetY : kLGAlertViewOffsetH);
+    _heightMax           = (kLGAlertViewHeightMax != NSNotFound ? kLGAlertViewHeightMax : NSNotFound);
+    _width               = (kLGAlertViewWidth != NSNotFound ? kLGAlertViewWidth : NSNotFound);
 
-    _coverColor = [UIColor colorWithWhite:0.f alpha:0.5];
-    _backgroundColor = [UIColor whiteColor];
+    _layerCornerRadius  = (kLGAlertViewLayerCornerRadius != NSNotFound ? kLGAlertViewLayerCornerRadius : ([UIDevice currentDevice].systemVersion.floatValue < 9.0 ? 6.f : 12.f));
+    _layerBorderColor   = (kLGAlertViewLayerBorderColor ? kLGAlertViewLayerBorderColor : nil);
+    _layerBorderWidth   = (kLGAlertViewLayerBorderWidth != NSNotFound ? kLGAlertViewLayerBorderWidth : 0.f);
+    _layerShadowColor   = (kLGAlertViewLayerShadowColor ? kLGAlertViewLayerShadowColor : nil);
+    _layerShadowRadius  = (kLGAlertViewLayerShadowRadius != NSNotFound ? kLGAlertViewLayerShadowRadius : 0.f);
+    _layerShadowOpacity = (kLGAlertViewLayerShadowOpacity != NSNotFound ? kLGAlertViewLayerShadowOpacity : 0.f);
+    _layerShadowOffset  = (kLGAlertViewLayerShadowOffset ? CGSizeFromString(kLGAlertViewLayerShadowOffset) : CGSizeZero);
 
-    // -----
+    _titleTextColor     = (kLGAlertViewTitleTextColor ? kLGAlertViewTitleTextColor : (_style == LGAlertViewStyleAlert ? [UIColor blackColor] : [UIColor grayColor]));
+    _titleTextAlignment = (kLGAlertViewTitleTextAlignment != NSNotFound ? kLGAlertViewTitleTextAlignment : NSTextAlignmentCenter);
+    _titleFont          = (kLGAlertViewTitleFont ? kLGAlertViewTitleFont : (_style == LGAlertViewStyleAlert ? [UIFont boldSystemFontOfSize:18.f] : [UIFont boldSystemFontOfSize:14.f]));
 
-    _buttonsHeight = (([UIDevice currentDevice].systemVersion.floatValue < 9.0 || _style == LGAlertViewStyleAlert) ? 44.f : 56.f);
-    _textFieldsHeight = 44.f;
-    _offsetVertical = -1;
-    _cancelButtonOffsetY = kLGAlertViewOffsetHorizontal;
-    _heightMax = -1.f;
-    _width = -1.f;
+    _messageTextColor     = (kLGAlertViewMessageTextColor ? kLGAlertViewMessageTextColor : (_style == LGAlertViewStyleAlert ? [UIColor blackColor] : [UIColor grayColor]));
+    _messageTextAlignment = (kLGAlertViewMessageTextAlignment != NSNotFound ? kLGAlertViewMessageTextAlignment : NSTextAlignmentCenter);
+    _messageFont          = (kLGAlertViewMessageFont ? kLGAlertViewMessageFont : (_style == LGAlertViewStyleAlert ? [UIFont systemFontOfSize:14.f] : [UIFont systemFontOfSize:14.f]));
 
-    // -----
+    _tintColor = (kLGAlertViewTintColor ? kLGAlertViewTintColor : [UIColor colorWithRed:0.f green:0.5 blue:1.f alpha:1.f]);
 
-    _layerCornerRadius = ([UIDevice currentDevice].systemVersion.floatValue < 9.0 ? 6.f : 12.f);
-    _layerBorderColor = nil;
-    _layerBorderWidth = 0.f;
-    _layerShadowColor = nil;
-    _layerShadowRadius = 0.f;
-    _layerShadowOpacity = 1.f;
-    _layerShadowOffset = CGSizeZero;
-
-    // -----
-
-    if (_style == LGAlertViewStyleAlert)
-    {
-        _titleTextColor     = [UIColor blackColor];
-        _titleTextAlignment = NSTextAlignmentCenter;
-        _titleFont          = [UIFont boldSystemFontOfSize:18.f];
-    }
-    else
-    {
-        _titleTextColor     = [UIColor grayColor];
-        _titleTextAlignment = NSTextAlignmentCenter;
-        _titleFont          = [UIFont boldSystemFontOfSize:14.f];
-    }
-
-    if (_style == LGAlertViewStyleAlert)
-    {
-        _messageTextColor     = [UIColor blackColor];
-        _messageTextAlignment = NSTextAlignmentCenter;
-        _messageFont          = [UIFont systemFontOfSize:14.f];
-    }
-    else
-    {
-        _messageTextColor     = [UIColor grayColor];
-        _messageTextAlignment = NSTextAlignmentCenter;
-        _messageFont          = [UIFont systemFontOfSize:14.f];
-    }
-
-    // -----
-
-    if (!kLGAlertViewTintColor)
-        kLGAlertViewTintColor = [UIColor colorWithRed:0.f green:0.5 blue:1.f alpha:1.f];
-
-    _tintColor = kLGAlertViewTintColor;
-
-    // -----
-
-    _buttonsTitleColor                 = _tintColor;
-    _buttonsTitleColorHighlighted      = [UIColor whiteColor];
-    _buttonsTitleColorDisabled         = [UIColor grayColor];
-    _buttonsTextAlignment              = NSTextAlignmentCenter;
-    _buttonsFont                       = [UIFont systemFontOfSize:18.f];
-    _buttonsNumberOfLines              = 1;
-    _buttonsLineBreakMode              = NSLineBreakByTruncatingMiddle;
-    _buttonsAdjustsFontSizeToFitWidth  = YES;
-    _buttonsMinimumScaleFactor         = 14.f/18.f;
-    _buttonsBackgroundColor            = nil;
-    _buttonsBackgroundColorHighlighted = _tintColor;
-    _buttonsBackgroundColorDisabled    = nil;
+    _buttonsTitleColor                 = (kLGAlertViewButtonsTitleColor ? kLGAlertViewButtonsTitleColor : _tintColor);
+    _buttonsTitleColorHighlighted      = (kLGAlertViewButtonsTitleColorHighlighted ? kLGAlertViewButtonsTitleColorHighlighted : [UIColor whiteColor]);
+    _buttonsTitleColorDisabled         = (kLGAlertViewButtonsTitleColorDisabled ? kLGAlertViewButtonsTitleColorDisabled : [UIColor grayColor]);
+    _buttonsTextAlignment              = (kLGAlertViewButtonsTextAlignment != NSNotFound ? kLGAlertViewButtonsTextAlignment : NSTextAlignmentCenter);
+    _buttonsFont                       = (kLGAlertViewButtonsFont ? kLGAlertViewButtonsFont : [UIFont systemFontOfSize:18.f]);
+    _buttonsNumberOfLines              = (kLGAlertViewButtonsNumberOfLines != NSNotFound ? kLGAlertViewButtonsNumberOfLines : 1);
+    _buttonsLineBreakMode              = (kLGAlertViewButtonsLineBreakMode != NSNotFound ? kLGAlertViewButtonsLineBreakMode : NSLineBreakByTruncatingMiddle);
+    _buttonsAdjustsFontSizeToFitWidth  = (kLGAlertViewButtonsAdjustsFontSizeToFitWidth ? kLGAlertViewButtonsAdjustsFontSizeToFitWidth.boolValue : YES);
+    _buttonsMinimumScaleFactor         = (kLGAlertViewButtonsMinimumScaleFactor != NSNotFound ? kLGAlertViewButtonsMinimumScaleFactor : 14.f/18.f);
+    _buttonsBackgroundColor            = (kLGAlertViewButtonsBackgroundColor ? kLGAlertViewButtonsBackgroundColor : nil);
+    _buttonsBackgroundColorHighlighted = (kLGAlertViewButtonsBackgroundColorHighlighted ? kLGAlertViewButtonsBackgroundColorHighlighted : _tintColor);
+    _buttonsBackgroundColorDisabled    = (kLGAlertViewButtonsBackgroundColorDisabled ? kLGAlertViewButtonsBackgroundColorDisabled : nil);
     _buttonsEnabled                    = YES;
 
-    _cancelButtonTitleColor                 = _tintColor;
-    _cancelButtonTitleColorHighlighted      = [UIColor whiteColor];
-    _cancelButtonTitleColorDisabled         = [UIColor grayColor];
-    _cancelButtonTextAlignment              = NSTextAlignmentCenter;
-    _cancelButtonFont                       = [UIFont boldSystemFontOfSize:18.f];
-    _cancelButtonNumberOfLines              = 1;
-    _cancelButtonLineBreakMode              = NSLineBreakByTruncatingMiddle;
-    _cancelButtonAdjustsFontSizeToFitWidth  = YES;
-    _cancelButtonMinimumScaleFactor         = 14.f/18.f;
-    _cancelButtonBackgroundColor            = nil;
-    _cancelButtonBackgroundColorHighlighted = _tintColor;
-    _cancelButtonBackgroundColorDisabled    = nil;
+    _cancelButtonTitleColor                 = (kLGAlertViewCancelButtonTitleColor ? kLGAlertViewCancelButtonTitleColor : _tintColor);
+    _cancelButtonTitleColorHighlighted      = (kLGAlertViewCancelButtonTitleColorHighlighted ? kLGAlertViewCancelButtonTitleColorHighlighted : [UIColor whiteColor]);
+    _cancelButtonTitleColorDisabled         = (kLGAlertViewCancelButtonTitleColorDisabled ? kLGAlertViewCancelButtonTitleColorDisabled : [UIColor grayColor]);
+    _cancelButtonTextAlignment              = (kLGAlertViewCancelButtonTextAlignment != NSNotFound ? kLGAlertViewCancelButtonTextAlignment : NSTextAlignmentCenter);
+    _cancelButtonFont                       = (kLGAlertViewCancelButtonFont ? kLGAlertViewCancelButtonFont : [UIFont boldSystemFontOfSize:18.f]);
+    _cancelButtonNumberOfLines              = (kLGAlertViewCancelButtonNumberOfLines != NSNotFound ? kLGAlertViewCancelButtonNumberOfLines : 1);
+    _cancelButtonLineBreakMode              = (kLGAlertViewCancelButtonLineBreakMode != NSNotFound ? kLGAlertViewCancelButtonLineBreakMode : NSLineBreakByTruncatingMiddle);
+    _cancelButtonAdjustsFontSizeToFitWidth  = (kLGAlertViewCancelButtonAdjustsFontSizeToFitWidth ? kLGAlertViewCancelButtonAdjustsFontSizeToFitWidth.boolValue : YES);
+    _cancelButtonMinimumScaleFactor         = (kLGAlertViewCancelButtonMinimumScaleFactor != NSNotFound ? kLGAlertViewCancelButtonMinimumScaleFactor : 14.f/18.f);
+    _cancelButtonBackgroundColor            = (kLGAlertViewCancelButtonBackgroundColor ? kLGAlertViewCancelButtonBackgroundColor : nil);
+    _cancelButtonBackgroundColorHighlighted = (kLGAlertViewCancelButtonBackgroundColorHighlighted ? kLGAlertViewCancelButtonBackgroundColorHighlighted : _tintColor);
+    _cancelButtonBackgroundColorDisabled    = (kLGAlertViewCancelButtonBackgroundColorDisabled ? kLGAlertViewCancelButtonBackgroundColorDisabled : nil);
     _cancelButtonEnabled                    = YES;
 
-    _destructiveButtonTitleColor                 = [UIColor redColor];
-    _destructiveButtonTitleColorHighlighted      = [UIColor whiteColor];
-    _destructiveButtonTitleColorDisabled         = [UIColor grayColor];
-    _destructiveButtonTextAlignment              = NSTextAlignmentCenter;
-    _destructiveButtonFont                       = [UIFont systemFontOfSize:18.f];
-    _destructiveButtonNumberOfLines              = 1;
-    _destructiveButtonLineBreakMode              = NSLineBreakByTruncatingMiddle;
-    _destructiveButtonAdjustsFontSizeToFitWidth  = YES;
-    _destructiveButtonMinimumScaleFactor         = 14.f/18.f;
-    _destructiveButtonBackgroundColor            = nil;
-    _destructiveButtonBackgroundColorHighlighted = [UIColor redColor];
-    _destructiveButtonBackgroundColorDisabled    = nil;
+    _destructiveButtonTitleColor                 = (kLGAlertViewDestructiveButtonTitleColor ? kLGAlertViewDestructiveButtonTitleColor : [UIColor redColor]);
+    _destructiveButtonTitleColorHighlighted      = (kLGAlertViewDestructiveButtonTitleColorHighlighted ? kLGAlertViewDestructiveButtonTitleColorHighlighted : [UIColor whiteColor]);
+    _destructiveButtonTitleColorDisabled         = (kLGAlertViewDestructiveButtonTitleColorDisabled ? kLGAlertViewDestructiveButtonTitleColorDisabled : [UIColor grayColor]);
+    _destructiveButtonTextAlignment              = (kLGAlertViewDestructiveButtonTextAlignment != NSNotFound ? kLGAlertViewDestructiveButtonTextAlignment : NSTextAlignmentCenter);
+    _destructiveButtonFont                       = (kLGAlertViewDestructiveButtonFont ? kLGAlertViewDestructiveButtonFont : [UIFont systemFontOfSize:18.f]);
+    _destructiveButtonNumberOfLines              = (kLGAlertViewDestructiveButtonNumberOfLines != NSNotFound ? kLGAlertViewDestructiveButtonNumberOfLines : 1);
+    _destructiveButtonLineBreakMode              = (kLGAlertViewDestructiveButtonLineBreakMode != NSNotFound ? kLGAlertViewDestructiveButtonLineBreakMode : NSLineBreakByTruncatingMiddle);
+    _destructiveButtonAdjustsFontSizeToFitWidth  = (kLGAlertViewDestructiveButtonAdjustsFontSizeToFitWidth ? kLGAlertViewDestructiveButtonAdjustsFontSizeToFitWidth.boolValue : YES);
+    _destructiveButtonMinimumScaleFactor         = (kLGAlertViewDestructiveButtonMinimumScaleFactor != NSNotFound ? kLGAlertViewDestructiveButtonMinimumScaleFactor : 14.f/18.f);
+    _destructiveButtonBackgroundColor            = (kLGAlertViewDestructiveButtonBackgroundColor ? kLGAlertViewDestructiveButtonBackgroundColor : nil);
+    _destructiveButtonBackgroundColorHighlighted = (kLGAlertViewDestructiveButtonBackgroundColorHighlighted ? kLGAlertViewDestructiveButtonBackgroundColorHighlighted : [UIColor redColor]);
+    _destructiveButtonBackgroundColorDisabled    = (kLGAlertViewDestructiveButtonBackgroundColorDisabled ? kLGAlertViewDestructiveButtonBackgroundColorDisabled : nil);
     _destructiveButtonEnabled                    = YES;
 
-    // -----
+    _activityIndicatorViewStyle = (kLGAlertViewActivityIndicatorViewStyle != NSNotFound ? kLGAlertViewActivityIndicatorViewStyle : UIActivityIndicatorViewStyleWhiteLarge);
+    _activityIndicatorViewColor = (kLGAlertViewActivityIndicatorViewColor ? kLGAlertViewActivityIndicatorViewColor : _tintColor);
 
-    self.colorful = kLGAlertViewColorful;
+    _progressViewProgressTintColor = (kLGAlertViewProgressViewProgressTintColor ? kLGAlertViewProgressViewProgressTintColor : _tintColor);
+    _progressViewTrackTintColor    = (kLGAlertViewProgressViewTrackTintColor ? kLGAlertViewProgressViewTrackTintColor : [UIColor colorWithRed:0.8 green:0.8 blue:0.8 alpha:1.f]);
+    _progressViewProgressImage     = (kLGAlertViewProgressViewProgressImage ? kLGAlertViewProgressViewProgressImage : nil);
+    _progressViewTrackImage        = (kLGAlertViewProgressViewTrackImage ? kLGAlertViewProgressViewTrackImage : nil);
+    _progressLabelTextColor        = (kLGAlertViewProgressLabelTextColor ? kLGAlertViewProgressLabelTextColor : [UIColor blackColor]);
+    _progressLabelTextAlignment    = (kLGAlertViewProgressLabelTextAlignment != NSNotFound ? kLGAlertViewProgressLabelTextAlignment : NSTextAlignmentCenter);
+    _progressLabelFont             = (kLGAlertViewProgressLabelFont ? kLGAlertViewProgressLabelFont : [UIFont systemFontOfSize:14.f]);
 
-    // -----
+    _separatorsColor               = (kLGAlertViewSeparatorsColor ? kLGAlertViewSeparatorsColor : [UIColor colorWithRed:0.85 green:0.85 blue:0.85 alpha:1.f]);
+    _indicatorStyle                = (kLGAlertViewIndicatorStyle ? kLGAlertViewIndicatorStyle : UIScrollViewIndicatorStyleBlack);
+    _showsVerticalScrollIndicator  = (kLGAlertViewShowsVerticalScrollIndicator ? kLGAlertViewShowsVerticalScrollIndicator.boolValue : NO);
+    _padShowsActionSheetFromBottom = (kLGAlertViewPadShowActionSheetFromBottom ? kLGAlertViewPadShowActionSheetFromBottom.boolValue : NO);
+    _oneRowOneButton               = (kLGAlertViewOneRowOneButton ? kLGAlertViewOneRowOneButton.boolValue : NO);
 
-    _activityIndicatorViewStyle = UIActivityIndicatorViewStyleWhiteLarge;
-    _activityIndicatorViewColor = _tintColor;
-
-    _progressViewProgressTintColor = _tintColor;
-    _progressViewTrackTintColor    = [UIColor colorWithRed:0.8 green:0.8 blue:0.8 alpha:1.f];
-    _progressViewProgressImage     = nil;
-    _progressViewTrackImage        = nil;
-
-    _progressLabelTextColor     = [UIColor blackColor];
-    _progressLabelTextAlignment = NSTextAlignmentCenter;
-    _progressLabelFont          = [UIFont systemFontOfSize:14.f];
-
-    _separatorsColor = [UIColor colorWithRed:0.85 green:0.85 blue:0.85 alpha:1.f];
-
-    _indicatorStyle = UIScrollViewIndicatorStyleBlack;
-    _showsVerticalScrollIndicator = NO;
+    self.colorful = (kLGAlertViewColorful ? kLGAlertViewColorful.boolValue : YES);
 
     // -----
 
@@ -1127,80 +1176,60 @@ LGAlertViewType;
 {
     _colorful = colorful;
 
-    if (_colorful)
-    {
-        if (!self.isUserButtonsTitleColorHighlighted)
-            _buttonsTitleColorHighlighted = [UIColor whiteColor];
-        if (!self.isUserButtonsBackgroundColorHighlighted)
-            _buttonsBackgroundColorHighlighted = _tintColor;
+    if (!self.isUserButtonsTitleColorHighlighted && !kLGAlertViewButtonsTitleColorHighlighted)
+        _buttonsTitleColorHighlighted = (colorful ? [UIColor whiteColor] : _buttonsTitleColorHighlighted);
+    if (!self.isUserButtonsBackgroundColorHighlighted && !kLGAlertViewButtonsBackgroundColorHighlighted)
+        _buttonsBackgroundColorHighlighted = (colorful ? _tintColor : [UIColor colorWithRed:0.9 green:0.9 blue:0.9 alpha:1.f]);
 
-        if (!self.isUserCancelButtonTitleColorHighlighted)
-            _cancelButtonTitleColorHighlighted = [UIColor whiteColor];
-        if (!self.isUserCancelButtonBackgroundColorHighlighted)
-            _cancelButtonBackgroundColorHighlighted = _tintColor;
+    if (!self.isUserCancelButtonTitleColorHighlighted && !kLGAlertViewCancelButtonTitleColorHighlighted)
+        _cancelButtonTitleColorHighlighted = (colorful ? [UIColor whiteColor] : _cancelButtonTitleColorHighlighted);
+    if (!self.isUserCancelButtonBackgroundColorHighlighted && !kLGAlertViewCancelButtonBackgroundColorHighlighted)
+        _cancelButtonBackgroundColorHighlighted = (colorful ? _tintColor : [UIColor colorWithRed:0.9 green:0.9 blue:0.9 alpha:1.f]);
 
-        if (!self.isUserDestructiveButtonTitleColorHighlighted)
-            _destructiveButtonTitleColorHighlighted = [UIColor whiteColor];
-        if (!self.isUserDestructiveButtonBackgroundColorHighlighted)
-            _destructiveButtonBackgroundColorHighlighted = [UIColor redColor];
-    }
-    else
-    {
-        if (!self.isUserButtonsTitleColorHighlighted)
-            _buttonsTitleColorHighlighted = _buttonsTitleColor;
-        if (!self.isUserButtonsBackgroundColorHighlighted)
-            _buttonsBackgroundColorHighlighted = [UIColor colorWithRed:0.9 green:0.9 blue:0.9 alpha:1.f];
-
-        if (!self.isUserCancelButtonTitleColorHighlighted)
-            _cancelButtonTitleColorHighlighted = _cancelButtonTitleColor;
-        if (!self.isUserCancelButtonBackgroundColorHighlighted)
-            _cancelButtonBackgroundColorHighlighted = [UIColor colorWithRed:0.9 green:0.9 blue:0.9 alpha:1.f];
-
-        if (!self.isUserDestructiveButtonTitleColorHighlighted)
-            _destructiveButtonTitleColorHighlighted = _destructiveButtonTitleColor;
-        if (!self.isUserDestructiveButtonBackgroundColorHighlighted)
-            _destructiveButtonBackgroundColorHighlighted = [UIColor colorWithRed:0.9 green:0.9 blue:0.9 alpha:1.f];
-    }
+    if (!self.isUserDestructiveButtonTitleColorHighlighted && !kLGAlertViewDestructiveButtonTitleColorHighlighted)
+        _destructiveButtonTitleColorHighlighted = (colorful ? [UIColor whiteColor] : _destructiveButtonTitleColorHighlighted);
+    if (!self.isUserDestructiveButtonBackgroundColorHighlighted && !kLGAlertViewDestructiveButtonBackgroundColorHighlighted)
+        _destructiveButtonBackgroundColorHighlighted = (colorful ? [UIColor redColor] : [UIColor colorWithRed:0.9 green:0.9 blue:0.9 alpha:1.f]);
 }
 
 - (void)setTintColor:(UIColor *)tintColor
 {
     _tintColor = tintColor;
 
-    if (!self.isUserButtonsTitleColor)
-        _buttonsTitleColor = _tintColor;
-    if (!self.isUserCancelButtonTitleColor)
-        _cancelButtonTitleColor = _tintColor;
+    if (!self.isUserButtonsTitleColor && !kLGAlertViewButtonsTitleColor)
+        _buttonsTitleColor = tintColor;
+    if (!self.isUserCancelButtonTitleColor && !kLGAlertViewCancelButtonTitleColor)
+        _cancelButtonTitleColor = tintColor;
 
     if (!self.isColorful)
     {
-        if (!self.isUserButtonsTitleColorHighlighted)
-            _buttonsTitleColorHighlighted = _tintColor;
-        if (!self.isUserCancelButtonTitleColorHighlighted)
-            _cancelButtonTitleColorHighlighted = _tintColor;
+        if (!self.isUserButtonsTitleColorHighlighted && !kLGAlertViewButtonsTitleColorHighlighted)
+            _buttonsTitleColorHighlighted = tintColor;
+        if (!self.isUserCancelButtonTitleColorHighlighted && !kLGAlertViewCancelButtonTitleColorHighlighted)
+            _cancelButtonTitleColorHighlighted = tintColor;
     }
 
-    if (!self.isUserButtonsBackgroundColorHighlighted)
-        _buttonsBackgroundColorHighlighted = _tintColor;
-    if (!self.isUserCancelButtonBackgroundColorHighlighted)
-        _cancelButtonBackgroundColorHighlighted = _tintColor;
+    if (!self.isUserButtonsBackgroundColorHighlighted && !kLGAlertViewButtonsBackgroundColorHighlighted)
+        _buttonsBackgroundColorHighlighted = tintColor;
+    if (!self.isUserCancelButtonBackgroundColorHighlighted && !kLGAlertViewCancelButtonBackgroundColorHighlighted)
+        _cancelButtonBackgroundColorHighlighted = tintColor;
 
-    if (!self.isUserActivityIndicatorViewColor)
-        _activityIndicatorViewColor = _tintColor;
-    if (!self.isUserProgressViewProgressTintColor)
-        _progressViewProgressTintColor = _tintColor;
+    if (!self.isUserActivityIndicatorViewColor && !kLGAlertViewActivityIndicatorViewColor)
+        _activityIndicatorViewColor = tintColor;
+    if (!self.isUserProgressViewProgressTintColor && !kLGAlertViewProgressViewProgressTintColor)
+        _progressViewProgressTintColor = tintColor;
 }
 
 - (void)setButtonsHeight:(CGFloat)buttonsHeight
 {
-    if (buttonsHeight < 0) buttonsHeight = 0;
+    NSAssert(buttonsHeight >= 0, @"Buttons height can not be less then 0.f");
 
     _buttonsHeight = buttonsHeight;
 }
 
 - (void)setTextFieldsHeight:(CGFloat)textFieldsHeight
 {
-    if (textFieldsHeight < 0) textFieldsHeight = 0;
+    NSAssert(textFieldsHeight >= 0, @"Text fields height can not be less then 0.f");
 
     _textFieldsHeight = textFieldsHeight;
 }
@@ -1275,29 +1304,16 @@ LGAlertViewType;
     _userProgressViewProgressTintColor = YES;
 }
 
+- (void)setWidth:(CGFloat)width
+{
+    NSAssert(width >= 0, @"LGAlertView width can not be less then 0.f");
+
+    _width = width;
+}
+
 - (BOOL)isShowing
 {
     return (_showing && _window.isKeyWindow && !_window.isHidden);
-}
-
-#pragma mark - Class methods
-
-+ (void)setTintColor:(UIColor *)color
-{
-    kLGAlertViewTintColor = color;
-}
-
-+ (void)setColorful:(BOOL)colorful
-{
-    kLGAlertViewColorful = colorful;
-}
-
-+ (NSArray *)getAlertViewsArray
-{
-    if (!kLGAlertViewArray)
-        kLGAlertViewArray = [NSMutableArray new];
-
-    return kLGAlertViewArray;
 }
 
 #pragma mark -
@@ -1975,11 +1991,11 @@ LGAlertViewType;
                     {
                         [self dismissAnimated:NO
                             completionHandler:^(void)
-                        {
-                            [alertView showComplete];
+                         {
+                             [alertView showComplete];
 
-                            if (completionHandler) completionHandler();
-                        }];
+                             if (completionHandler) completionHandler();
+                         }];
                     }];
                }];
           }];
@@ -1992,7 +2008,7 @@ LGAlertViewType;
 {
     CGFloat width = 0.f;
 
-    if (_width > 0.f)
+    if (_width != NSNotFound)
     {
         width = MIN(size.width, size.height);
 
@@ -2007,7 +2023,7 @@ LGAlertViewType;
             if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
                 width = kLGAlertViewWidthStyleActionSheet;
             else
-                width = MIN(size.width, size.height)-kLGAlertViewOffsetHorizontal*2;
+                width = MIN(size.width, size.height)-kLGAlertViewOffsetH*2;
         }
     }
 
@@ -2588,7 +2604,7 @@ LGAlertViewType;
 
     CGFloat width = 0.f;
 
-    if (_width > 0.f)
+    if (_width != NSNotFound)
     {
         width = MIN(size.width, size.height);
 
@@ -2603,18 +2619,18 @@ LGAlertViewType;
             if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
                 width = kLGAlertViewWidthStyleActionSheet;
             else
-                width = MIN(size.width, size.height)-kLGAlertViewOffsetHorizontal*2;
+                width = MIN(size.width, size.height)-kLGAlertViewOffsetH*2;
         }
     }
 
     // -----
 
-    CGFloat heightMax = size.height-_keyboardHeight-kLGAlertViewOffsetVertical*2;
+    CGFloat heightMax = size.height-_keyboardHeight-kLGAlertViewOffsetV*2;
 
     if (_windowLevel == LGAlertViewWindowLevelBelowStatusBar)
         heightMax -= kLGAlertViewStatusBarHeight;
 
-    if (_heightMax > 0.f && _heightMax < heightMax)
+    if (_heightMax != NSNotFound && _heightMax < heightMax)
         heightMax = _heightMax;
 
     if (kLGAlertViewIsCancelButtonSeparate(self) && _cancelButton)
@@ -2649,7 +2665,7 @@ LGAlertViewType;
     }
     else
     {
-        CGFloat bottomShift = kLGAlertViewOffsetVertical;
+        CGFloat bottomShift = kLGAlertViewOffsetV;
         if (kLGAlertViewIsCancelButtonSeparate(self) && _cancelButton)
             bottomShift += _buttonsHeight+_cancelButtonOffsetY;
 
@@ -2669,7 +2685,7 @@ LGAlertViewType;
 
         // -----
 
-        CGFloat commonHeight = scrollViewFrame.size.height+kLGAlertViewOffsetVertical;
+        CGFloat commonHeight = scrollViewFrame.size.height+kLGAlertViewOffsetV;
         if (kLGAlertViewIsCancelButtonSeparate(self) && _cancelButton)
             commonHeight += _buttonsHeight+_cancelButtonOffsetY;
 
@@ -2768,7 +2784,8 @@ LGAlertViewType;
 
     // -----
 
-    [self dismissAnimated:YES completionHandler:nil];
+    if (_dismissOnAction)
+        [self dismissAnimated:YES completionHandler:nil];
 }
 
 - (void)destructiveAction:(id)sender
@@ -2787,7 +2804,8 @@ LGAlertViewType;
 
     // -----
 
-    [self dismissAnimated:YES completionHandler:nil];
+    if (_dismissOnAction)
+        [self dismissAnimated:YES completionHandler:nil];
 }
 
 - (void)actionActionAtIndex:(NSUInteger)index title:(NSString *)title
@@ -2804,22 +2822,23 @@ LGAlertViewType;
 
     // -----
 
-    [self dismissAnimated:YES completionHandler:nil];
+    if (_dismissOnAction)
+        [self dismissAnimated:YES completionHandler:nil];
 }
 
 - (void)firstButtonAction:(id)sender
 {
     if (sender && [sender isKindOfClass:[UIButton class]])
         [(UIButton *)sender setSelected:YES];
-    
+
     // -----
-    
+
     NSUInteger index = 0;
-    
+
     NSString *title = _buttonTitles[0];
-    
+
     // -----
-    
+
     [self actionActionAtIndex:index title:title];
 }
 
@@ -2827,15 +2846,15 @@ LGAlertViewType;
 {
     if (sender && [sender isKindOfClass:[UIButton class]])
         [(UIButton *)sender setSelected:YES];
-    
+
     // -----
-    
+
     NSUInteger index = 1;
-    
+
     NSString *title = _buttonTitles[1];
-    
+
     // -----
-    
+
     [self actionActionAtIndex:index title:title];
 }
 
@@ -2843,16 +2862,794 @@ LGAlertViewType;
 {
     if (sender && [sender isKindOfClass:[UIButton class]])
         [(UIButton *)sender setSelected:YES];
-    
+
     // -----
-    
+
     NSUInteger index = 2;
-    
+
     NSString *title = _buttonTitles[2];
-    
+
     // -----
-    
+
     [self actionActionAtIndex:index title:title];
+}
+
+#pragma mark - Class methods
+
+/** Setup LGAlertView globally for all instances of LGAlertViews */
++ (void)setWindowLevel:(LGAlertViewWindowLevel)windowLevel
+{
+    kLGAlertViewWindowLevel = windowLevel;
+}
+
++ (LGAlertViewWindowLevel)windowLevel
+{
+    return kLGAlertViewWindowLevel;
+}
+
++ (void)setColorful:(BOOL)colorful
+{
+    kLGAlertViewColorful = [NSNumber numberWithBool:colorful];
+}
+
++ (BOOL)colorful
+{
+    return (kLGAlertViewColorful ? kLGAlertViewColorful.boolValue : YES);
+}
+
++ (void)setTintColor:(UIColor *)tintColor
+{
+    kLGAlertViewTintColor = tintColor;
+}
+
++ (UIColor *)tintColor
+{
+    return kLGAlertViewTintColor;
+}
+
++ (void)setCoverColor:(UIColor *)coverColor
+{
+    kLGAlertViewCoverColor = coverColor;
+}
+
++ (UIColor *)coverColor
+{
+    return kLGAlertViewCoverColor;
+}
+
++ (void)setBackgroundColor:(UIColor *)backgroundColor
+{
+    kLGAlertViewBackgroundColor = backgroundColor;
+}
+
++ (UIColor *)backgroundColor
+{
+    return kLGAlertViewBackgroundColor;
+}
+
++ (void)setButtonsHeight:(CGFloat)buttonsHeight
+{
+    NSAssert(buttonsHeight >= 0, @"Buttons height can not be less then 0.f");
+
+    kLGAlertViewButtonsHeight = buttonsHeight;
+}
+
++ (CGFloat)buttonsHeight
+{
+    return kLGAlertViewButtonsHeight;
+}
+
++ (void)setTextFieldsHeight:(CGFloat)textFieldsHeight
+{
+    NSAssert(textFieldsHeight >= 0, @"Text fields height can not be less then 0.f");
+
+    kLGAlertViewTextFieldsHeight = textFieldsHeight;
+}
+
++ (CGFloat)textFieldsHeight
+{
+    return kLGAlertViewTextFieldsHeight;
+}
+
++ (void)setOffsetVertical:(CGFloat)offsetVertical
+{
+    kLGAlertViewOffsetVertical = offsetVertical;
+}
+
++ (CGFloat)offsetVertical
+{
+    return kLGAlertViewOffsetVertical;
+}
+
++ (void)setCancelButtonOffsetY:(CGFloat)cancelButtonOffsetY
+{
+    kLGAlertViewCancelButtonOffsetY = cancelButtonOffsetY;
+}
+
++ (CGFloat)cancelButtonOffsetY
+{
+    return kLGAlertViewCancelButtonOffsetY;
+}
+
++ (void)setHeightMax:(CGFloat)heightMax
+{
+    kLGAlertViewHeightMax = heightMax;
+}
+
++ (CGFloat)heightMax
+{
+    return kLGAlertViewHeightMax;
+}
+
++ (void)setWidth:(CGFloat)width
+{
+    NSAssert(width >= 0, @"LGAlertView width can not be less then 0.f");
+
+    kLGAlertViewWidth = width;
+}
+
++ (CGFloat)width
+{
+    return kLGAlertViewWidth;
+}
+
+#pragma mark -
+
+
++ (void)setLayerCornerRadius:(CGFloat)layerCornerRadius
+{
+    kLGAlertViewLayerCornerRadius = layerCornerRadius;
+}
+
++ (CGFloat)layerCornerRadius
+{
+    return kLGAlertViewLayerCornerRadius;
+}
+
++ (void)setLayerBorderColor:(UIColor *)layerBorderColor
+{
+    kLGAlertViewLayerBorderColor = layerBorderColor;
+}
+
++ (UIColor *)layerBorderColor
+{
+    return kLGAlertViewLayerBorderColor;
+}
+
++ (void)setLayerBorderWidth:(CGFloat)layerBorderWidth
+{
+    kLGAlertViewLayerBorderWidth = layerBorderWidth;
+}
+
++ (CGFloat)layerBorderWidth
+{
+    return kLGAlertViewLayerBorderWidth;
+}
+
++ (void)setLayerShadowColor:(UIColor *)layerShadowColor
+{
+    kLGAlertViewLayerShadowColor = layerShadowColor;
+}
+
++ (UIColor *)layerShadowColor
+{
+    return kLGAlertViewLayerShadowColor;
+}
+
++ (void)setLayerShadowRadius:(CGFloat)layerShadowRadius
+{
+    kLGAlertViewLayerShadowRadius = layerShadowRadius;
+}
+
++ (CGFloat)layerShadowRadius
+{
+    return kLGAlertViewLayerShadowRadius;
+}
+
++ (void)setLayerShadowOpacity:(CGFloat)layerShadowOpacity
+{
+    kLGAlertViewLayerShadowOpacity = layerShadowOpacity;
+}
+
++ (CGFloat)layerShadowOpacity
+{
+    return kLGAlertViewLayerShadowOpacity;
+}
+
++ (void)setLayerShadowOffset:(CGSize)layerShadowOffset
+{
+    kLGAlertViewLayerShadowOffset = NSStringFromCGSize(layerShadowOffset);
+}
+
++ (CGSize)layerShadowOffset
+{
+    return CGSizeFromString(kLGAlertViewLayerShadowOffset);
+}
+
+#pragma mark -
+
++ (void)setTitleTextColor:(UIColor *)titleTextColor
+{
+    kLGAlertViewTitleTextColor = titleTextColor;
+}
+
++ (UIColor *)titleTextColor
+{
+    return kLGAlertViewTitleTextColor;
+}
+
++ (void)setTitleTextAlignment:(NSTextAlignment)titleTextAlignment
+{
+    kLGAlertViewTitleTextAlignment = titleTextAlignment;
+}
+
++ (NSTextAlignment)titleTextAlignment
+{
+    return kLGAlertViewTitleTextAlignment;
+}
+
++ (void)setTitleFont:(UIFont *)titleFont
+{
+    kLGAlertViewTitleFont = titleFont;
+}
+
++ (UIFont *)titleFont
+{
+    return kLGAlertViewTitleFont;
+}
+
+#pragma mark -
+
++ (void)setMessageTextColor:(UIColor *)messageTextColor
+{
+    kLGAlertViewMessageTextColor = messageTextColor;
+}
+
++ (UIColor *)messageTextColor
+{
+    return kLGAlertViewMessageTextColor;
+}
+
++ (void)setMessageTextAlignment:(NSTextAlignment)messageTextAlignment
+{
+    kLGAlertViewMessageTextAlignment = messageTextAlignment;
+}
+
++ (NSTextAlignment)messageTextAlignment
+{
+    return kLGAlertViewMessageTextAlignment;
+}
+
++ (void)setMessageFont:(UIFont *)messageFont
+{
+    kLGAlertViewMessageFont = messageFont;
+}
+
++ (UIFont *)messageFont
+{
+    return kLGAlertViewMessageFont;
+}
+
+#pragma mark -
+
++ (void)setButtonsTitleColor:(UIColor *)buttonsTitleColor
+{
+    kLGAlertViewButtonsTitleColor = buttonsTitleColor;
+}
+
++ (UIColor *)buttonsTitleColor
+{
+    return kLGAlertViewButtonsTitleColor;
+}
+
++ (void)setButtonsTitleColorHighlighted:(UIColor *)buttonsTitleColorHighlighted
+{
+    kLGAlertViewButtonsTitleColorHighlighted = buttonsTitleColorHighlighted;
+}
+
++ (UIColor *)buttonsTitleColorHighlighted
+{
+    return kLGAlertViewButtonsTitleColorHighlighted;
+}
+
++ (void)setButtonsTitleColorDisabled:(UIColor *)buttonsTitleColorDisabled
+{
+    kLGAlertViewButtonsTitleColorDisabled = buttonsTitleColorDisabled;
+}
+
++ (UIColor *)buttonsTitleColorDisabled
+{
+    return kLGAlertViewButtonsTitleColorDisabled;
+}
+
++ (void)setButtonsTextAlignment:(NSTextAlignment)buttonsTextAlignment
+{
+    kLGAlertViewButtonsTextAlignment = buttonsTextAlignment;
+}
+
++ (NSTextAlignment)buttonsTextAlignment
+{
+    return kLGAlertViewButtonsTextAlignment;
+}
+
++ (void)setButtonsFont:(UIFont *)buttonsFont
+{
+    kLGAlertViewButtonsFont = buttonsFont;
+}
+
++ (UIFont *)buttonsFont
+{
+    return kLGAlertViewButtonsFont;
+}
+
++ (void)setButtonsBackgroundColor:(UIColor *)buttonsBackgroundColor
+{
+    kLGAlertViewButtonsBackgroundColor = buttonsBackgroundColor;
+}
+
++ (UIColor *)buttonsBackgroundColor
+{
+    return kLGAlertViewButtonsBackgroundColor;
+}
+
++ (void)setButtonsBackgroundColorHighlighted:(UIColor *)buttonsBackgroundColorHighlighted
+{
+    kLGAlertViewButtonsBackgroundColorHighlighted = buttonsBackgroundColorHighlighted;
+}
+
++ (UIColor *)buttonsBackgroundColorHighlighted
+{
+    return kLGAlertViewButtonsBackgroundColorHighlighted;
+}
+
++ (void)setButtonsBackgroundColorDisabled:(UIColor *)buttonsBackgroundColorDisabled
+{
+    kLGAlertViewButtonsBackgroundColorDisabled = buttonsBackgroundColorDisabled;
+}
+
++ (UIColor *)buttonsBackgroundColorDisabled
+{
+    return kLGAlertViewButtonsBackgroundColorDisabled;
+}
+
++ (void)setButtonsNumberOfLines:(NSUInteger)buttonsNumberOfLines
+{
+    kLGAlertViewButtonsNumberOfLines = buttonsNumberOfLines;
+}
+
++ (NSUInteger)buttonsNumberOfLines
+{
+    return kLGAlertViewButtonsNumberOfLines;
+}
+
++ (void)setButtonsLineBreakMode:(NSLineBreakMode)buttonsLineBreakMode
+{
+    kLGAlertViewButtonsLineBreakMode = buttonsLineBreakMode;
+}
+
++ (NSLineBreakMode)buttonsLineBreakMode
+{
+    return kLGAlertViewButtonsLineBreakMode;
+}
+
++ (void)setButtonsMinimumScaleFactor:(CGFloat)buttonsMinimumScaleFactor
+{
+    kLGAlertViewButtonsMinimumScaleFactor = buttonsMinimumScaleFactor;
+}
+
++ (CGFloat)buttonsMinimumScaleFactor
+{
+    return kLGAlertViewButtonsMinimumScaleFactor;
+}
+
++ (void)setButtonsAdjustsFontSizeToFitWidth:(BOOL)buttonsAdjustsFontSizeToFitWidth
+{
+    kLGAlertViewButtonsAdjustsFontSizeToFitWidth = [NSNumber numberWithBool:buttonsAdjustsFontSizeToFitWidth];
+}
+
++ (BOOL)buttonsAdjustsFontSizeToFitWidth
+{
+    return (kLGAlertViewButtonsAdjustsFontSizeToFitWidth ? kLGAlertViewButtonsAdjustsFontSizeToFitWidth.boolValue : YES);
+}
+
+#pragma mark -
+
++ (void)setCancelButtonTitleColor:(UIColor *)cancelButtonTitleColor
+{
+    kLGAlertViewCancelButtonTitleColor = cancelButtonTitleColor;
+}
+
++ (UIColor *)cancelButtonTitleColor
+{
+    return kLGAlertViewCancelButtonTitleColor;
+}
+
++ (void)setCancelButtonTitleColorHighlighted:(UIColor *)cancelButtonTitleColorHighlighted
+{
+    kLGAlertViewCancelButtonTitleColorHighlighted = cancelButtonTitleColorHighlighted;
+}
+
++ (UIColor *)cancelButtonTitleColorHighlighted
+{
+    return kLGAlertViewCancelButtonTitleColorHighlighted;
+}
+
++ (void)setCancelButtonTitleColorDisabled:(UIColor *)cancelButtonTitleColorDisabled
+{
+    kLGAlertViewCancelButtonTitleColorDisabled = cancelButtonTitleColorDisabled;
+}
+
++ (UIColor *)cancelButtonTitleColorDisabled
+{
+    return kLGAlertViewCancelButtonTitleColorDisabled;
+}
+
++ (void)setCancelButtonTextAlignment:(NSTextAlignment)cancelButtonTextAlignment
+{
+    kLGAlertViewCancelButtonTextAlignment = cancelButtonTextAlignment;
+}
+
++ (NSTextAlignment)cancelButtonTextAlignment
+{
+    return kLGAlertViewCancelButtonTextAlignment;
+}
+
++ (void)setCancelButtonFont:(UIFont *)cancelButtonFont
+{
+    kLGAlertViewCancelButtonFont = cancelButtonFont;
+}
+
++ (UIFont *)cancelButtonFont
+{
+    return kLGAlertViewCancelButtonFont;
+}
+
++ (void)setCancelButtonBackgroundColor:(UIColor *)cancelButtonBackgroundColor
+{
+    kLGAlertViewCancelButtonBackgroundColor = cancelButtonBackgroundColor;
+}
+
++ (UIColor *)cancelButtonBackgroundColor
+{
+    return kLGAlertViewCancelButtonBackgroundColor;
+}
+
++ (void)setCancelButtonBackgroundColorHighlighted:(UIColor *)cancelButtonBackgroundColorHighlighted
+{
+    kLGAlertViewCancelButtonBackgroundColorHighlighted = cancelButtonBackgroundColorHighlighted;
+}
+
++ (UIColor *)cancelButtonBackgroundColorHighlighted
+{
+    return kLGAlertViewCancelButtonBackgroundColorHighlighted;
+}
+
++ (void)setCancelButtonBackgroundColorDisabled:(UIColor *)cancelButtonBackgroundColorDisabled
+{
+    kLGAlertViewCancelButtonBackgroundColorDisabled = cancelButtonBackgroundColorDisabled;
+}
+
++ (UIColor *)cancelButtonBackgroundColorDisabled
+{
+    return kLGAlertViewCancelButtonBackgroundColorDisabled;
+}
+
++ (void)setCancelButtonNumberOfLines:(NSUInteger)cancelButtonNumberOfLines
+{
+    kLGAlertViewCancelButtonNumberOfLines = cancelButtonNumberOfLines;
+}
+
++ (NSUInteger)cancelButtonNumberOfLines
+{
+    return kLGAlertViewCancelButtonNumberOfLines;
+}
+
++ (void)setCancelButtonLineBreakMode:(NSLineBreakMode)cancelButtonLineBreakMode
+{
+    kLGAlertViewCancelButtonLineBreakMode = cancelButtonLineBreakMode;
+}
+
++ (NSLineBreakMode)cancelButtonLineBreakMode
+{
+    return kLGAlertViewCancelButtonLineBreakMode;
+}
+
++ (void)setCancelButtonMinimumScaleFactor:(CGFloat)cancelButtonMinimumScaleFactor
+{
+    kLGAlertViewCancelButtonMinimumScaleFactor = cancelButtonMinimumScaleFactor;
+}
+
++ (CGFloat)cancelButtonMinimumScaleFactor
+{
+    return kLGAlertViewCancelButtonMinimumScaleFactor;
+}
+
++ (void)setCancelButtonAdjustsFontSizeToFitWidth:(BOOL)cancelButtonAdjustsFontSizeToFitWidth
+{
+    kLGAlertViewCancelButtonAdjustsFontSizeToFitWidth = [NSNumber numberWithBool:cancelButtonAdjustsFontSizeToFitWidth];
+}
+
++ (BOOL)cancelButtonAdjustsFontSizeToFitWidth
+{
+    return (kLGAlertViewCancelButtonAdjustsFontSizeToFitWidth ? kLGAlertViewCancelButtonAdjustsFontSizeToFitWidth.boolValue : YES);
+}
+
+#pragma mark -
+
++ (void)setDestructiveButtonTitleColor:(UIColor *)destructiveButtonTitleColor
+{
+    kLGAlertViewDestructiveButtonTitleColor = destructiveButtonTitleColor;
+}
+
++ (UIColor *)destructiveButtonTitleColor
+{
+    return kLGAlertViewDestructiveButtonTitleColor;
+}
+
++ (void)setDestructiveButtonTitleColorHighlighted:(UIColor *)destructiveButtonTitleColorHighlighted
+{
+    kLGAlertViewDestructiveButtonTitleColorHighlighted = destructiveButtonTitleColorHighlighted;
+}
+
++ (UIColor *)destructiveButtonTitleColorHighlighted
+{
+    return kLGAlertViewDestructiveButtonTitleColorHighlighted;
+}
+
++ (void)setDestructiveButtonTitleColorDisabled:(UIColor *)destructiveButtonTitleColorDisabled
+{
+    kLGAlertViewDestructiveButtonTitleColorDisabled = destructiveButtonTitleColorDisabled;
+}
+
++ (UIColor *)destructiveButtonTitleColorDisabled
+{
+    return kLGAlertViewDestructiveButtonTitleColorDisabled;
+}
+
++ (void)setDestructiveButtonTextAlignment:(NSTextAlignment)destructiveButtonTextAlignment
+{
+    kLGAlertViewDestructiveButtonTextAlignment = destructiveButtonTextAlignment;
+}
+
++ (NSTextAlignment)destructiveButtonTextAlignment
+{
+    return kLGAlertViewDestructiveButtonTextAlignment;
+}
+
++ (void)setDestructiveButtonFont:(UIFont *)destructiveButtonFont
+{
+    kLGAlertViewDestructiveButtonFont = destructiveButtonFont;
+}
+
++ (UIFont *)destructiveButtonFont
+{
+    return kLGAlertViewDestructiveButtonFont;
+}
+
++ (void)setDestructiveButtonBackgroundColor:(UIColor *)destructiveButtonBackgroundColor
+{
+    kLGAlertViewDestructiveButtonBackgroundColor = destructiveButtonBackgroundColor;
+}
+
++ (UIColor *)destructiveButtonBackgroundColor
+{
+    return kLGAlertViewDestructiveButtonBackgroundColor;
+}
+
++ (void)setDestructiveButtonBackgroundColorHighlighted:(UIColor *)destructiveButtonBackgroundColorHighlighted
+{
+    kLGAlertViewDestructiveButtonBackgroundColorHighlighted = destructiveButtonBackgroundColorHighlighted;
+}
+
++ (UIColor *)destructiveButtonBackgroundColorHighlighted
+{
+    return kLGAlertViewDestructiveButtonBackgroundColorHighlighted;
+}
+
++ (void)setDestructiveButtonBackgroundColorDisabled:(UIColor *)destructiveButtonBackgroundColorDisabled
+{
+    kLGAlertViewDestructiveButtonBackgroundColorDisabled = destructiveButtonBackgroundColorDisabled;
+}
+
++ (UIColor *)destructiveButtonBackgroundColorDisabled
+{
+    return kLGAlertViewDestructiveButtonBackgroundColorDisabled;
+}
+
++ (void)setDestructiveButtonNumberOfLines:(NSUInteger)destructiveButtonNumberOfLines
+{
+    kLGAlertViewDestructiveButtonNumberOfLines = destructiveButtonNumberOfLines;
+}
+
++ (NSUInteger)destructiveButtonNumberOfLines
+{
+    return kLGAlertViewDestructiveButtonNumberOfLines;
+}
+
++ (void)setDestructiveButtonLineBreakMode:(NSLineBreakMode)destructiveButtonLineBreakMode
+{
+    kLGAlertViewDestructiveButtonLineBreakMode = destructiveButtonLineBreakMode;
+}
+
++ (NSLineBreakMode)destructiveButtonLineBreakMode
+{
+    return kLGAlertViewDestructiveButtonLineBreakMode;
+}
+
++ (void)setDestructiveButtonMinimumScaleFactor:(CGFloat)destructiveButtonMinimumScaleFactor
+{
+    kLGAlertViewDestructiveButtonMinimumScaleFactor = destructiveButtonMinimumScaleFactor;
+}
+
++ (CGFloat)destructiveButtonMinimumScaleFactor
+{
+    return kLGAlertViewDestructiveButtonMinimumScaleFactor;
+}
+
++ (void)setDestructiveButtonAdjustsFontSizeToFitWidth:(BOOL)destructiveButtonAdjustsFontSizeToFitWidth
+{
+    kLGAlertViewDestructiveButtonAdjustsFontSizeToFitWidth = [NSNumber numberWithBool:destructiveButtonAdjustsFontSizeToFitWidth];
+}
+
++ (BOOL)destructiveButtonAdjustsFontSizeToFitWidth
+{
+    return (kLGAlertViewDestructiveButtonAdjustsFontSizeToFitWidth ? kLGAlertViewDestructiveButtonAdjustsFontSizeToFitWidth.boolValue : YES);
+}
+
+#pragma mark -
+
++ (void)setActivityIndicatorViewStyle:(UIActivityIndicatorViewStyle)activityIndicatorViewStyle
+{
+    kLGAlertViewActivityIndicatorViewStyle = activityIndicatorViewStyle;
+}
+
++ (UIActivityIndicatorViewStyle)activityIndicatorViewStyle
+{
+    return kLGAlertViewActivityIndicatorViewStyle;
+}
+
++ (void)setActivityIndicatorViewColor:(UIColor *)activityIndicatorViewColor
+{
+    kLGAlertViewActivityIndicatorViewColor = activityIndicatorViewColor;
+}
+
++ (UIColor *)activityIndicatorViewColor
+{
+    return kLGAlertViewActivityIndicatorViewColor;
+}
+
+#pragma mark -
+
++ (void)setProgressViewProgressTintColor:(UIColor *)progressViewProgressTintColor
+{
+    kLGAlertViewProgressViewProgressTintColor = progressViewProgressTintColor;
+}
+
++ (UIColor *)progressViewProgressTintColor
+{
+    return kLGAlertViewProgressViewProgressTintColor;
+}
+
++ (void)setProgressViewTrackTintColor:(UIColor *)progressViewTrackTintColor
+{
+    kLGAlertViewProgressViewTrackTintColor = progressViewTrackTintColor;
+}
+
++ (UIColor *)progressViewTrackTintColor
+{
+    return kLGAlertViewProgressViewTrackTintColor;
+}
+
++ (void)setProgressViewProgressImage:(UIImage *)progressViewProgressImage
+{
+    kLGAlertViewProgressViewProgressImage = progressViewProgressImage;
+}
+
++ (UIImage *)progressViewProgressImage
+{
+    return kLGAlertViewProgressViewProgressImage;
+}
+
++ (void)setProgressViewTrackImage:(UIImage *)progressViewTrackImage
+{
+    kLGAlertViewProgressViewTrackImage = progressViewTrackImage;
+}
+
++ (UIImage *)progressViewTrackImage
+{
+    return kLGAlertViewProgressViewTrackImage;
+}
+
++ (void)setProgressLabelTextColor:(UIColor *)progressLabelTextColor
+{
+    kLGAlertViewProgressLabelTextColor = progressLabelTextColor;
+}
+
++ (UIColor *)progressLabelTextColor
+{
+    return kLGAlertViewProgressLabelTextColor;
+}
+
++ (void)setProgressLabelTextAlignment:(NSTextAlignment)progressLabelTextAlignment
+{
+    kLGAlertViewProgressLabelTextAlignment = progressLabelTextAlignment;
+}
+
++ (NSTextAlignment)progressLabelTextAlignment
+{
+    return kLGAlertViewProgressLabelTextAlignment;
+}
+
++ (void)setProgressLabelFont:(UIFont *)progressLabelFont
+{
+    kLGAlertViewProgressLabelFont = progressLabelFont;
+}
+
++ (UIFont *)progressLabelFont
+{
+    return kLGAlertViewProgressLabelFont;
+}
+
+#pragma mark -
+
++ (void)setSeparatorsColor:(UIColor *)separatorsColor
+{
+    kLGAlertViewSeparatorsColor = separatorsColor;
+}
+
++ (UIColor *)separatorsColor
+{
+    return kLGAlertViewSeparatorsColor;
+}
+
++ (void)setIndicatorStyle:(UIScrollViewIndicatorStyle)indicatorStyle
+{
+    kLGAlertViewIndicatorStyle = indicatorStyle;
+}
+
++ (UIScrollViewIndicatorStyle)indicatorStyle
+{
+    return kLGAlertViewIndicatorStyle;
+}
+
++ (void)setShowsVerticalScrollIndicator:(BOOL)showsVerticalScrollIndicator
+{
+    kLGAlertViewShowsVerticalScrollIndicator = [NSNumber numberWithBool:showsVerticalScrollIndicator];
+}
+
++ (BOOL)showsVerticalScrollIndicator
+{
+    return (kLGAlertViewShowsVerticalScrollIndicator ? kLGAlertViewShowsVerticalScrollIndicator.boolValue : NO);
+}
+
++ (void)setPadShowsActionSheetFromBottom:(BOOL)padShowActionSheetFromBottom
+{
+    kLGAlertViewPadShowActionSheetFromBottom = [NSNumber numberWithBool:padShowActionSheetFromBottom];
+}
+
++ (BOOL)padShowsActionSheetFromBottom
+{
+    return (kLGAlertViewPadShowActionSheetFromBottom ? kLGAlertViewPadShowActionSheetFromBottom.boolValue : NO);
+}
+
++ (void)setOneRowOneButton:(BOOL)oneRowOneButton
+{
+    kLGAlertViewOneRowOneButton = [NSNumber numberWithBool:oneRowOneButton];
+}
+
++ (BOOL)oneRowOneButton
+{
+    return (kLGAlertViewOneRowOneButton ? kLGAlertViewOneRowOneButton.boolValue : NO);
+}
+
+#pragma mark -
+
++ (NSArray *)alertViewsArray
+{
+    if (!kLGAlertViewArray)
+        kLGAlertViewArray = [NSMutableArray new];
+    
+    return kLGAlertViewArray;
 }
 
 #pragma mark - Support
