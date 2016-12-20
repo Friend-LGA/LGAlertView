@@ -31,17 +31,17 @@
 
 @interface LGAlertViewButtonProperties : NSObject
 
-@property (strong, nonatomic) UIColor         *titleColor;
-@property (strong, nonatomic) UIColor         *titleColorHighlighted;
-@property (strong, nonatomic) UIColor         *titleColorDisabled;
+@property (strong, nonatomic, nullable) UIColor *titleColor;
+@property (strong, nonatomic, nullable) UIColor *titleColorHighlighted;
+@property (strong, nonatomic, nullable) UIColor *titleColorDisabled;
 @property (assign, nonatomic) NSTextAlignment textAlignment;
-@property (strong, nonatomic) UIFont          *font;
-@property (strong, nonatomic) UIColor         *backgroundColor;
-@property (strong, nonatomic) UIColor         *backgroundColorHighlighted;
-@property (strong, nonatomic) UIColor         *backgroundColorDisabled;
-@property (assign, nonatomic) NSUInteger      numberOfLines;
+@property (strong, nonatomic, nullable) UIFont *font;
+@property (strong, nonatomic, nullable) UIColor *backgroundColor;
+@property (strong, nonatomic, nullable) UIColor *backgroundColorHighlighted;
+@property (strong, nonatomic, nullable) UIColor *backgroundColorDisabled;
+@property (assign, nonatomic) NSUInteger numberOfLines;
 @property (assign, nonatomic) NSLineBreakMode lineBreakMode;
-@property (assign, nonatomic) CGFloat         minimumScaleFactor;
+@property (assign, nonatomic) CGFloat minimumScaleFactor;
 @property (assign, nonatomic, getter=isAdjustsFontSizeToFitWidth) BOOL adjustsFontSizeToFitWidth;
 @property (assign, nonatomic, getter=isEnabled) BOOL enabled;
 

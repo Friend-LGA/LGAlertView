@@ -29,111 +29,99 @@
 
 #import "LGAlertViewCell.h"
 
-#define kLGAlertViewSeparatorHeight ([UIScreen mainScreen].scale == 1.f || [UIDevice currentDevice].systemVersion.floatValue < 7.0 ? 1.f : 0.5)
-
 @interface LGAlertViewCell ()
 
-@property (strong, nonatomic) UILabel   *titleLabel;
-@property (strong, nonatomic) UIView    *separatorView;
+@property (strong, nonatomic) UILabel *titleLabel;
+@property (strong, nonatomic) UIView *separatorView;
 
 @end
 
 @implementation LGAlertViewCell
 
-- (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
-{
+- (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
-    if (self)
-    {
+    if (self) {
         self.selectionStyle = UITableViewCellSelectionStyleNone;
 
-        _titleLabel = [UILabel new];
-        _titleLabel.backgroundColor = [UIColor clearColor];
-        [self addSubview:_titleLabel];
+        self.titleLabel = [UILabel new];
+        self.titleLabel.backgroundColor = [UIColor clearColor];
+        [self addSubview:self.titleLabel];
 
-        _separatorView = [UIView new];
-        [self addSubview:_separatorView];
+        self.separatorView = [UIView new];
+        [self addSubview:self.separatorView];
 
-        _enabled = YES;
+        self.enabled = YES;
     }
     return self;
 }
 
-- (void)layoutSubviews
-{
+- (void)layoutSubviews {
     [super layoutSubviews];
 
-    _titleLabel.text = _title;
-    _titleLabel.textAlignment = _textAlignment;
-    _titleLabel.font = _font;
-    _titleLabel.numberOfLines = _numberOfLines;
-    _titleLabel.lineBreakMode = _lineBreakMode;
-    _titleLabel.adjustsFontSizeToFitWidth = _adjustsFontSizeToFitWidth;
-    _titleLabel.minimumScaleFactor = _minimumScaleFactor;
+    self.titleLabel.text = self.title;
+    self.titleLabel.textAlignment = self.textAlignment;
+    self.titleLabel.font = self.font;
+    self.titleLabel.numberOfLines = self.numberOfLines;
+    self.titleLabel.lineBreakMode = self.lineBreakMode;
+    self.titleLabel.adjustsFontSizeToFitWidth = self.adjustsFontSizeToFitWidth;
+    self.titleLabel.minimumScaleFactor = self.minimumScaleFactor;
 
-    CGRect titleLabelFrame = CGRectMake(10.f, 0.f, self.frame.size.width-20.f, self.frame.size.height);
+    CGRect titleLabelFrame = CGRectMake(10.0, 0.0, self.frame.size.width-20.0, self.frame.size.height);
 
-    if ([UIScreen mainScreen].scale == 1.f)
+    if ([UIScreen mainScreen].scale == 1.0) {
         titleLabelFrame = CGRectIntegral(titleLabelFrame);
-
-    _titleLabel.frame = titleLabelFrame;
-
-    if (self.isSeparatorVisible)
-    {
-        _separatorView.hidden = NO;
-
-        _separatorView.backgroundColor = _separatorColor_;
-
-        _separatorView.frame = CGRectMake(0.f, self.frame.size.height-kLGAlertViewSeparatorHeight, self.frame.size.width, kLGAlertViewSeparatorHeight);
     }
-    else _separatorView.hidden = YES;
+
+    self.titleLabel.frame = titleLabelFrame;
+
+    if (self.isSeparatorVisible) {
+        CGFloat separatorHeight = [UIScreen mainScreen].scale == 1.0 ? 1.0 : 0.5;
+
+        self.separatorView.hidden = NO;
+        self.separatorView.backgroundColor = self.separatorColor_;
+        self.separatorView.frame = CGRectMake(0.0, self.frame.size.height-separatorHeight, self.frame.size.width, separatorHeight);
+    }
+    else {
+        self.separatorView.hidden = YES;
+    }
 }
 
-- (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated
-{
+- (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated {
     [super setHighlighted:highlighted animated:animated];
 
-    if (highlighted)
-    {
-        _titleLabel.textColor = _titleColorHighlighted;
-        self.backgroundColor = _backgroundColorHighlighted;
+    if (highlighted) {
+        self.titleLabel.textColor = self.titleColorHighlighted;
+        self.backgroundColor = self.backgroundColorHighlighted;
     }
-    else
-    {
-        [self setEnabled:_enabled];
+    else {
+        [self setEnabled:self.enabled];
     }
 }
 
-- (void)setSelected:(BOOL)selected animated:(BOOL)animated
-{
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated {
     [super setSelected:selected animated:animated];
 
-    if (selected)
-    {
-        _titleLabel.textColor = _titleColorHighlighted;
-        self.backgroundColor = _backgroundColorHighlighted;
+    if (selected) {
+        self.titleLabel.textColor = self.titleColorHighlighted;
+        self.backgroundColor = self.backgroundColorHighlighted;
     }
-    else
-    {
-        [self setEnabled:_enabled];
+    else {
+        [self setEnabled:self.enabled];
     }
 }
 
-- (void)setEnabled:(BOOL)enabled
-{
+- (void)setEnabled:(BOOL)enabled {
     _enabled = enabled;
 
     self.userInteractionEnabled = enabled;
 
-    if (enabled)
-    {
-        _titleLabel.textColor = _titleColor;
-        self.backgroundColor = _backgroundColorNormal;
+    if (enabled) {
+        self.titleLabel.textColor = self.titleColor;
+        self.backgroundColor = self.backgroundColorNormal;
     }
-    else
-    {
-        _titleLabel.textColor = _titleColorDisabled;
-        self.backgroundColor = _backgroundColorDisabled;
+    else {
+        self.titleLabel.textColor = self.titleColorDisabled;
+        self.backgroundColor = self.backgroundColorDisabled;
     }
 }
 

@@ -27,4 +27,4 @@
 //  SOFTWARE.
 //
 
-static CGFloat const kLGAlertViewPaddingW = 10.f;
+static CGFloat const kLGAlertViewPaddingW = 10.0;

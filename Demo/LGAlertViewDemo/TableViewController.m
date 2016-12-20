@@ -2,9 +2,6 @@
 //  TableViewController.m
 //  LGAlertViewDemo
 //
-//  Created by Grigory Lutkov on 18.02.15.
-//  Copyright (c) 2015 Grigory Lutkov. All rights reserved.
-//
 
 #import "TableViewController.h"
 #import "TableViewControllerAlert.h"
@@ -20,17 +17,15 @@
 
 @implementation TableViewController
 
-- (id)init
-{
+- (id)init {
     self = [super initWithStyle:UITableViewStylePlain];
-    if (self)
-    {
+    if (self) {
         self.title = @"LGAlertView";
 
-        _titlesArray = @[@"AlertView Style",
-                         @"ActionSheet Style",
-                         @"Custom AlertView Styles",
-                         @"Custom ActionSheet Styles"];
+        self.titlesArray = @[@"AlertView Style",
+                             @"ActionSheet Style",
+                             @"Custom AlertView Styles",
+                             @"Custom ActionSheet Styles"];
 
         [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"cell"];
 
@@ -41,57 +36,48 @@
 
 #pragma mark - UITableView DataSource
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
-{
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return 1;
 }
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
-{
-    return _titlesArray.count;
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    return self.titlesArray.count;
 }
 
 #pragma mark - UITableView Delegate
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"cell"];
 
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-    
-    cell.textLabel.font = [UIFont systemFontOfSize:16.f];
-    cell.textLabel.text = _titlesArray[indexPath.row];
+    cell.textLabel.font = [UIFont systemFontOfSize:16.0];
+    cell.textLabel.text = self.titlesArray[indexPath.row];
 
     return cell;
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    return 44.f;
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    return 44.0;
 }
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    if (indexPath.row == 0)
-    {
-        TableViewControllerAlert *tableViewController = [TableViewControllerAlert new];
-        [self.navigationController pushViewController:tableViewController animated:YES];
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    UITableViewController *tableViewController;
+
+    switch (indexPath.row) {
+        case 0:
+            tableViewController = [TableViewControllerAlert new];
+            break;
+        case 1:
+            tableViewController = [TableViewControllerActionSheet new];
+            break;
+        case 2:
+            tableViewController = [TableViewControllerCustomAlert new];
+            break;
+        case 3:
+            tableViewController = [TableViewControllerCustomActionSheet new];
     }
-    else if (indexPath.row == 1)
-    {
-        TableViewControllerActionSheet *tableViewController = [TableViewControllerActionSheet new];
-        [self.navigationController pushViewController:tableViewController animated:YES];
-    }
-    else if (indexPath.row == 2)
-    {
-        TableViewControllerCustomAlert *tableViewController = [TableViewControllerCustomAlert new];
-        [self.navigationController pushViewController:tableViewController animated:YES];
-    }
-    else if (indexPath.row == 3)
-    {
-        TableViewControllerCustomActionSheet *tableViewController = [TableViewControllerCustomActionSheet new];
-        [self.navigationController pushViewController:tableViewController animated:YES];
-    }
+
+    [self.navigationController pushViewController:tableViewController animated:YES];
 }
 
 @end

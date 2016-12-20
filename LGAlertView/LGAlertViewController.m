@@ -1,9 +1,30 @@
 //
-//  LGAlertViewController.m
-//  Pods
+//  LGAlertViewController.h
+//  LGAlertView
 //
-//  Created by Grigory Lutkov on 01.11.15.
 //
+//  The MIT License (MIT)
+//
+//  Copyright (c) 2015 Grigory Lutkov <Friend.LGA@gmail.com>
+//  (https://github.com/Friend-LGA/LGAlertView)
+//
+//  Permission is hereby granted, free of charge, to any person obtaining a copy
+//  of this software and associated documentation files (the "Software"), to deal
+//  in the Software without restriction, including without limitation the rights
+//  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+//  copies of the Software, and to permit persons to whom the Software is
+//  furnished to do so, subject to the following conditions:
+//
+//  The above copyright notice and this permission notice shall be included in all
+//  copies or substantial portions of the Software.
+//
+//  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+//  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+//  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+//  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+//  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+//  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+//  SOFTWARE.
 //
 
 #import "LGAlertViewController.h"
@@ -18,17 +39,10 @@
 
 @implementation LGAlertViewController
 
-- (instancetype)initWithAlertView:(LGAlertView *)alertView view:(UIView *)view
-{
+- (nonnull instancetype)initWithAlertView:(nonnull LGAlertView *)alertView view:(nonnull UIView *)view {
     self = [super init];
-    if (self)
-    {
-#if __IPHONE_OS_VERSION_MIN_REQUIRED < __IPHONE_7_0
-        if ([UIDevice currentDevice].systemVersion.floatValue < 7.0)
-            self.wantsFullScreenLayout = YES;
-#endif
-
-        _alertView = alertView;
+    if (self) {
+        self.alertView = alertView;
 
         self.view.backgroundColor = [UIColor clearColor];
         [self.view addSubview:view];
@@ -36,59 +50,29 @@
     return self;
 }
 
-- (BOOL)shouldAutorotate
-{
+- (BOOL)shouldAutorotate {
     UIWindow *window = [UIApplication sharedApplication].delegate.window;
 
     return window.currentViewController.shouldAutorotate;
 }
 
-- (UIInterfaceOrientationMask)supportedInterfaceOrientations
-{
+- (UIInterfaceOrientationMask)supportedInterfaceOrientations {
     UIWindow *window = [UIApplication sharedApplication].delegate.window;
 
     return window.currentViewController.supportedInterfaceOrientations;
 }
 
-#if __IPHONE_OS_VERSION_MIN_REQUIRED >= __IPHONE_6_0
-
-// iOS <= 7
-
-- (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
-{
-    [super willAnimateRotationToInterfaceOrientation:toInterfaceOrientation duration:duration];
-
-    CGSize size = self.view.frame.size;
-
-    if (UIInterfaceOrientationIsPortrait(toInterfaceOrientation))
-        size = CGSizeMake(MIN(size.width, size.height), MAX(size.width, size.height));
-    else
-        size = CGSizeMake(MAX(size.width, size.height), MIN(size.width, size.height));
-
-    [_alertView layoutInvalidateWithSize:size];
-}
-
-#endif
-
-#if __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_8_0
-
-// iOS >= 8
-
-- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator
-{
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator {
     [super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
 
-    [coordinator animateAlongsideTransition:^(id<UIViewControllerTransitionCoordinatorContext> context)
-     {
-         [_alertView layoutInvalidateWithSize:size];
+    [coordinator
+     animateAlongsideTransition:^(id<UIViewControllerTransitionCoordinatorContext> context) {
+         [self.alertView layoutValidateWithSize:size];
      }
-                                 completion:nil];
+     completion:nil];
 }
 
-#endif
-
-- (UIStatusBarStyle)preferredStatusBarStyle
-{
+- (UIStatusBarStyle)preferredStatusBarStyle {
     return [UIApplication sharedApplication].statusBarStyle;
 }
 
