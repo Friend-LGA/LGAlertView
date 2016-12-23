@@ -8,6 +8,7 @@
 #import "TableViewControllerActionSheet.h"
 #import "TableViewControllerCustomAlert.h"
 #import "TableViewControllerCustomActionSheet.h"
+#import "LGAlertView.h"
 
 @interface TableViewController ()
 
@@ -75,6 +76,7 @@
             break;
         case 3:
             tableViewController = [TableViewControllerCustomActionSheet new];
+            break;
     }
 
     [self.navigationController pushViewController:tableViewController animated:YES];

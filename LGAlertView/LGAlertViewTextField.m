@@ -5,7 +5,7 @@
 //
 //  The MIT License (MIT)
 //
-//  Copyright (c) 2015 Grigory Lutkov <Friend.LGA@gmail.com>
+//  Copyright © 2015 Grigory Lutkov <Friend.LGA@gmail.com>
 //  (https://github.com/Friend-LGA/LGAlertView)
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -48,12 +48,12 @@
     bounds.size.width -= kLGAlertViewPaddingW*2;
 
     if (self.leftView) {
-        bounds.origin.x += (self.leftView.frame.size.width+kLGAlertViewPaddingW);
-        bounds.size.width -= (self.leftView.frame.size.width+kLGAlertViewPaddingW);
+        bounds.origin.x += (CGRectGetWidth(self.leftView.frame)+kLGAlertViewPaddingW);
+        bounds.size.width -= (CGRectGetWidth(self.leftView.frame)+kLGAlertViewPaddingW);
     }
 
     if (self.rightView) {
-        bounds.size.width -= (self.rightView.frame.size.width+kLGAlertViewPaddingW);
+        bounds.size.width -= (CGRectGetWidth(self.rightView.frame)+kLGAlertViewPaddingW);
     }
     else if (self.clearButtonMode == UITextFieldViewModeAlways) {
         bounds.size.width -= 20.0;
@@ -67,12 +67,12 @@
     bounds.size.width -= kLGAlertViewPaddingW*2;
 
     if (self.leftView) {
-        bounds.origin.x += (self.leftView.frame.size.width+kLGAlertViewPaddingW);
-        bounds.size.width -= (self.leftView.frame.size.width+kLGAlertViewPaddingW);
+        bounds.origin.x += (CGRectGetWidth(self.leftView.frame)+kLGAlertViewPaddingW);
+        bounds.size.width -= (CGRectGetWidth(self.leftView.frame)+kLGAlertViewPaddingW);
     }
 
     if (self.rightView) {
-        bounds.size.width -= (self.rightView.frame.size.width+kLGAlertViewPaddingW);
+        bounds.size.width -= (CGRectGetWidth(self.rightView.frame)+kLGAlertViewPaddingW);
     }
     else if (self.clearButtonMode == UITextFieldViewModeAlways) {
         bounds.size.width -= 20.0;

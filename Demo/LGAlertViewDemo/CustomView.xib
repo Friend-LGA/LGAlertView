@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11762" systemVersion="15G1212" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB">
+            <rect key="frame" x="0.0" y="0.0" width="200" height="200"/>
+            <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="r0w-Fb-h6d">
+                    <rect key="frame" x="0.0" y="0.0" width="200" height="200"/>
+                    <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Custom View" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="u9D-3k-jA5">
+                            <rect key="frame" x="43" y="73.5" width="114.5" height="21"/>
+                            <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
+                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="200 x 200" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bVf-Sj-RzL">
+                            <rect key="frame" x="56" y="105.5" width="88.5" height="21"/>
+                            <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
+                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                    </subviews>
+                    <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstItem="u9D-3k-jA5" firstAttribute="centerX" secondItem="r0w-Fb-h6d" secondAttribute="centerX" id="IBw-8D-MPc"/>
+                        <constraint firstItem="bVf-Sj-RzL" firstAttribute="centerX" secondItem="r0w-Fb-h6d" secondAttribute="centerX" id="P00-e2-iyZ"/>
+                        <constraint firstAttribute="height" constant="200" id="alS-PY-53J"/>
+                        <constraint firstItem="bVf-Sj-RzL" firstAttribute="centerY" secondItem="r0w-Fb-h6d" secondAttribute="centerY" constant="16" id="fUE-qQ-DAI"/>
+                        <constraint firstItem="u9D-3k-jA5" firstAttribute="centerY" secondItem="r0w-Fb-h6d" secondAttribute="centerY" constant="-16" id="jwL-pd-zQs"/>
+                        <constraint firstAttribute="width" constant="200" id="wK2-EQ-uC7"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="r0w-Fb-h6d" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="Gb1-Ag-xUk"/>
+                <constraint firstItem="r0w-Fb-h6d" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="y87-Gb-1f0"/>
+            </constraints>
+            <nil key="simulatedStatusBarMetrics"/>
+            <nil key="simulatedTopBarMetrics"/>
+            <nil key="simulatedBottomBarMetrics"/>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+        </view>
+    </objects>
+</document>

@@ -5,7 +5,7 @@
 //
 //  The MIT License (MIT)
 //
-//  Copyright (c) 2015 Grigory Lutkov <Friend.LGA@gmail.com>
+//  Copyright © 2015 Grigory Lutkov <Friend.LGA@gmail.com>
 //  (https://github.com/Friend-LGA/LGAlertView)
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -66,7 +66,7 @@
     self.titleLabel.adjustsFontSizeToFitWidth = self.adjustsFontSizeToFitWidth;
     self.titleLabel.minimumScaleFactor = self.minimumScaleFactor;
 
-    CGRect titleLabelFrame = CGRectMake(10.0, 0.0, self.frame.size.width-20.0, self.frame.size.height);
+    CGRect titleLabelFrame = CGRectMake(10.0, 0.0, CGRectGetWidth(self.frame)-20.0, CGRectGetHeight(self.frame));
 
     if ([UIScreen mainScreen].scale == 1.0) {
         titleLabelFrame = CGRectIntegral(titleLabelFrame);
@@ -79,7 +79,7 @@
 
         self.separatorView.hidden = NO;
         self.separatorView.backgroundColor = self.separatorColor_;
-        self.separatorView.frame = CGRectMake(0.0, self.frame.size.height-separatorHeight, self.frame.size.width, separatorHeight);
+        self.separatorView.frame = CGRectMake(0.0, CGRectGetHeight(self.frame)-separatorHeight, CGRectGetWidth(self.frame), separatorHeight);
     }
     else {
         self.separatorView.hidden = YES;

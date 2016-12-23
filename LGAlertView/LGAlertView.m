@@ -5,7 +5,7 @@
 //
 //  The MIT License (MIT)
 //
-//  Copyright (c) 2015 Grigory Lutkov <Friend.LGA@gmail.com>
+//  Copyright © 2015 Grigory Lutkov <Friend.LGA@gmail.com>
 //  (https://github.com/Friend-LGA/LGAlertView)
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -34,15 +34,14 @@
 #import "LGAlertViewTextField.h"
 #import "LGAlertViewShared.h"
 
-#define kLGAlertViewStatusBarHeight                   ([UIApplication sharedApplication].isStatusBarHidden ? 0.0 : 20.0)
-#define kLGAlertViewSeparatorHeight                   ([UIScreen mainScreen].scale == 1.0 ? 1.0 : 0.5)
-#define kLGAlertViewButtonTitleMarginH                8.0
-#define kLGAlertViewInnerMarginH                      (self.style == LGAlertViewStyleAlert ? 16.0 : 12.0)
+#define kLGAlertViewStatusBarHeight ([UIApplication sharedApplication].isStatusBarHidden ? 0.0 : CGRectGetHeight([UIApplication sharedApplication].statusBarFrame))
+#define kLGAlertViewSeparatorHeight ([UIScreen mainScreen].scale == 1.0 ? 1.0 : 0.5)
+#define kLGAlertViewButtonTitleMarginH 8.0
+#define kLGAlertViewInnerMarginH (self.style == LGAlertViewStyleAlert ? 16.0 : 12.0)
+#define kLGAlertViewWindowPrevious(index) (index > 0 && index < kLGAlertViewWindowsArray.count ? [kLGAlertViewWindowsArray objectAtIndex:(index-1)] : nil)
+#define kLGAlertViewWindowNext(index) (kLGAlertViewWindowsArray.count > index+1 ? [kLGAlertViewWindowsArray objectAtIndex:(index+1)] : nil)
+#define kLGAlertViewPadAndNotForce(alertView) (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad && !alertView.isPadShowsActionSheetFromBottom)
 #define kLGAlertViewIsCancelButtonSeparate(alertView) (alertView.style == LGAlertViewStyleActionSheet && alertView.cancelButtonOffsetY != NSNotFound && alertView.cancelButtonOffsetY > 0.0 && !kLGAlertViewPadAndNotForce(alertView))
-#define kLGAlertViewButtonWidthMin                    64.0
-#define kLGAlertViewWindowPrevious(index)             (index > 0 && index < kLGAlertViewWindowsArray.count ? [kLGAlertViewWindowsArray objectAtIndex:(index-1)] : nil)
-#define kLGAlertViewWindowNext(index)                 (kLGAlertViewWindowsArray.count > index+1 ? [kLGAlertViewWindowsArray objectAtIndex:(index+1)] : nil)
-#define kLGAlertViewPadAndNotForce(alertView)         (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad && !alertView.isPadShowsActionSheetFromBottom)
 
 #define kLGAlertViewPointIsNil(point) CGPointEqualToPoint(point, CGPointMake(NSNotFound, NSNotFound))
 
@@ -93,6 +92,7 @@ static NSMutableArray *kLGAlertViewArray;
 
 @property (strong, nonatomic) UILabel  *titleLabel;
 @property (strong, nonatomic) UILabel  *messageLabel;
+@property (strong, nonatomic) UIView   *innerContainerView;
 @property (strong, nonatomic) UIButton *destructiveButton;
 @property (strong, nonatomic) UIButton *cancelButton;
 @property (strong, nonatomic) UIButton *firstButton;
@@ -146,7 +146,7 @@ static NSMutableArray *kLGAlertViewArray;
 - (nonnull instancetype)initWithTitle:(nullable NSString *)title
                               message:(nullable NSString *)message
                                 style:(LGAlertViewStyle)style
-                         buttonTitles:(nullable NSArray *)buttonTitles
+                         buttonTitles:(nullable NSArray<NSString *> *)buttonTitles
                     cancelButtonTitle:(nullable NSString *)cancelButtonTitle
                destructiveButtonTitle:(nullable NSString *)destructiveButtonTitle {
     self = [super init];
@@ -167,7 +167,7 @@ static NSMutableArray *kLGAlertViewArray;
                                      message:(nullable NSString *)message
                                        style:(LGAlertViewStyle)style
                                         view:(nullable UIView *)view
-                                buttonTitles:(nullable NSArray *)buttonTitles
+                                buttonTitles:(nullable NSArray<NSString *> *)buttonTitles
                            cancelButtonTitle:(nullable NSString *)cancelButtonTitle
                       destructiveButtonTitle:(nullable NSString *)destructiveButtonTitle {
     self = [super init];
@@ -188,7 +188,7 @@ static NSMutableArray *kLGAlertViewArray;
 - (nonnull instancetype)initWithActivityIndicatorAndTitle:(nullable NSString *)title
                                                   message:(nullable NSString *)message
                                                     style:(LGAlertViewStyle)style
-                                             buttonTitles:(nullable NSArray *)buttonTitles
+                                             buttonTitles:(nullable NSArray<NSString *> *)buttonTitles
                                         cancelButtonTitle:(nullable NSString *)cancelButtonTitle
                                    destructiveButtonTitle:(nullable NSString *)destructiveButtonTitle {
     self = [super init];
@@ -211,7 +211,7 @@ static NSMutableArray *kLGAlertViewArray;
                                              message:(nullable NSString *)message
                                                style:(LGAlertViewStyle)style
                                    progressLabelText:(NSString *)progressLabelText
-                                        buttonTitles:(nullable NSArray *)buttonTitles
+                                        buttonTitles:(nullable NSArray<NSString *> *)buttonTitles
                                    cancelButtonTitle:(nullable NSString *)cancelButtonTitle
                               destructiveButtonTitle:(nullable NSString *)destructiveButtonTitle {
     self = [super init];
@@ -235,7 +235,7 @@ static NSMutableArray *kLGAlertViewArray;
                                            message:(nullable NSString *)message
                                 numberOfTextFields:(NSUInteger)numberOfTextFields
                             textFieldsSetupHandler:(LGAlertViewTextFieldsSetupHandler)textFieldsSetupHandler
-                                      buttonTitles:(nullable NSArray *)buttonTitles
+                                      buttonTitles:(nullable NSArray<NSString *> *)buttonTitles
                                  cancelButtonTitle:(nullable NSString *)cancelButtonTitle
                             destructiveButtonTitle:(nullable NSString *)destructiveButtonTitle {
     self = [super init];
@@ -283,7 +283,7 @@ static NSMutableArray *kLGAlertViewArray;
 + (nonnull instancetype)alertViewWithTitle:(nullable NSString *)title
                                    message:(nullable NSString *)message
                                      style:(LGAlertViewStyle)style
-                              buttonTitles:(nullable NSArray *)buttonTitles
+                              buttonTitles:(nullable NSArray<NSString *> *)buttonTitles
                          cancelButtonTitle:(nullable NSString *)cancelButtonTitle
                     destructiveButtonTitle:(nullable NSString *)destructiveButtonTitle {
     return [[self alloc] initWithTitle:title
@@ -298,7 +298,7 @@ static NSMutableArray *kLGAlertViewArray;
                                           message:(nullable NSString *)message
                                             style:(LGAlertViewStyle)style
                                              view:(nullable UIView *)view
-                                     buttonTitles:(nullable NSArray *)buttonTitles
+                                     buttonTitles:(nullable NSArray<NSString *> *)buttonTitles
                                 cancelButtonTitle:(nullable NSString *)cancelButtonTitle
                            destructiveButtonTitle:(nullable NSString *)destructiveButtonTitle {
     return [[self alloc] initWithViewAndTitle:title
@@ -313,7 +313,7 @@ static NSMutableArray *kLGAlertViewArray;
 + (nonnull instancetype)alertViewWithActivityIndicatorAndTitle:(nullable NSString *)title
                                                        message:(nullable NSString *)message
                                                          style:(LGAlertViewStyle)style
-                                                  buttonTitles:(nullable NSArray *)buttonTitles
+                                                  buttonTitles:(nullable NSArray<NSString *> *)buttonTitles
                                              cancelButtonTitle:(nullable NSString *)cancelButtonTitle
                                         destructiveButtonTitle:(nullable NSString *)destructiveButtonTitle {
     return [[self alloc] initWithActivityIndicatorAndTitle:title
@@ -328,7 +328,7 @@ static NSMutableArray *kLGAlertViewArray;
                                                   message:(nullable NSString *)message
                                                     style:(LGAlertViewStyle)style
                                         progressLabelText:(NSString *)progressLabelText
-                                             buttonTitles:(nullable NSArray *)buttonTitles
+                                             buttonTitles:(nullable NSArray<NSString *> *)buttonTitles
                                         cancelButtonTitle:(nullable NSString *)cancelButtonTitle
                                    destructiveButtonTitle:(nullable NSString *)destructiveButtonTitle {
     return [[self alloc] initWithProgressViewAndTitle:title
@@ -344,7 +344,7 @@ static NSMutableArray *kLGAlertViewArray;
                                                 message:(nullable NSString *)message
                                      numberOfTextFields:(NSUInteger)numberOfTextFields
                                  textFieldsSetupHandler:(LGAlertViewTextFieldsSetupHandler)textFieldsSetupHandler
-                                           buttonTitles:(nullable NSArray *)buttonTitles
+                                           buttonTitles:(nullable NSArray<NSString *> *)buttonTitles
                                       cancelButtonTitle:(nullable NSString *)cancelButtonTitle
                                  destructiveButtonTitle:(nullable NSString *)destructiveButtonTitle {
     return [[self alloc] initWithTextFieldsAndTitle:title
@@ -361,7 +361,7 @@ static NSMutableArray *kLGAlertViewArray;
 - (nonnull instancetype)initWithTitle:(nullable NSString *)title
                               message:(nullable NSString *)message
                                 style:(LGAlertViewStyle)style
-                         buttonTitles:(nullable NSArray *)buttonTitles
+                         buttonTitles:(nullable NSArray<NSString *> *)buttonTitles
                     cancelButtonTitle:(nullable NSString *)cancelButtonTitle
                destructiveButtonTitle:(nullable NSString *)destructiveButtonTitle
                         actionHandler:(LGAlertViewActionHandler)actionHandler
@@ -385,7 +385,7 @@ static NSMutableArray *kLGAlertViewArray;
                                      message:(nullable NSString *)message
                                        style:(LGAlertViewStyle)style
                                         view:(nullable UIView *)view
-                                buttonTitles:(nullable NSArray *)buttonTitles
+                                buttonTitles:(nullable NSArray<NSString *> *)buttonTitles
                            cancelButtonTitle:(nullable NSString *)cancelButtonTitle
                       destructiveButtonTitle:(nullable NSString *)destructiveButtonTitle
                                actionHandler:(LGAlertViewActionHandler)actionHandler
@@ -409,7 +409,7 @@ static NSMutableArray *kLGAlertViewArray;
 - (nonnull instancetype)initWithActivityIndicatorAndTitle:(nullable NSString *)title
                                                   message:(nullable NSString *)message
                                                     style:(LGAlertViewStyle)style
-                                             buttonTitles:(nullable NSArray *)buttonTitles
+                                             buttonTitles:(nullable NSArray<NSString *> *)buttonTitles
                                         cancelButtonTitle:(nullable NSString *)cancelButtonTitle
                                    destructiveButtonTitle:(nullable NSString *)destructiveButtonTitle
                                             actionHandler:(LGAlertViewActionHandler)actionHandler
@@ -433,7 +433,7 @@ static NSMutableArray *kLGAlertViewArray;
                                              message:(nullable NSString *)message
                                                style:(LGAlertViewStyle)style
                                    progressLabelText:(NSString *)progressLabelText
-                                        buttonTitles:(nullable NSArray *)buttonTitles
+                                        buttonTitles:(nullable NSArray<NSString *> *)buttonTitles
                                    cancelButtonTitle:(nullable NSString *)cancelButtonTitle
                               destructiveButtonTitle:(nullable NSString *)destructiveButtonTitle
                                        actionHandler:(LGAlertViewActionHandler)actionHandler
@@ -458,7 +458,7 @@ static NSMutableArray *kLGAlertViewArray;
                                            message:(nullable NSString *)message
                                 numberOfTextFields:(NSUInteger)numberOfTextFields
                             textFieldsSetupHandler:(LGAlertViewTextFieldsSetupHandler)textFieldsSetupHandler
-                                      buttonTitles:(nullable NSArray *)buttonTitles
+                                      buttonTitles:(nullable NSArray<NSString *> *)buttonTitles
                                  cancelButtonTitle:(nullable NSString *)cancelButtonTitle
                             destructiveButtonTitle:(nullable NSString *)destructiveButtonTitle
                                      actionHandler:(LGAlertViewActionHandler)actionHandler
@@ -482,7 +482,7 @@ static NSMutableArray *kLGAlertViewArray;
 + (nonnull instancetype)alertViewWithTitle:(nullable NSString *)title
                                    message:(nullable NSString *)message
                                      style:(LGAlertViewStyle)style
-                              buttonTitles:(nullable NSArray *)buttonTitles
+                              buttonTitles:(nullable NSArray<NSString *> *)buttonTitles
                          cancelButtonTitle:(nullable NSString *)cancelButtonTitle
                     destructiveButtonTitle:(nullable NSString *)destructiveButtonTitle
                              actionHandler:(LGAlertViewActionHandler)actionHandler
@@ -503,7 +503,7 @@ static NSMutableArray *kLGAlertViewArray;
                                           message:(nullable NSString *)message
                                             style:(LGAlertViewStyle)style
                                              view:(nullable UIView *)view
-                                     buttonTitles:(nullable NSArray *)buttonTitles
+                                     buttonTitles:(nullable NSArray<NSString *> *)buttonTitles
                                 cancelButtonTitle:(nullable NSString *)cancelButtonTitle
                            destructiveButtonTitle:(nullable NSString *)destructiveButtonTitle
                                     actionHandler:(LGAlertViewActionHandler)actionHandler
@@ -524,7 +524,7 @@ static NSMutableArray *kLGAlertViewArray;
 + (nonnull instancetype)alertViewWithActivityIndicatorAndTitle:(nullable NSString *)title
                                                        message:(nullable NSString *)message
                                                          style:(LGAlertViewStyle)style
-                                                  buttonTitles:(nullable NSArray *)buttonTitles
+                                                  buttonTitles:(nullable NSArray<NSString *> *)buttonTitles
                                              cancelButtonTitle:(nullable NSString *)cancelButtonTitle
                                         destructiveButtonTitle:(nullable NSString *)destructiveButtonTitle
                                                  actionHandler:(LGAlertViewActionHandler)actionHandler
@@ -545,7 +545,7 @@ static NSMutableArray *kLGAlertViewArray;
                                                   message:(nullable NSString *)message
                                                     style:(LGAlertViewStyle)style
                                         progressLabelText:(NSString *)progressLabelText
-                                             buttonTitles:(nullable NSArray *)buttonTitles
+                                             buttonTitles:(nullable NSArray<NSString *> *)buttonTitles
                                         cancelButtonTitle:(nullable NSString *)cancelButtonTitle
                                    destructiveButtonTitle:(nullable NSString *)destructiveButtonTitle
                                             actionHandler:(LGAlertViewActionHandler)actionHandler
@@ -567,7 +567,7 @@ static NSMutableArray *kLGAlertViewArray;
                                                 message:(nullable NSString *)message
                                      numberOfTextFields:(NSUInteger)numberOfTextFields
                                  textFieldsSetupHandler:(LGAlertViewTextFieldsSetupHandler)textFieldsSetupHandler
-                                           buttonTitles:(nullable NSArray *)buttonTitles
+                                           buttonTitles:(nullable NSArray<NSString *> *)buttonTitles
                                       cancelButtonTitle:(nullable NSString *)cancelButtonTitle
                                  destructiveButtonTitle:(nullable NSString *)destructiveButtonTitle
                                           actionHandler:(LGAlertViewActionHandler)actionHandler
@@ -590,7 +590,7 @@ static NSMutableArray *kLGAlertViewArray;
 - (nonnull instancetype)initWithTitle:(nullable NSString *)title
                               message:(nullable NSString *)message
                                 style:(LGAlertViewStyle)style
-                         buttonTitles:(nullable NSArray *)buttonTitles
+                         buttonTitles:(nullable NSArray<NSString *> *)buttonTitles
                     cancelButtonTitle:(nullable NSString *)cancelButtonTitle
                destructiveButtonTitle:(nullable NSString *)destructiveButtonTitle
                              delegate:(nullable id<LGAlertViewDelegate>)delegate {
@@ -610,7 +610,7 @@ static NSMutableArray *kLGAlertViewArray;
                                      message:(nullable NSString *)message
                                        style:(LGAlertViewStyle)style
                                         view:(nullable UIView *)view
-                                buttonTitles:(nullable NSArray *)buttonTitles
+                                buttonTitles:(nullable NSArray<NSString *> *)buttonTitles
                            cancelButtonTitle:(nullable NSString *)cancelButtonTitle
                       destructiveButtonTitle:(nullable NSString *)destructiveButtonTitle
                                     delegate:(nullable id<LGAlertViewDelegate>)delegate {
@@ -630,7 +630,7 @@ static NSMutableArray *kLGAlertViewArray;
 - (nonnull instancetype)initWithActivityIndicatorAndTitle:(nullable NSString *)title
                                                   message:(nullable NSString *)message
                                                     style:(LGAlertViewStyle)style
-                                             buttonTitles:(nullable NSArray *)buttonTitles
+                                             buttonTitles:(nullable NSArray<NSString *> *)buttonTitles
                                         cancelButtonTitle:(nullable NSString *)cancelButtonTitle
                                    destructiveButtonTitle:(nullable NSString *)destructiveButtonTitle
                                                  delegate:(nullable id<LGAlertViewDelegate>)delegate {
@@ -650,7 +650,7 @@ static NSMutableArray *kLGAlertViewArray;
                                              message:(nullable NSString *)message
                                                style:(LGAlertViewStyle)style
                                    progressLabelText:(NSString *)progressLabelText
-                                        buttonTitles:(nullable NSArray *)buttonTitles
+                                        buttonTitles:(nullable NSArray<NSString *> *)buttonTitles
                                    cancelButtonTitle:(nullable NSString *)cancelButtonTitle
                               destructiveButtonTitle:(nullable NSString *)destructiveButtonTitle
                                             delegate:(nullable id<LGAlertViewDelegate>)delegate {
@@ -671,7 +671,7 @@ static NSMutableArray *kLGAlertViewArray;
                                            message:(nullable NSString *)message
                                 numberOfTextFields:(NSUInteger)numberOfTextFields
                             textFieldsSetupHandler:(LGAlertViewTextFieldsSetupHandler)textFieldsSetupHandler
-                                      buttonTitles:(nullable NSArray *)buttonTitles
+                                      buttonTitles:(nullable NSArray<NSString *> *)buttonTitles
                                  cancelButtonTitle:(nullable NSString *)cancelButtonTitle
                             destructiveButtonTitle:(nullable NSString *)destructiveButtonTitle
                                           delegate:(nullable id<LGAlertViewDelegate>)delegate {
@@ -691,7 +691,7 @@ static NSMutableArray *kLGAlertViewArray;
 + (nonnull instancetype)alertViewWithTitle:(nullable NSString *)title
                                    message:(nullable NSString *)message
                                      style:(LGAlertViewStyle)style
-                              buttonTitles:(nullable NSArray *)buttonTitles
+                              buttonTitles:(nullable NSArray<NSString *> *)buttonTitles
                          cancelButtonTitle:(nullable NSString *)cancelButtonTitle
                     destructiveButtonTitle:(nullable NSString *)destructiveButtonTitle
                                   delegate:(nullable id<LGAlertViewDelegate>)delegate {
@@ -708,7 +708,7 @@ static NSMutableArray *kLGAlertViewArray;
                                           message:(nullable NSString *)message
                                             style:(LGAlertViewStyle)style
                                              view:(nullable UIView *)view
-                                     buttonTitles:(nullable NSArray *)buttonTitles
+                                     buttonTitles:(nullable NSArray<NSString *> *)buttonTitles
                                 cancelButtonTitle:(nullable NSString *)cancelButtonTitle
                            destructiveButtonTitle:(nullable NSString *)destructiveButtonTitle
                                          delegate:(nullable id<LGAlertViewDelegate>)delegate {
@@ -725,7 +725,7 @@ static NSMutableArray *kLGAlertViewArray;
 + (nonnull instancetype)alertViewWithActivityIndicatorAndTitle:(nullable NSString *)title
                                                        message:(nullable NSString *)message
                                                          style:(LGAlertViewStyle)style
-                                                  buttonTitles:(nullable NSArray *)buttonTitles
+                                                  buttonTitles:(nullable NSArray<NSString *> *)buttonTitles
                                              cancelButtonTitle:(nullable NSString *)cancelButtonTitle
                                         destructiveButtonTitle:(nullable NSString *)destructiveButtonTitle
                                                       delegate:(nullable id<LGAlertViewDelegate>)delegate {
@@ -742,7 +742,7 @@ static NSMutableArray *kLGAlertViewArray;
                                                   message:(nullable NSString *)message
                                                     style:(LGAlertViewStyle)style
                                         progressLabelText:(NSString *)progressLabelText
-                                             buttonTitles:(nullable NSArray *)buttonTitles
+                                             buttonTitles:(nullable NSArray<NSString *> *)buttonTitles
                                         cancelButtonTitle:(nullable NSString *)cancelButtonTitle
                                    destructiveButtonTitle:(nullable NSString *)destructiveButtonTitle
                                                  delegate:(nullable id<LGAlertViewDelegate>)delegate {
@@ -760,7 +760,7 @@ static NSMutableArray *kLGAlertViewArray;
                                                 message:(nullable NSString *)message
                                      numberOfTextFields:(NSUInteger)numberOfTextFields
                                  textFieldsSetupHandler:(LGAlertViewTextFieldsSetupHandler)textFieldsSetupHandler
-                                           buttonTitles:(nullable NSArray *)buttonTitles
+                                           buttonTitles:(nullable NSArray<NSString *> *)buttonTitles
                                       cancelButtonTitle:(nullable NSString *)cancelButtonTitle
                                  destructiveButtonTitle:(nullable NSString *)destructiveButtonTitle
                                                delegate:(nullable id<LGAlertViewDelegate>)delegate {
@@ -785,7 +785,7 @@ static NSMutableArray *kLGAlertViewArray;
         self.windowLevel = LGAlertViewWindowLevelAboveStatusBar;
         self.cancelOnTouch = nil;
         self.dismissOnAction = YES;
-        
+
         self.tintColor = [UIColor colorWithRed:0.0 green:0.5 blue:1.0 alpha:1.0];
         self.coverColor = [UIColor colorWithWhite:0.0 alpha:0.4];
         self.coverBlurEffect = nil;
@@ -1115,7 +1115,7 @@ static NSMutableArray *kLGAlertViewArray;
 
 - (void)keyboardFrameChanged:(NSNotification *)notification {
     if ([notification.userInfo[UIKeyboardAnimationDurationUserInfoKey] floatValue] == 0.0) {
-        self.keyboardHeight = [notification.userInfo[UIKeyboardFrameEndUserInfoKey] CGRectValue].size.height;
+        self.keyboardHeight = CGRectGetHeight([notification.userInfo[UIKeyboardFrameEndUserInfoKey] CGRectValue]);
     }
 }
 
@@ -1435,7 +1435,7 @@ static NSMutableArray *kLGAlertViewArray;
         label.adjustsFontSizeToFitWidth = self.destructiveButtonAdjustsFontSizeToFitWidth;
         label.minimumScaleFactor        = self.destructiveButtonMinimumScaleFactor;
 
-        CGSize size = [label sizeThatFits:CGSizeMake(tableView.frame.size.width-kLGAlertViewPaddingW*2, CGFLOAT_MAX)];
+        CGSize size = [label sizeThatFits:CGSizeMake(CGRectGetWidth(tableView.frame)-kLGAlertViewPaddingW*2, CGFLOAT_MAX)];
         size.height += kLGAlertViewButtonTitleMarginH*2;
 
         if (size.height < self.buttonsHeight) {
@@ -1456,7 +1456,7 @@ static NSMutableArray *kLGAlertViewArray;
         label.adjustsFontSizeToFitWidth = self.cancelButtonAdjustsFontSizeToFitWidth;
         label.minimumScaleFactor        = self.cancelButtonMinimumScaleFactor;
 
-        CGSize size = [label sizeThatFits:CGSizeMake(tableView.frame.size.width-kLGAlertViewPaddingW*2, CGFLOAT_MAX)];
+        CGSize size = [label sizeThatFits:CGSizeMake(CGRectGetWidth(tableView.frame)-kLGAlertViewPaddingW*2, CGFLOAT_MAX)];
         size.height += kLGAlertViewButtonTitleMarginH*2;
 
         if (size.height < self.buttonsHeight) {
@@ -1477,7 +1477,7 @@ static NSMutableArray *kLGAlertViewArray;
         label.adjustsFontSizeToFitWidth = self.buttonsAdjustsFontSizeToFitWidth;
         label.minimumScaleFactor        = self.buttonsMinimumScaleFactor;
 
-        CGSize size = [label sizeThatFits:CGSizeMake(tableView.frame.size.width-kLGAlertViewPaddingW*2, CGFLOAT_MAX)];
+        CGSize size = [label sizeThatFits:CGSizeMake(CGRectGetWidth(tableView.frame)-kLGAlertViewPaddingW*2, CGFLOAT_MAX)];
         size.height += kLGAlertViewButtonTitleMarginH*2;
 
         if (size.height < self.buttonsHeight) {
@@ -1574,15 +1574,7 @@ static NSMutableArray *kLGAlertViewArray;
 
     // -----
 
-    if (self.willShowHandler) {
-        self.willShowHandler(self);
-    }
-
-    if (self.delegate && [self.delegate respondsToSelector:@selector(alertViewWillShow:)]) {
-        [self.delegate alertViewWillShow:self];
-    }
-
-    [[NSNotificationCenter defaultCenter] postNotificationName:LGAlertViewWillShowNotification object:self userInfo:nil];
+    [self willShowCallback];
 
     // -----
 
@@ -1657,15 +1649,7 @@ static NSMutableArray *kLGAlertViewArray;
 
     // -----
 
-    if (self.didShowHandler) {
-        self.didShowHandler(self);
-    }
-
-    if (self.delegate && [self.delegate respondsToSelector:@selector(alertViewDidShow:)]) {
-        [self.delegate alertViewDidShow:self];
-    }
-
-    [[NSNotificationCenter defaultCenter] postNotificationName:LGAlertViewDidShowNotification object:self userInfo:nil];
+    [self didShowCallback];
 
     // -----
 
@@ -1687,15 +1671,7 @@ static NSMutableArray *kLGAlertViewArray;
 
     // -----
 
-    if (self.willDismissHandler) {
-        self.willDismissHandler(self);
-    }
-
-    if (self.delegate && [self.delegate respondsToSelector:@selector(alertViewWillDismiss:)]) {
-        [self.delegate alertViewWillDismiss:self];
-    }
-
-    [[NSNotificationCenter defaultCenter] postNotificationName:LGAlertViewWillDismissNotification object:self userInfo:nil];
+    [self willDismissCallback];
 
     // -----
 
@@ -1765,15 +1741,7 @@ static NSMutableArray *kLGAlertViewArray;
 
     // -----
 
-    if (self.didDismissHandler) {
-        self.didDismissHandler(self);
-    }
-
-    if (self.delegate && [self.delegate respondsToSelector:@selector(alertViewDidDismiss:)]) {
-        [self.delegate alertViewDidDismiss:self];
-    }
-
-    [[NSNotificationCenter defaultCenter] postNotificationName:LGAlertViewDidDismissNotification object:self userInfo:nil];
+    [self didDismissCallback];
 
     // -----
 
@@ -1978,7 +1946,7 @@ static NSMutableArray *kLGAlertViewArray;
             self.titleLabel.frame = titleLabelFrame;
             [self.scrollView addSubview:self.titleLabel];
 
-            offsetY = self.titleLabel.frame.origin.y+self.titleLabel.frame.size.height;
+            offsetY = CGRectGetMinY(self.titleLabel.frame)+CGRectGetHeight(self.titleLabel.frame);
         }
 
         if (self.message.length) {
@@ -2008,20 +1976,38 @@ static NSMutableArray *kLGAlertViewArray;
             self.messageLabel.frame = messageLabelFrame;
             [self.scrollView addSubview:self.messageLabel];
 
-            offsetY = self.messageLabel.frame.origin.y+self.messageLabel.frame.size.height;
+            offsetY = CGRectGetMinY(self.messageLabel.frame)+CGRectGetHeight(self.messageLabel.frame);
         }
 
         if (self.innerView) {
-            CGRect innerViewFrame = CGRectMake(width/2-self.innerView.frame.size.width/2, offsetY+kLGAlertViewInnerMarginH, self.innerView.frame.size.width, self.innerView.frame.size.height);
+            self.innerContainerView = [UIView new];
+            self.innerContainerView.backgroundColor = UIColor.clearColor;
+
+            CGRect innerContainerViewFrame = CGRectMake(0.0,
+                                                        offsetY+kLGAlertViewInnerMarginH,
+                                                        width,
+                                                        CGRectGetHeight(self.innerView.frame));
+
+            if ([UIScreen mainScreen].scale == 1.0) {
+                innerContainerViewFrame = CGRectIntegral(innerContainerViewFrame);
+            }
+
+            self.innerContainerView.frame = innerContainerViewFrame;
+            [self.scrollView addSubview:self.innerContainerView];
+
+            CGRect innerViewFrame = CGRectMake(width/2-CGRectGetWidth(self.innerView.frame)/2,
+                                               0.0,
+                                               CGRectGetWidth(self.innerView.frame),
+                                               CGRectGetHeight(self.innerView.frame));
 
             if ([UIScreen mainScreen].scale == 1.0) {
                 innerViewFrame = CGRectIntegral(innerViewFrame);
             }
 
             self.innerView.frame = innerViewFrame;
-            [self.scrollView addSubview:self.innerView];
+            [self.innerContainerView addSubview:self.innerView];
 
-            offsetY = self.innerView.frame.origin.y+self.innerView.frame.size.height;
+            offsetY = CGRectGetMinY(self.innerContainerView.frame)+CGRectGetHeight(self.innerContainerView.frame);
         }
         else if (self.type == LGAlertViewTypeActivityIndicator) {
             self.activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:self.activityIndicatorViewStyle];
@@ -2029,10 +2015,10 @@ static NSMutableArray *kLGAlertViewArray;
             self.activityIndicator.backgroundColor = [UIColor clearColor];
             [self.activityIndicator startAnimating];
 
-            CGRect activityIndicatorFrame = CGRectMake(width/2-self.activityIndicator.frame.size.width/2,
+            CGRect activityIndicatorFrame = CGRectMake(width/2-CGRectGetWidth(self.activityIndicator.frame)/2,
                                                        offsetY+kLGAlertViewInnerMarginH,
-                                                       self.activityIndicator.frame.size.width,
-                                                       self.activityIndicator.frame.size.height);
+                                                       CGRectGetWidth(self.activityIndicator.frame),
+                                                       CGRectGetHeight(self.activityIndicator.frame));
 
             if ([UIScreen mainScreen].scale == 1.0) {
                 activityIndicatorFrame = CGRectIntegral(activityIndicatorFrame);
@@ -2041,7 +2027,7 @@ static NSMutableArray *kLGAlertViewArray;
             self.activityIndicator.frame = activityIndicatorFrame;
             [self.scrollView addSubview:self.activityIndicator];
 
-            offsetY = self.activityIndicator.frame.origin.y+self.activityIndicator.frame.size.height;
+            offsetY = CGRectGetMinY(self.activityIndicator.frame)+CGRectGetHeight(self.activityIndicator.frame);
         }
         else if (self.type == LGAlertViewTypeProgressView) {
             self.progressView = [[UIProgressView alloc] initWithProgressViewStyle:UIProgressViewStyleDefault];
@@ -2060,7 +2046,7 @@ static NSMutableArray *kLGAlertViewArray;
             CGRect progressViewFrame = CGRectMake(kLGAlertViewPaddingW,
                                                   offsetY+kLGAlertViewInnerMarginH,
                                                   width-kLGAlertViewPaddingW*2,
-                                                  self.progressView.frame.size.height);
+                                                  CGRectGetHeight(self.progressView.frame));
 
             if ([UIScreen mainScreen].scale == 1.0) {
                 progressViewFrame = CGRectIntegral(progressViewFrame);
@@ -2069,7 +2055,7 @@ static NSMutableArray *kLGAlertViewArray;
             self.progressView.frame = progressViewFrame;
             [self.scrollView addSubview:self.progressView];
 
-            offsetY = self.progressView.frame.origin.y+self.progressView.frame.size.height;
+            offsetY = CGRectGetMinY(self.progressView.frame)+CGRectGetHeight(self.progressView.frame);
 
             self.progressLabel = [UILabel new];
             self.progressLabel.text = self.progressLabelText;
@@ -2092,7 +2078,7 @@ static NSMutableArray *kLGAlertViewArray;
             self.progressLabel.frame = progressLabelFrame;
             [self.scrollView addSubview:self.progressLabel];
 
-            offsetY = self.progressLabel.frame.origin.y+self.progressLabel.frame.size.height;
+            offsetY = CGRectGetMinY(self.progressLabel.frame)+CGRectGetHeight(self.progressLabel.frame);
         }
         else if (self.type == LGAlertViewTypeTextFields) {
             for (NSUInteger i=0; i<self.textFieldsArray.count; i++) {
@@ -2111,7 +2097,7 @@ static NSMutableArray *kLGAlertViewArray;
                 separatorView.frame = separatorViewFrame;
                 [self.scrollView addSubview:separatorView];
 
-                offsetY = separatorView.frame.origin.y+separatorView.frame.size.height;
+                offsetY = CGRectGetMinY(separatorView.frame)+CGRectGetHeight(separatorView.frame);
 
                 // -----
 
@@ -2126,7 +2112,7 @@ static NSMutableArray *kLGAlertViewArray;
                 textField.frame = textFieldFrame;
                 [self.scrollView addSubview:textField];
 
-                offsetY = textField.frame.origin.y+textField.frame.size.height;
+                offsetY = CGRectGetMinY(textField.frame)+CGRectGetHeight(textField.frame);
             }
 
             offsetY -= kLGAlertViewInnerMarginH;
@@ -2175,7 +2161,7 @@ static NSMutableArray *kLGAlertViewArray;
                  (self.style == LGAlertViewStyleActionSheet && numberOfButtons == 1))) {
                     CGFloat buttonWidth = width/numberOfButtons;
 
-                    if (buttonWidth < kLGAlertViewButtonWidthMin) {
+                    if (buttonWidth < 64.0) {
                         showTable = YES;
                     }
 
@@ -2441,7 +2427,7 @@ static NSMutableArray *kLGAlertViewArray;
                             self.separatorHorizontalView.frame = separatorHorizontalViewFrame;
                             [self.scrollView addSubview:self.separatorHorizontalView];
 
-                            offsetY = self.separatorHorizontalView.frame.origin.y+self.separatorHorizontalView.frame.size.height;
+                            offsetY = CGRectGetMinY(self.separatorHorizontalView.frame)+CGRectGetHeight(self.separatorHorizontalView.frame);
                         }
 
                         // -----
@@ -2458,7 +2444,7 @@ static NSMutableArray *kLGAlertViewArray;
                         CGRect thirdButtonFrame = CGRectZero;
 
                         if (secondButton) {
-                            secondButtonFrame = CGRectMake(firstButtonFrame.origin.x+firstButtonFrame.size.width+kLGAlertViewSeparatorHeight,
+                            secondButtonFrame = CGRectMake(CGRectGetMinX(firstButtonFrame)+CGRectGetWidth(firstButtonFrame)+kLGAlertViewSeparatorHeight,
                                                            offsetY,
                                                            width/numberOfButtons-kLGAlertViewSeparatorHeight,
                                                            self.buttonsHeight);
@@ -2470,7 +2456,7 @@ static NSMutableArray *kLGAlertViewArray;
                             secondButton.frame = secondButtonFrame;
 
                             if (thirdButton) {
-                                thirdButtonFrame = CGRectMake(secondButtonFrame.origin.x+secondButtonFrame.size.width+kLGAlertViewSeparatorHeight,
+                                thirdButtonFrame = CGRectMake(CGRectGetMinX(secondButtonFrame)+CGRectGetWidth(secondButtonFrame)+kLGAlertViewSeparatorHeight,
                                                               offsetY,
                                                               width/numberOfButtons-kLGAlertViewSeparatorHeight,
                                                               self.buttonsHeight);
@@ -2489,10 +2475,10 @@ static NSMutableArray *kLGAlertViewArray;
                             self.separatorVerticalView1 = [UIView new];
                             self.separatorVerticalView1.backgroundColor = self.separatorsColor;
 
-                            CGRect separatorVerticalView1Frame = CGRectMake(firstButtonFrame.origin.x+firstButtonFrame.size.width,
+                            CGRect separatorVerticalView1Frame = CGRectMake(CGRectGetMinX(firstButtonFrame)+CGRectGetWidth(firstButtonFrame),
                                                                             offsetY,
                                                                             kLGAlertViewSeparatorHeight,
-                                                                            MAX(UIScreen.mainScreen.bounds.size.width, UIScreen.mainScreen.bounds.size.height));
+                                                                            MAX(CGRectGetWidth(UIScreen.mainScreen.bounds), CGRectGetHeight(UIScreen.mainScreen.bounds)));
 
                             if ([UIScreen mainScreen].scale == 1.0) {
                                 separatorVerticalView1Frame = CGRectIntegral(separatorVerticalView1Frame);
@@ -2505,10 +2491,10 @@ static NSMutableArray *kLGAlertViewArray;
                                 self.separatorVerticalView2 = [UIView new];
                                 self.separatorVerticalView2.backgroundColor = self.separatorsColor;
 
-                                CGRect separatorVerticalView2Frame = CGRectMake(secondButtonFrame.origin.x+secondButtonFrame.size.width,
+                                CGRect separatorVerticalView2Frame = CGRectMake(CGRectGetMinX(secondButtonFrame)+CGRectGetWidth(secondButtonFrame),
                                                                                 offsetY,
                                                                                 kLGAlertViewSeparatorHeight,
-                                                                                MAX(UIScreen.mainScreen.bounds.size.width, UIScreen.mainScreen.bounds.size.height));
+                                                                                MAX(CGRectGetWidth(UIScreen.mainScreen.bounds), CGRectGetHeight(UIScreen.mainScreen.bounds)));
 
                                 if ([UIScreen mainScreen].scale == 1.0) {
                                     separatorVerticalView2Frame = CGRectIntegral(separatorVerticalView2Frame);
@@ -2588,7 +2574,7 @@ static NSMutableArray *kLGAlertViewArray;
 
                 [self.scrollView addSubview:self.tableView];
 
-                offsetY = self.tableView.frame.origin.y+self.tableView.frame.size.height;
+                offsetY = CGRectGetMinY(self.tableView.frame)+CGRectGetHeight(self.tableView.frame);
             }
         }
         else {
@@ -2671,25 +2657,25 @@ static NSMutableArray *kLGAlertViewArray;
             cancelButtonFrame = CGRectMake(size.width/2-width/2, size.height-self.cancelButtonOffsetY-self.buttonsHeight, width, self.buttonsHeight);
         }
 
-        self.scrollViewCenterShowed = CGPointMake(scrollViewFrame.origin.x+scrollViewFrame.size.width/2,
-                                                  scrollViewFrame.origin.y+scrollViewFrame.size.height/2);
+        self.scrollViewCenterShowed = CGPointMake(CGRectGetMinX(scrollViewFrame)+CGRectGetWidth(scrollViewFrame)/2,
+                                                  CGRectGetMinY(scrollViewFrame)+CGRectGetHeight(scrollViewFrame)/2);
 
-        self.cancelButtonCenterShowed = CGPointMake(cancelButtonFrame.origin.x+cancelButtonFrame.size.width/2,
-                                                    cancelButtonFrame.origin.y+cancelButtonFrame.size.height/2);
+        self.cancelButtonCenterShowed = CGPointMake(CGRectGetMinX(cancelButtonFrame)+CGRectGetWidth(cancelButtonFrame)/2,
+                                                    CGRectGetMinY(cancelButtonFrame)+CGRectGetHeight(cancelButtonFrame)/2);
 
         // -----
 
-        CGFloat commonHeight = scrollViewFrame.size.height+self.offsetVertical;
+        CGFloat commonHeight = CGRectGetHeight(scrollViewFrame)+self.offsetVertical;
 
         if (kLGAlertViewIsCancelButtonSeparate(self) && self.cancelButton) {
             commonHeight += self.buttonsHeight+self.cancelButtonOffsetY;
         }
 
-        self.scrollViewCenterHidden = CGPointMake(scrollViewFrame.origin.x+scrollViewFrame.size.width/2,
-                                                  scrollViewFrame.origin.y+scrollViewFrame.size.height/2+commonHeight+self.layerBorderWidth+self.layerShadowRadius);
+        self.scrollViewCenterHidden = CGPointMake(CGRectGetMinX(scrollViewFrame)+CGRectGetWidth(scrollViewFrame)/2,
+                                                  CGRectGetMinY(scrollViewFrame)+CGRectGetHeight(scrollViewFrame)/2+commonHeight+self.layerBorderWidth+self.layerShadowRadius);
 
-        self.cancelButtonCenterHidden = CGPointMake(cancelButtonFrame.origin.x+cancelButtonFrame.size.width/2,
-                                                    cancelButtonFrame.origin.y+cancelButtonFrame.size.height/2+commonHeight);
+        self.cancelButtonCenterHidden = CGPointMake(CGRectGetMinX(cancelButtonFrame)+CGRectGetWidth(cancelButtonFrame)/2,
+                                                    CGRectGetMinY(cancelButtonFrame)+CGRectGetHeight(cancelButtonFrame)/2+commonHeight);
 
         if (!self.isVisible) {
             scrollViewFrame.origin.y += commonHeight;
@@ -2709,10 +2695,10 @@ static NSMutableArray *kLGAlertViewArray;
             self.cancelButton.frame = cancelButtonFrame;
 
             CGFloat borderWidth = self.layerBorderWidth;
-            self.styleCancelView.frame = CGRectMake(cancelButtonFrame.origin.x-borderWidth,
-                                                    cancelButtonFrame.origin.y-borderWidth,
-                                                    cancelButtonFrame.size.width+borderWidth*2,
-                                                    cancelButtonFrame.size.height+borderWidth*2);
+            self.styleCancelView.frame = CGRectMake(CGRectGetMinX(cancelButtonFrame)-borderWidth,
+                                                    CGRectGetMinY(cancelButtonFrame)-borderWidth,
+                                                    CGRectGetWidth(cancelButtonFrame)+borderWidth*2,
+                                                    CGRectGetHeight(cancelButtonFrame)+borderWidth*2);
         }
     }
 
@@ -2721,7 +2707,7 @@ static NSMutableArray *kLGAlertViewArray;
     if ([UIScreen mainScreen].scale == 1.0) {
         scrollViewFrame = CGRectIntegral(scrollViewFrame);
 
-        if (scrollViewFrame.size.height - self.scrollView.contentSize.height == 1.0) {
+        if (CGRectGetHeight(scrollViewFrame) - self.scrollView.contentSize.height == 1.0) {
             scrollViewFrame.size.height -= 2.0;
         }
     }
@@ -2733,10 +2719,10 @@ static NSMutableArray *kLGAlertViewArray;
     self.scrollView.alpha = scrollViewAlpha;
 
     CGFloat borderWidth = self.layerBorderWidth;
-    self.styleView.frame = CGRectMake(scrollViewFrame.origin.x-borderWidth,
-                                      scrollViewFrame.origin.y-borderWidth,
-                                      scrollViewFrame.size.width+borderWidth*2,
-                                      scrollViewFrame.size.height+borderWidth*2);
+    self.styleView.frame = CGRectMake(CGRectGetMinX(scrollViewFrame)-borderWidth,
+                                      CGRectGetMinY(scrollViewFrame)-borderWidth,
+                                      CGRectGetWidth(scrollViewFrame)+borderWidth*2,
+                                      CGRectGetHeight(scrollViewFrame)+borderWidth*2);
     self.styleView.transform = scrollViewTransform;
     self.styleView.alpha = scrollViewAlpha;
 }
@@ -2892,6 +2878,56 @@ static NSMutableArray *kLGAlertViewArray;
     // -----
 
     [self actionActionAtIndex:index title:title];
+}
+
+#pragma mark - Callbacks
+
+- (void)willShowCallback {
+    if (self.willShowHandler) {
+        self.willShowHandler(self);
+    }
+
+    if (self.delegate && [self.delegate respondsToSelector:@selector(alertViewWillShow:)]) {
+        [self.delegate alertViewWillShow:self];
+    }
+
+    [[NSNotificationCenter defaultCenter] postNotificationName:LGAlertViewWillShowNotification object:self userInfo:nil];
+}
+
+- (void)didShowCallback {
+    if (self.didShowHandler) {
+        self.didShowHandler(self);
+    }
+
+    if (self.delegate && [self.delegate respondsToSelector:@selector(alertViewDidShow:)]) {
+        [self.delegate alertViewDidShow:self];
+    }
+
+    [[NSNotificationCenter defaultCenter] postNotificationName:LGAlertViewDidShowNotification object:self userInfo:nil];
+}
+
+- (void)willDismissCallback {
+    if (self.willDismissHandler) {
+        self.willDismissHandler(self);
+    }
+
+    if (self.delegate && [self.delegate respondsToSelector:@selector(alertViewWillDismiss:)]) {
+        [self.delegate alertViewWillDismiss:self];
+    }
+
+    [[NSNotificationCenter defaultCenter] postNotificationName:LGAlertViewWillDismissNotification object:self userInfo:nil];
+}
+
+- (void)didDismissCallback {
+    if (self.didDismissHandler) {
+        self.didDismissHandler(self);
+    }
+
+    if (self.delegate && [self.delegate respondsToSelector:@selector(alertViewDidDismiss:)]) {
+        [self.delegate alertViewDidDismiss:self];
+    }
+
+    [[NSNotificationCenter defaultCenter] postNotificationName:LGAlertViewDidDismissNotification object:self userInfo:nil];
 }
 
 #pragma mark - Class methods
@@ -3725,7 +3761,7 @@ static UIFont *_classProgressLabelFont;
 }
 
 + (void)keyboardAnimateWithNotificationUserInfo:(NSDictionary *)notificationUserInfo animations:(void(^)(CGFloat keyboardHeight))animations {
-    CGFloat keyboardHeight = (notificationUserInfo[UIKeyboardFrameEndUserInfoKey] ? [notificationUserInfo[UIKeyboardFrameEndUserInfoKey] CGRectValue].size.height : 0.0);
+    CGFloat keyboardHeight = (notificationUserInfo[UIKeyboardFrameEndUserInfoKey] ? CGRectGetHeight([notificationUserInfo[UIKeyboardFrameEndUserInfoKey] CGRectValue]) : 0.0);
     
     if (!keyboardHeight) return;
     

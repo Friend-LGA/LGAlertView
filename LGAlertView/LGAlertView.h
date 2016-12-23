@@ -5,7 +5,7 @@
 //
 //  The MIT License (MIT)
 //
-//  Copyright (c) 2015 Grigory Lutkov <Friend.LGA@gmail.com>
+//  Copyright © 2015 Grigory Lutkov <Friend.LGA@gmail.com>
 //  (https://github.com/Friend-LGA/LGAlertView)
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -87,9 +87,9 @@ typedef NS_ENUM(NSUInteger, LGAlertViewWindowLevel) {
 /** Default is nil */
 @property (class, strong, nonatomic, nullable) NSNumber *cancelOnTouch;
 
-/** 
+/**
  Dismiss alert view on action, cancel and destructive
- Default is YES 
+ Default is YES
  */
 @property (assign, nonatomic, getter=isDismissOnAction) BOOL dismissOnAction;
 /**
@@ -528,7 +528,7 @@ typedef NS_ENUM(NSUInteger, LGAlertViewWindowLevel) {
 - (nonnull instancetype)initWithTitle:(nullable NSString *)title
                               message:(nullable NSString *)message
                                 style:(LGAlertViewStyle)style
-                         buttonTitles:(nullable NSArray *)buttonTitles
+                         buttonTitles:(nullable NSArray<NSString *> *)buttonTitles
                     cancelButtonTitle:(nullable NSString *)cancelButtonTitle
                destructiveButtonTitle:(nullable NSString *)destructiveButtonTitle;
 
@@ -536,14 +536,14 @@ typedef NS_ENUM(NSUInteger, LGAlertViewWindowLevel) {
                                      message:(nullable NSString *)message
                                        style:(LGAlertViewStyle)style
                                         view:(nullable UIView *)view
-                                buttonTitles:(nullable NSArray *)buttonTitles
+                                buttonTitles:(nullable NSArray<NSString *> *)buttonTitles
                            cancelButtonTitle:(nullable NSString *)cancelButtonTitle
                       destructiveButtonTitle:(nullable NSString *)destructiveButtonTitle;
 
 - (nonnull instancetype)initWithActivityIndicatorAndTitle:(nullable NSString *)title
                                                   message:(nullable NSString *)message
                                                     style:(LGAlertViewStyle)style
-                                             buttonTitles:(nullable NSArray *)buttonTitles
+                                             buttonTitles:(nullable NSArray<NSString *> *)buttonTitles
                                         cancelButtonTitle:(nullable NSString *)cancelButtonTitle
                                    destructiveButtonTitle:(nullable NSString *)destructiveButtonTitle;
 
@@ -551,7 +551,7 @@ typedef NS_ENUM(NSUInteger, LGAlertViewWindowLevel) {
                                              message:(nullable NSString *)message
                                                style:(LGAlertViewStyle)style
                                    progressLabelText:(nullable NSString *)progressLabelText
-                                        buttonTitles:(nullable NSArray *)buttonTitles
+                                        buttonTitles:(nullable NSArray<NSString *> *)buttonTitles
                                    cancelButtonTitle:(nullable NSString *)cancelButtonTitle
                               destructiveButtonTitle:(nullable NSString *)destructiveButtonTitle;
 
@@ -559,14 +559,14 @@ typedef NS_ENUM(NSUInteger, LGAlertViewWindowLevel) {
                                            message:(nullable NSString *)message
                                 numberOfTextFields:(NSUInteger)numberOfTextFields
                             textFieldsSetupHandler:(LGAlertViewTextFieldsSetupHandler)textFieldsSetupHandler
-                                      buttonTitles:(nullable NSArray *)buttonTitles
+                                      buttonTitles:(nullable NSArray<NSString *> *)buttonTitles
                                  cancelButtonTitle:(nullable NSString *)cancelButtonTitle
                             destructiveButtonTitle:(nullable NSString *)destructiveButtonTitle;
 
 + (nonnull instancetype)alertViewWithTitle:(nullable NSString *)title
                                    message:(nullable NSString *)message
                                      style:(LGAlertViewStyle)style
-                              buttonTitles:(nullable NSArray *)buttonTitles
+                              buttonTitles:(nullable NSArray<NSString *> *)buttonTitles
                          cancelButtonTitle:(nullable NSString *)cancelButtonTitle
                     destructiveButtonTitle:(nullable NSString *)destructiveButtonTitle;
 
@@ -574,14 +574,14 @@ typedef NS_ENUM(NSUInteger, LGAlertViewWindowLevel) {
                                           message:(nullable NSString *)message
                                             style:(LGAlertViewStyle)style
                                              view:(nullable UIView *)view
-                                     buttonTitles:(nullable NSArray *)buttonTitles
+                                     buttonTitles:(nullable NSArray<NSString *> *)buttonTitles
                                 cancelButtonTitle:(nullable NSString *)cancelButtonTitle
                            destructiveButtonTitle:(nullable NSString *)destructiveButtonTitle;
 
 + (nonnull instancetype)alertViewWithActivityIndicatorAndTitle:(nullable NSString *)title
                                                        message:(nullable NSString *)message
                                                          style:(LGAlertViewStyle)style
-                                                  buttonTitles:(nullable NSArray *)buttonTitles
+                                                  buttonTitles:(nullable NSArray<NSString *> *)buttonTitles
                                              cancelButtonTitle:(nullable NSString *)cancelButtonTitle
                                         destructiveButtonTitle:(nullable NSString *)destructiveButtonTitle;
 
@@ -589,7 +589,7 @@ typedef NS_ENUM(NSUInteger, LGAlertViewWindowLevel) {
                                                   message:(nullable NSString *)message
                                                     style:(LGAlertViewStyle)style
                                         progressLabelText:(nullable NSString *)progressLabelText
-                                             buttonTitles:(nullable NSArray *)buttonTitles
+                                             buttonTitles:(nullable NSArray<NSString *> *)buttonTitles
                                         cancelButtonTitle:(nullable NSString *)cancelButtonTitle
                                    destructiveButtonTitle:(nullable NSString *)destructiveButtonTitle;
 
@@ -597,7 +597,7 @@ typedef NS_ENUM(NSUInteger, LGAlertViewWindowLevel) {
                                                 message:(nullable NSString *)message
                                      numberOfTextFields:(NSUInteger)numberOfTextFields
                                  textFieldsSetupHandler:(LGAlertViewTextFieldsSetupHandler)textFieldsSetupHandler
-                                           buttonTitles:(nullable NSArray *)buttonTitles
+                                           buttonTitles:(nullable NSArray<NSString *> *)buttonTitles
                                       cancelButtonTitle:(nullable NSString *)cancelButtonTitle
                                  destructiveButtonTitle:(nullable NSString *)destructiveButtonTitle;
 
@@ -607,7 +607,7 @@ typedef NS_ENUM(NSUInteger, LGAlertViewWindowLevel) {
 - (nonnull instancetype)initWithTitle:(nullable NSString *)title
                               message:(nullable NSString *)message
                                 style:(LGAlertViewStyle)style
-                         buttonTitles:(nullable NSArray *)buttonTitles
+                         buttonTitles:(nullable NSArray<NSString *> *)buttonTitles
                     cancelButtonTitle:(nullable NSString *)cancelButtonTitle
                destructiveButtonTitle:(nullable NSString *)destructiveButtonTitle
                         actionHandler:(LGAlertViewActionHandler)actionHandler
@@ -619,7 +619,7 @@ typedef NS_ENUM(NSUInteger, LGAlertViewWindowLevel) {
                                      message:(nullable NSString *)message
                                        style:(LGAlertViewStyle)style
                                         view:(nullable UIView *)view
-                                buttonTitles:(nullable NSArray *)buttonTitles
+                                buttonTitles:(nullable NSArray<NSString *> *)buttonTitles
                            cancelButtonTitle:(nullable NSString *)cancelButtonTitle
                       destructiveButtonTitle:(nullable NSString *)destructiveButtonTitle
                                actionHandler:(LGAlertViewActionHandler)actionHandler
@@ -630,7 +630,7 @@ typedef NS_ENUM(NSUInteger, LGAlertViewWindowLevel) {
 - (nonnull instancetype)initWithActivityIndicatorAndTitle:(nullable NSString *)title
                                                   message:(nullable NSString *)message
                                                     style:(LGAlertViewStyle)style
-                                             buttonTitles:(nullable NSArray *)buttonTitles
+                                             buttonTitles:(nullable NSArray<NSString *> *)buttonTitles
                                         cancelButtonTitle:(nullable NSString *)cancelButtonTitle
                                    destructiveButtonTitle:(nullable NSString *)destructiveButtonTitle
                                             actionHandler:(LGAlertViewActionHandler)actionHandler
@@ -642,7 +642,7 @@ typedef NS_ENUM(NSUInteger, LGAlertViewWindowLevel) {
                                              message:(nullable NSString *)message
                                                style:(LGAlertViewStyle)style
                                    progressLabelText:(nullable NSString *)progressLabelText
-                                        buttonTitles:(nullable NSArray *)buttonTitles
+                                        buttonTitles:(nullable NSArray<NSString *> *)buttonTitles
                                    cancelButtonTitle:(nullable NSString *)cancelButtonTitle
                               destructiveButtonTitle:(nullable NSString *)destructiveButtonTitle
                                        actionHandler:(LGAlertViewActionHandler)actionHandler
@@ -654,7 +654,7 @@ typedef NS_ENUM(NSUInteger, LGAlertViewWindowLevel) {
                                            message:(nullable NSString *)message
                                 numberOfTextFields:(NSUInteger)numberOfTextFields
                             textFieldsSetupHandler:(LGAlertViewTextFieldsSetupHandler)textFieldsSetupHandler
-                                      buttonTitles:(nullable NSArray *)buttonTitles
+                                      buttonTitles:(nullable NSArray<NSString *> *)buttonTitles
                                  cancelButtonTitle:(nullable NSString *)cancelButtonTitle
                             destructiveButtonTitle:(nullable NSString *)destructiveButtonTitle
                                      actionHandler:(LGAlertViewActionHandler)actionHandler
@@ -665,7 +665,7 @@ typedef NS_ENUM(NSUInteger, LGAlertViewWindowLevel) {
 + (nonnull instancetype)alertViewWithTitle:(nullable NSString *)title
                                    message:(nullable NSString *)message
                                      style:(LGAlertViewStyle)style
-                              buttonTitles:(nullable NSArray *)buttonTitles
+                              buttonTitles:(nullable NSArray<NSString *> *)buttonTitles
                          cancelButtonTitle:(nullable NSString *)cancelButtonTitle
                     destructiveButtonTitle:(nullable NSString *)destructiveButtonTitle
                              actionHandler:(LGAlertViewActionHandler)actionHandler
@@ -677,7 +677,7 @@ typedef NS_ENUM(NSUInteger, LGAlertViewWindowLevel) {
                                           message:(nullable NSString *)message
                                             style:(LGAlertViewStyle)style
                                              view:(nullable UIView *)view
-                                     buttonTitles:(nullable NSArray *)buttonTitles
+                                     buttonTitles:(nullable NSArray<NSString *> *)buttonTitles
                                 cancelButtonTitle:(nullable NSString *)cancelButtonTitle
                            destructiveButtonTitle:(nullable NSString *)destructiveButtonTitle
                                     actionHandler:(LGAlertViewActionHandler)actionHandler
@@ -688,7 +688,7 @@ typedef NS_ENUM(NSUInteger, LGAlertViewWindowLevel) {
 + (nonnull instancetype)alertViewWithActivityIndicatorAndTitle:(nullable NSString *)title
                                                        message:(nullable NSString *)message
                                                          style:(LGAlertViewStyle)style
-                                                  buttonTitles:(nullable NSArray *)buttonTitles
+                                                  buttonTitles:(nullable NSArray<NSString *> *)buttonTitles
                                              cancelButtonTitle:(nullable NSString *)cancelButtonTitle
                                         destructiveButtonTitle:(nullable NSString *)destructiveButtonTitle
                                                  actionHandler:(LGAlertViewActionHandler)actionHandler
@@ -700,7 +700,7 @@ typedef NS_ENUM(NSUInteger, LGAlertViewWindowLevel) {
                                                   message:(nullable NSString *)message
                                                     style:(LGAlertViewStyle)style
                                         progressLabelText:(nullable NSString *)progressLabelText
-                                             buttonTitles:(nullable NSArray *)buttonTitles
+                                             buttonTitles:(nullable NSArray<NSString *> *)buttonTitles
                                         cancelButtonTitle:(nullable NSString *)cancelButtonTitle
                                    destructiveButtonTitle:(nullable NSString *)destructiveButtonTitle
                                             actionHandler:(LGAlertViewActionHandler)actionHandler
@@ -712,7 +712,7 @@ typedef NS_ENUM(NSUInteger, LGAlertViewWindowLevel) {
                                                 message:(nullable NSString *)message
                                      numberOfTextFields:(NSUInteger)numberOfTextFields
                                  textFieldsSetupHandler:(LGAlertViewTextFieldsSetupHandler)textFieldsSetupHandler
-                                           buttonTitles:(nullable NSArray *)buttonTitles
+                                           buttonTitles:(nullable NSArray<NSString *> *)buttonTitles
                                       cancelButtonTitle:(nullable NSString *)cancelButtonTitle
                                  destructiveButtonTitle:(nullable NSString *)destructiveButtonTitle
                                           actionHandler:(LGAlertViewActionHandler)actionHandler
@@ -724,7 +724,7 @@ typedef NS_ENUM(NSUInteger, LGAlertViewWindowLevel) {
 - (nonnull instancetype)initWithTitle:(nullable NSString *)title
                               message:(nullable NSString *)message
                                 style:(LGAlertViewStyle)style
-                         buttonTitles:(nullable NSArray *)buttonTitles
+                         buttonTitles:(nullable NSArray<NSString *> *)buttonTitles
                     cancelButtonTitle:(nullable NSString *)cancelButtonTitle
                destructiveButtonTitle:(nullable NSString *)destructiveButtonTitle
                              delegate:(nullable id<LGAlertViewDelegate>)delegate;
@@ -734,7 +734,7 @@ typedef NS_ENUM(NSUInteger, LGAlertViewWindowLevel) {
                                      message:(nullable NSString *)message
                                        style:(LGAlertViewStyle)style
                                         view:(nullable UIView *)view
-                                buttonTitles:(nullable NSArray *)buttonTitles
+                                buttonTitles:(nullable NSArray<NSString *> *)buttonTitles
                            cancelButtonTitle:(nullable NSString *)cancelButtonTitle
                       destructiveButtonTitle:(nullable NSString *)destructiveButtonTitle
                                     delegate:(nullable id<LGAlertViewDelegate>)delegate;
@@ -742,7 +742,7 @@ typedef NS_ENUM(NSUInteger, LGAlertViewWindowLevel) {
 - (nonnull instancetype)initWithActivityIndicatorAndTitle:(nullable NSString *)title
                                                   message:(nullable NSString *)message
                                                     style:(LGAlertViewStyle)style
-                                             buttonTitles:(nullable NSArray *)buttonTitles
+                                             buttonTitles:(nullable NSArray<NSString *> *)buttonTitles
                                         cancelButtonTitle:(nullable NSString *)cancelButtonTitle
                                    destructiveButtonTitle:(nullable NSString *)destructiveButtonTitle
                                                  delegate:(nullable id<LGAlertViewDelegate>)delegate;
@@ -751,7 +751,7 @@ typedef NS_ENUM(NSUInteger, LGAlertViewWindowLevel) {
                                              message:(nullable NSString *)message
                                                style:(LGAlertViewStyle)style
                                    progressLabelText:(nullable NSString *)progressLabelText
-                                        buttonTitles:(nullable NSArray *)buttonTitles
+                                        buttonTitles:(nullable NSArray<NSString *> *)buttonTitles
                                    cancelButtonTitle:(nullable NSString *)cancelButtonTitle
                               destructiveButtonTitle:(nullable NSString *)destructiveButtonTitle
                                             delegate:(nullable id<LGAlertViewDelegate>)delegate;
@@ -760,7 +760,7 @@ typedef NS_ENUM(NSUInteger, LGAlertViewWindowLevel) {
                                            message:(nullable NSString *)message
                                 numberOfTextFields:(NSUInteger)numberOfTextFields
                             textFieldsSetupHandler:(LGAlertViewTextFieldsSetupHandler)textFieldsSetupHandler
-                                      buttonTitles:(nullable NSArray *)buttonTitles
+                                      buttonTitles:(nullable NSArray<NSString *> *)buttonTitles
                                  cancelButtonTitle:(nullable NSString *)cancelButtonTitle
                             destructiveButtonTitle:(nullable NSString *)destructiveButtonTitle
                                           delegate:(nullable id<LGAlertViewDelegate>)delegate;
@@ -768,7 +768,7 @@ typedef NS_ENUM(NSUInteger, LGAlertViewWindowLevel) {
 + (nonnull instancetype)alertViewWithTitle:(nullable NSString *)title
                                    message:(nullable NSString *)message
                                      style:(LGAlertViewStyle)style
-                              buttonTitles:(nullable NSArray *)buttonTitles
+                              buttonTitles:(nullable NSArray<NSString *> *)buttonTitles
                          cancelButtonTitle:(nullable NSString *)cancelButtonTitle
                     destructiveButtonTitle:(nullable NSString *)destructiveButtonTitle
                                   delegate:(nullable id<LGAlertViewDelegate>)delegate;
@@ -778,7 +778,7 @@ typedef NS_ENUM(NSUInteger, LGAlertViewWindowLevel) {
                                           message:(nullable NSString *)message
                                             style:(LGAlertViewStyle)style
                                              view:(nullable UIView *)view
-                                     buttonTitles:(nullable NSArray *)buttonTitles
+                                     buttonTitles:(nullable NSArray<NSString *> *)buttonTitles
                                 cancelButtonTitle:(nullable NSString *)cancelButtonTitle
                            destructiveButtonTitle:(nullable NSString *)destructiveButtonTitle
                                          delegate:(nullable id<LGAlertViewDelegate>)delegate;
@@ -786,7 +786,7 @@ typedef NS_ENUM(NSUInteger, LGAlertViewWindowLevel) {
 + (nonnull instancetype)alertViewWithActivityIndicatorAndTitle:(nullable NSString *)title
                                                        message:(nullable NSString *)message
                                                          style:(LGAlertViewStyle)style
-                                                  buttonTitles:(nullable NSArray *)buttonTitles
+                                                  buttonTitles:(nullable NSArray<NSString *> *)buttonTitles
                                              cancelButtonTitle:(nullable NSString *)cancelButtonTitle
                                         destructiveButtonTitle:(nullable NSString *)destructiveButtonTitle
                                                       delegate:(nullable id<LGAlertViewDelegate>)delegate;
@@ -795,7 +795,7 @@ typedef NS_ENUM(NSUInteger, LGAlertViewWindowLevel) {
                                                   message:(nullable NSString *)message
                                                     style:(LGAlertViewStyle)style
                                         progressLabelText:(nullable NSString *)progressLabelText
-                                             buttonTitles:(nullable NSArray *)buttonTitles
+                                             buttonTitles:(nullable NSArray<NSString *> *)buttonTitles
                                         cancelButtonTitle:(nullable NSString *)cancelButtonTitle
                                    destructiveButtonTitle:(nullable NSString *)destructiveButtonTitle
                                                  delegate:(nullable id<LGAlertViewDelegate>)delegate;
@@ -804,7 +804,7 @@ typedef NS_ENUM(NSUInteger, LGAlertViewWindowLevel) {
                                                 message:(nullable NSString *)message
                                      numberOfTextFields:(NSUInteger)numberOfTextFields
                                  textFieldsSetupHandler:(LGAlertViewTextFieldsSetupHandler)textFieldsSetupHandler
-                                           buttonTitles:(nullable NSArray *)buttonTitles
+                                           buttonTitles:(nullable NSArray<NSString *> *)buttonTitles
                                       cancelButtonTitle:(nullable NSString *)cancelButtonTitle
                                  destructiveButtonTitle:(nullable NSString *)destructiveButtonTitle
                                                delegate:(nullable id<LGAlertViewDelegate>)delegate;
