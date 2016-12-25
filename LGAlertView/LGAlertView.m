@@ -32,11 +32,11 @@
 #import "LGAlertViewController.h"
 #import "LGAlertViewCell.h"
 #import "LGAlertViewTextField.h"
-#import "LGAlertViewShared.h"
+#import "LGAlertViewButton.h"
+#import "LGAlertViewSharedPrivate.h"
 
 #define kLGAlertViewStatusBarHeight ([UIApplication sharedApplication].isStatusBarHidden ? 0.0 : CGRectGetHeight([UIApplication sharedApplication].statusBarFrame))
 #define kLGAlertViewSeparatorHeight ([UIScreen mainScreen].scale == 1.0 ? 1.0 : 0.5)
-#define kLGAlertViewButtonTitleMarginH 8.0
 #define kLGAlertViewInnerMarginH (self.style == LGAlertViewStyleAlert ? 16.0 : 12.0)
 #define kLGAlertViewWindowPrevious(index) (index > 0 && index < kLGAlertViewWindowsArray.count ? [kLGAlertViewWindowsArray objectAtIndex:(index-1)] : nil)
 #define kLGAlertViewWindowNext(index) (kLGAlertViewWindowsArray.count > index+1 ? [kLGAlertViewWindowsArray objectAtIndex:(index+1)] : nil)
@@ -64,6 +64,16 @@ static NSMutableArray *kLGAlertViewArray;
 
 @interface LGAlertView () <UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate, UIGestureRecognizerDelegate>
 
+@property (readwrite) BOOL             showing;
+@property (readwrite) LGAlertViewStyle style;
+@property (readwrite) NSString         *title;
+@property (readwrite) NSString         *message;
+@property (readwrite) UIView           *innerView;
+@property (readwrite) NSArray          *buttonTitles;
+@property (readwrite) NSString         *cancelButtonTitle;
+@property (readwrite) NSString         *destructiveButtonTitle;
+@property (readwrite) NSArray          *textFieldsArray;
+
 @property (assign, nonatomic, getter=isExists) BOOL exists;
 
 @property (strong, nonatomic) LGAlertViewWindow *window;
@@ -80,27 +90,16 @@ static NSMutableArray *kLGAlertViewArray;
 @property (strong, nonatomic) UIScrollView *scrollView;
 @property (strong, nonatomic) UITableView  *tableView;
 
-@property (assign, nonatomic, getter=isShowing) BOOL showing;
+@property (strong, nonatomic) UILabel           *titleLabel;
+@property (strong, nonatomic) UILabel           *messageLabel;
+@property (strong, nonatomic) UIView            *innerContainerView;
+@property (strong, nonatomic) LGAlertViewButton *destructiveButton;
+@property (strong, nonatomic) LGAlertViewButton *cancelButton;
+@property (strong, nonatomic) LGAlertViewButton *firstButton;
+@property (strong, nonatomic) LGAlertViewButton *secondButton;
+@property (strong, nonatomic) LGAlertViewButton *thirdButton;
 
-@property (assign, nonatomic) LGAlertViewStyle style;
-@property (copy, nonatomic) NSString           *title;
-@property (copy, nonatomic) NSString           *message;
-@property (strong, nonatomic) UIView           *innerView;
-@property (strong, nonatomic) NSMutableArray   *buttonTitles;
-@property (copy, nonatomic) NSString           *cancelButtonTitle;
-@property (copy, nonatomic) NSString           *destructiveButtonTitle;
-
-@property (strong, nonatomic) UILabel  *titleLabel;
-@property (strong, nonatomic) UILabel  *messageLabel;
-@property (strong, nonatomic) UIView   *innerContainerView;
-@property (strong, nonatomic) UIButton *destructiveButton;
-@property (strong, nonatomic) UIButton *cancelButton;
-@property (strong, nonatomic) UIButton *firstButton;
-@property (strong, nonatomic) UIButton *secondButton;
-@property (strong, nonatomic) UIButton *thirdButton;
-
-@property (strong, nonatomic) NSMutableArray *textFieldsArray;
-@property (strong, nonatomic) NSMutableArray *textFieldSeparatorsArray;
+@property (strong, nonatomic) NSArray *textFieldSeparatorsArray;
 
 @property (strong, nonatomic) UIView *separatorHorizontalView;
 @property (strong, nonatomic) UIView *separatorVerticalView1;
@@ -123,6 +122,11 @@ static NSMutableArray *kLGAlertViewArray;
 
 @property (assign, nonatomic) CGFloat keyboardHeight;
 
+@property (strong, nonatomic) NSMutableDictionary *buttonsPropertiesDictionary;
+@property (strong, nonatomic) NSMutableArray *buttonsEnabledArray;
+
+@property (strong, nonatomic) LGAlertViewCell *heightCell;
+
 @property (assign, nonatomic, getter=isUserButtonsTitleColor)                           BOOL userButtonsTitleColor;
 @property (assign, nonatomic, getter=isUserButtonsTitleColorHighlighted)                BOOL userButtonsTitleColorHighlighted;
 @property (assign, nonatomic, getter=isUserButtonsBackgroundColorHighlighted)           BOOL userButtonsBackgroundColorHighlighted;
@@ -133,9 +137,6 @@ static NSMutableArray *kLGAlertViewArray;
 @property (assign, nonatomic, getter=isUserDestructiveButtonBackgroundColorHighlighted) BOOL userDestructiveButtonBackgroundColorHighlighted;
 @property (assign, nonatomic, getter=isUserActivityIndicatorViewColor)                  BOOL userActivityIndicatorViewColor;
 @property (assign, nonatomic, getter=isUserProgressViewProgressTintColor)               BOOL userProgressViewProgressTintColor;
-
-@property (strong, nonatomic) NSMutableDictionary *buttonsPropertiesDictionary;
-@property (strong, nonatomic) NSMutableArray *buttonsEnabledArray;
 
 @end
 
@@ -248,8 +249,8 @@ static NSMutableArray *kLGAlertViewArray;
 
         self.type = LGAlertViewTypeTextFields;
 
-        self.textFieldsArray = [NSMutableArray new];
-        self.textFieldSeparatorsArray = [NSMutableArray new];
+        NSMutableArray *textFieldsArray = [NSMutableArray new];
+        NSMutableArray *textFieldSeparatorsArray = [NSMutableArray new];
 
         for (NSUInteger i=0; i<numberOfTextFields; i++) {
             LGAlertViewTextField *textField = [LGAlertViewTextField new];
@@ -267,13 +268,16 @@ static NSMutableArray *kLGAlertViewArray;
                 textFieldsSetupHandler(textField, i);
             }
 
-            [self.textFieldsArray addObject:textField];
+            [textFieldsArray addObject:textField];
 
             // -----
 
             UIView *separatorView = [UIView new];
-            [self.textFieldSeparatorsArray addObject:separatorView];
+            [textFieldSeparatorsArray addObject:separatorView];
         }
+
+        self.textFieldsArray = textFieldsArray;
+        self.textFieldSeparatorsArray = textFieldSeparatorsArray;
 
         [self setupDefaults];
     }
@@ -831,6 +835,7 @@ static NSMutableArray *kLGAlertViewArray;
         self.buttonsLineBreakMode = NSLineBreakByTruncatingMiddle;
         self.buttonsMinimumScaleFactor = 14.0/18.0;
         self.buttonsAdjustsFontSizeToFitWidth = YES;
+        self.buttonsIconPosition = LGAlertViewButtonIconPositionLeft;
 
         self.cancelButtonTitleColor = self.tintColor;
         self.cancelButtonTitleColorHighlighted = UIColor.whiteColor;
@@ -844,6 +849,7 @@ static NSMutableArray *kLGAlertViewArray;
         self.cancelButtonLineBreakMode = NSLineBreakByTruncatingMiddle;
         self.cancelButtonMinimumScaleFactor = 14.0/18.0;
         self.cancelButtonAdjustsFontSizeToFitWidth = YES;
+        self.cancelButtonIconPosition = LGAlertViewButtonIconPositionLeft;
 
         self.destructiveButtonTitleColor = UIColor.redColor;
         self.destructiveButtonTitleColorHighlighted = UIColor.whiteColor;
@@ -857,6 +863,7 @@ static NSMutableArray *kLGAlertViewArray;
         self.destructiveButtonLineBreakMode = NSLineBreakByTruncatingMiddle;
         self.destructiveButtonMinimumScaleFactor = 14.0/18.0;
         self.destructiveButtonAdjustsFontSizeToFitWidth = YES;
+        self.destructiveButtonIconPosition = LGAlertViewButtonIconPositionLeft;
 
         self.activityIndicatorViewStyle = UIActivityIndicatorViewStyleWhiteLarge;
         self.activityIndicatorViewColor = self.tintColor;
@@ -877,6 +884,8 @@ static NSMutableArray *kLGAlertViewArray;
     for (NSUInteger i=0; i<self.buttonTitles.count; i++) {
         [self.buttonsEnabledArray addObject:@YES];
     }
+
+    self.heightCell = [[LGAlertViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
 
     // -----
 
@@ -956,6 +965,7 @@ static NSMutableArray *kLGAlertViewArray;
     self.buttonsBackgroundColorHighlighted = LGAlertView.buttonsBackgroundColorHighlighted;
     self.buttonsBackgroundColorDisabled = LGAlertView.buttonsBackgroundColorDisabled;
     self.buttonsEnabled = YES;
+    self.buttonsIconPosition = LGAlertView.buttonsIconPosition;
 
     self.cancelButtonTitleColor = LGAlertView.cancelButtonTitleColor;
     self.cancelButtonTitleColorHighlighted = LGAlertView.cancelButtonTitleColorHighlighted;
@@ -970,6 +980,7 @@ static NSMutableArray *kLGAlertViewArray;
     self.cancelButtonBackgroundColorHighlighted = LGAlertView.cancelButtonBackgroundColorHighlighted;
     self.cancelButtonBackgroundColorDisabled = LGAlertView.cancelButtonBackgroundColorDisabled;
     self.cancelButtonEnabled = YES;
+    self.cancelButtonIconPosition = LGAlertView.cancelButtonIconPosition;
 
     self.destructiveButtonTitleColor = LGAlertView.destructiveButtonTitleColor;
     self.destructiveButtonTitleColorHighlighted = LGAlertView.destructiveButtonTitleColorHighlighted;
@@ -984,6 +995,7 @@ static NSMutableArray *kLGAlertViewArray;
     self.destructiveButtonBackgroundColorHighlighted = LGAlertView.destructiveButtonBackgroundColorHighlighted;
     self.destructiveButtonBackgroundColorDisabled = LGAlertView.destructiveButtonBackgroundColorDisabled;
     self.destructiveButtonEnabled = YES;
+    self.destructiveButtonIconPosition = LGAlertView.destructiveButtonIconPosition;
 
     self.activityIndicatorViewStyle = LGAlertView.activityIndicatorViewStyle;
     self.activityIndicatorViewColor = LGAlertView.activityIndicatorViewColor;
@@ -1241,13 +1253,13 @@ static NSMutableArray *kLGAlertViewArray;
     return self.progressView.progress;
 }
 
-- (void)setButtonAtIndex:(NSUInteger)index enabled:(BOOL)enabled {
+- (void)setButtonEnabled:(BOOL)enabled atIndex:(NSUInteger)index {
     if (self.buttonTitles.count <= index) return;
 
     self.buttonsEnabledArray[index] = [NSNumber numberWithBool:enabled];
 
     if (self.tableView) {
-        if (self.destructiveButtonTitle.length) {
+        if (self.destructiveButtonTitle) {
             index++;
         }
 
@@ -1274,7 +1286,7 @@ static NSMutableArray *kLGAlertViewArray;
 - (void)setCancelButtonEnabled:(BOOL)cancelButtonEnabled {
     _cancelButtonEnabled = cancelButtonEnabled;
 
-    if (self.cancelButtonTitle.length) {
+    if (self.cancelButtonTitle) {
         if (self.tableView) {
             LGAlertViewCell *cell = (LGAlertViewCell *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:(self.buttonTitles.count-1) inSection:0]];
             cell.enabled = cancelButtonEnabled;
@@ -1288,7 +1300,7 @@ static NSMutableArray *kLGAlertViewArray;
 - (void)setDestructiveButtonEnabled:(BOOL)destructiveButtonEnabled {
     _destructiveButtonEnabled = destructiveButtonEnabled;
 
-    if (self.destructiveButtonTitle.length) {
+    if (self.destructiveButtonTitle) {
         if (self.tableView) {
             LGAlertViewCell *cell = (LGAlertViewCell *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
             cell.enabled = destructiveButtonEnabled;
@@ -1327,13 +1339,13 @@ static NSMutableArray *kLGAlertViewArray;
 }
 
 - (void)forceCancel {
-    NSAssert(self.cancelButtonTitle.length > 0, @"Cancel button is not exists");
+    NSAssert(self.cancelButtonTitle, @"Cancel button is not exists");
 
     [self cancelAction:nil];
 }
 
 - (void)forceDestructive {
-    NSAssert(self.destructiveButtonTitle.length > 0, @"Destructive button is not exists");
+    NSAssert(self.destructiveButtonTitle, @"Destructive button is not exists");
 
     [self destructiveAction:nil];
 }
@@ -1341,7 +1353,7 @@ static NSMutableArray *kLGAlertViewArray;
 - (void)forceActionAtIndex:(NSUInteger)index {
     NSAssert(self.buttonTitles.count > index, @"Button at index %lu is not exists", (long unsigned)index);
 
-    [self actionActionAtIndex:index title:self.buttonTitles[index + (self.tableView && self.destructiveButtonTitle.length ? 1 : 0)]];
+    [self actionActionAtIndex:index title:self.buttonTitles[index + (self.tableView && self.destructiveButtonTitle ? 1 : 0)]];
 }
 
 #pragma mark - Table View Data Source
@@ -1357,47 +1369,67 @@ static NSMutableArray *kLGAlertViewArray;
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     LGAlertViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"cell"];
 
-    cell.title = self.buttonTitles[indexPath.row];
+    [self configCell:cell forRowAtIndexPath:indexPath];
 
-    if (self.destructiveButtonTitle.length && indexPath.row == 0) {
+    return cell;
+}
+
+- (void)configCell:(LGAlertViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
+    cell.textLabel.text = self.buttonTitles[indexPath.row];
+    
+    if (self.destructiveButtonTitle && indexPath.row == 0) {
         cell.titleColor                 = self.destructiveButtonTitleColor;
         cell.titleColorHighlighted      = self.destructiveButtonTitleColorHighlighted;
         cell.titleColorDisabled         = self.destructiveButtonTitleColorDisabled;
         cell.backgroundColorNormal      = self.destructiveButtonBackgroundColor;
         cell.backgroundColorHighlighted = self.destructiveButtonBackgroundColorHighlighted;
         cell.backgroundColorDisabled    = self.destructiveButtonBackgroundColorDisabled;
-        cell.separatorVisible           = (indexPath.row != self.buttonTitles.count-1);
-        cell.separatorColor_            = self.separatorsColor;
-        cell.textAlignment              = self.destructiveButtonTextAlignment;
-        cell.font                       = self.destructiveButtonFont;
-        cell.numberOfLines              = self.destructiveButtonNumberOfLines;
-        cell.lineBreakMode              = self.destructiveButtonLineBreakMode;
-        cell.adjustsFontSizeToFitWidth  = self.destructiveButtonAdjustsFontSizeToFitWidth;
-        cell.minimumScaleFactor         = self.destructiveButtonMinimumScaleFactor;
-        cell.enabled                    = self.destructiveButtonEnabled;
+        cell.image                      = self.destructiveButtonIconImage;
+        cell.imageHighlighted           = self.destructiveButtonIconImageHighlighted;
+        cell.imageDisabled              = self.destructiveButtonIconImageDisabled;
+        cell.iconPosition               = self.destructiveButtonIconPosition;
+
+        cell.separatorView.hidden                = (indexPath.row == self.buttonTitles.count-1);
+        cell.separatorView.backgroundColor       = self.separatorsColor;
+        cell.textLabel.textAlignment             = self.destructiveButtonTextAlignment;
+        cell.textLabel.font                      = self.destructiveButtonFont;
+        cell.textLabel.numberOfLines             = self.destructiveButtonNumberOfLines;
+        cell.textLabel.lineBreakMode             = self.destructiveButtonLineBreakMode;
+        cell.textLabel.adjustsFontSizeToFitWidth = self.destructiveButtonAdjustsFontSizeToFitWidth;
+        cell.textLabel.minimumScaleFactor        = self.destructiveButtonMinimumScaleFactor;
+
+        cell.enabled = self.destructiveButtonEnabled;
     }
-    else if (self.cancelButtonTitle.length && !kLGAlertViewIsCancelButtonSeparate(self) && indexPath.row == self.buttonTitles.count-1) {
+    else if (self.cancelButtonTitle && !kLGAlertViewIsCancelButtonSeparate(self) && indexPath.row == self.buttonTitles.count-1) {
         cell.titleColor                 = self.cancelButtonTitleColor;
         cell.titleColorHighlighted      = self.cancelButtonTitleColorHighlighted;
         cell.titleColorDisabled         = self.cancelButtonTitleColorDisabled;
         cell.backgroundColorNormal      = self.cancelButtonBackgroundColor;
         cell.backgroundColorHighlighted = self.cancelButtonBackgroundColorHighlighted;
         cell.backgroundColorDisabled    = self.cancelButtonBackgroundColorDisabled;
-        cell.separatorVisible           = NO;
-        cell.separatorColor_            = self.separatorsColor;
-        cell.textAlignment              = self.cancelButtonTextAlignment;
-        cell.font                       = self.cancelButtonFont;
-        cell.numberOfLines              = self.cancelButtonNumberOfLines;
-        cell.lineBreakMode              = self.cancelButtonLineBreakMode;
-        cell.adjustsFontSizeToFitWidth  = self.cancelButtonAdjustsFontSizeToFitWidth;
-        cell.minimumScaleFactor         = self.cancelButtonMinimumScaleFactor;
-        cell.enabled                    = self.cancelButtonEnabled;
+        cell.image                      = self.cancelButtonIconImage;
+        cell.imageHighlighted           = self.cancelButtonIconImageHighlighted;
+        cell.imageDisabled              = self.cancelButtonIconImageDisabled;
+        cell.iconPosition               = self.cancelButtonIconPosition;
+
+        cell.separatorView.hidden                = YES;
+        cell.separatorView.backgroundColor       = self.separatorsColor;
+        cell.textLabel.textAlignment             = self.cancelButtonTextAlignment;
+        cell.textLabel.font                      = self.cancelButtonFont;
+        cell.textLabel.numberOfLines             = self.cancelButtonNumberOfLines;
+        cell.textLabel.lineBreakMode             = self.cancelButtonLineBreakMode;
+        cell.textLabel.adjustsFontSizeToFitWidth = self.cancelButtonAdjustsFontSizeToFitWidth;
+        cell.textLabel.minimumScaleFactor        = self.cancelButtonMinimumScaleFactor;
+
+        cell.enabled = self.cancelButtonEnabled;
     }
     else {
+        NSInteger buttonIndex = indexPath.row - (self.destructiveButtonTitle ? 1 : 0);
+
         LGAlertViewButtonProperties *properties = nil;
 
         if (self.buttonsPropertiesDictionary) {
-            properties = self.buttonsPropertiesDictionary[[NSNumber numberWithInteger:(indexPath.row - (self.destructiveButtonTitle.length ? 1 : 0))]];
+            properties = self.buttonsPropertiesDictionary[[NSNumber numberWithInteger:buttonIndex]];
         }
 
         cell.titleColor                 = (properties.isUserTitleColor ? properties.titleColor : self.buttonsTitleColor);
@@ -1406,100 +1438,79 @@ static NSMutableArray *kLGAlertViewArray;
         cell.backgroundColorNormal      = (properties.isUserBackgroundColor ? properties.backgroundColor : self.buttonsBackgroundColor);
         cell.backgroundColorHighlighted = (properties.isUserBackgroundColorHighlighted ? properties.backgroundColorHighlighted : self.buttonsBackgroundColorHighlighted);
         cell.backgroundColorDisabled    = (properties.isUserBackgroundColorDisabled ? properties.backgroundColorDisabled : self.buttonsBackgroundColorDisabled);
-        cell.separatorVisible           = (indexPath.row != self.buttonTitles.count-1);
-        cell.separatorColor_            = self.separatorsColor;
-        cell.textAlignment              = (properties.isUserTextAlignment ? properties.textAlignment : self.buttonsTextAlignment);
-        cell.font                       = (properties.isUserFont ? properties.font : self.buttonsFont);
-        cell.numberOfLines              = (properties.isUserNumberOfLines ? properties.numberOfLines : self.buttonsNumberOfLines);
-        cell.lineBreakMode              = (properties.isUserLineBreakMode ? properties.lineBreakMode : self.buttonsLineBreakMode);
-        cell.adjustsFontSizeToFitWidth  = (properties.isUserAdjustsFontSizeTofitWidth ? properties.adjustsFontSizeToFitWidth : self.buttonsAdjustsFontSizeToFitWidth);
-        cell.minimumScaleFactor         = (properties.isUserMinimimScaleFactor ? properties.minimumScaleFactor : self.buttonsMinimumScaleFactor);
-        cell.enabled                    = [self.buttonsEnabledArray[indexPath.row - (self.destructiveButtonTitle.length ? 1 : 0)] boolValue];
-    }
 
-    return cell;
+        UIImage *image = nil;
+
+        if (properties.isUserImage) {
+            image = properties.image;
+        }
+        else if (self.buttonsIconImages.count > buttonIndex) {
+            image = self.buttonsIconImages[buttonIndex];
+        }
+
+        cell.image = image;
+
+        UIImage *imageHighlighted = nil;
+
+        if (properties.isUserImageHighlighted) {
+            imageHighlighted = properties.imageHighlighted;
+        }
+        else if (self.buttonsIconImagesHighlighted.count > buttonIndex) {
+            imageHighlighted = self.buttonsIconImagesHighlighted[buttonIndex];
+        }
+
+        cell.imageHighlighted = imageHighlighted;
+
+        UIImage *imageDisabled = nil;
+
+        if (properties.isUserImageDisabled) {
+            imageDisabled = properties.imageDisabled;
+        }
+        else if (self.buttonsIconImagesDisabled.count > buttonIndex) {
+            imageDisabled = self.buttonsIconImagesDisabled[buttonIndex];
+        }
+
+        cell.imageDisabled = imageDisabled;
+        cell.iconPosition  = (properties.isUserIconPosition ? properties.iconPosition : self.buttonsIconPosition);
+
+        cell.separatorView.hidden                = (indexPath.row == self.buttonTitles.count-1);
+        cell.separatorView.backgroundColor       = self.separatorsColor;
+        cell.textLabel.textAlignment             = (properties.isUserTextAlignment ? properties.textAlignment : self.buttonsTextAlignment);
+        cell.textLabel.font                      = (properties.isUserFont ? properties.font : self.buttonsFont);
+        cell.textLabel.numberOfLines             = (properties.isUserNumberOfLines ? properties.numberOfLines : self.buttonsNumberOfLines);
+        cell.textLabel.lineBreakMode             = (properties.isUserLineBreakMode ? properties.lineBreakMode : self.buttonsLineBreakMode);
+        cell.textLabel.adjustsFontSizeToFitWidth = (properties.isUserAdjustsFontSizeTofitWidth ? properties.adjustsFontSizeToFitWidth : self.buttonsAdjustsFontSizeToFitWidth);
+        cell.textLabel.minimumScaleFactor        = (properties.isUserMinimimScaleFactor ? properties.minimumScaleFactor : self.buttonsMinimumScaleFactor);
+
+        cell.enabled = [self.buttonsEnabledArray[buttonIndex] boolValue];
+    }
 }
 
 #pragma mark - Table View Delegate
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (self.destructiveButtonTitle.length && indexPath.row == 0 && self.destructiveButtonNumberOfLines != 1) {
-        NSString *title = self.buttonTitles[indexPath.row];
+    [self configCell:self.heightCell forRowAtIndexPath:indexPath];
 
-        UILabel *label = [UILabel new];
-        label.text = title;
-        label.textAlignment             = self.destructiveButtonTextAlignment;
-        label.font                      = self.destructiveButtonFont;
-        label.numberOfLines             = self.destructiveButtonNumberOfLines;
-        label.lineBreakMode             = self.destructiveButtonLineBreakMode;
-        label.adjustsFontSizeToFitWidth = self.destructiveButtonAdjustsFontSizeToFitWidth;
-        label.minimumScaleFactor        = self.destructiveButtonMinimumScaleFactor;
+    CGSize size = [self.heightCell sizeThatFits:CGSizeMake(CGRectGetWidth(tableView.frame), CGFLOAT_MAX)];
 
-        CGSize size = [label sizeThatFits:CGSizeMake(CGRectGetWidth(tableView.frame)-kLGAlertViewPaddingW*2, CGFLOAT_MAX)];
-        size.height += kLGAlertViewButtonTitleMarginH*2;
-
-        if (size.height < self.buttonsHeight) {
-            size.height = self.buttonsHeight;
-        }
-
-        return size.height;
+    if (size.height < self.buttonsHeight) {
+        size.height = self.buttonsHeight;
     }
-    else if (self.cancelButtonTitle.length && !kLGAlertViewIsCancelButtonSeparate(self) && indexPath.row == self.buttonTitles.count-1 && self.cancelButtonNumberOfLines != 1) {
-        NSString *title = self.buttonTitles[indexPath.row];
 
-        UILabel *label = [UILabel new];
-        label.text = title;
-        label.textAlignment             = self.cancelButtonTextAlignment;
-        label.font                      = self.cancelButtonFont;
-        label.numberOfLines             = self.cancelButtonNumberOfLines;
-        label.lineBreakMode             = self.cancelButtonLineBreakMode;
-        label.adjustsFontSizeToFitWidth = self.cancelButtonAdjustsFontSizeToFitWidth;
-        label.minimumScaleFactor        = self.cancelButtonMinimumScaleFactor;
-
-        CGSize size = [label sizeThatFits:CGSizeMake(CGRectGetWidth(tableView.frame)-kLGAlertViewPaddingW*2, CGFLOAT_MAX)];
-        size.height += kLGAlertViewButtonTitleMarginH*2;
-
-        if (size.height < self.buttonsHeight) {
-            size.height = self.buttonsHeight;
-        }
-
-        return size.height;
-    }
-    else if (self.buttonsNumberOfLines != 1) {
-        NSString *title = self.buttonTitles[indexPath.row];
-
-        UILabel *label = [UILabel new];
-        label.text = title;
-        label.textAlignment             = self.buttonsTextAlignment;
-        label.font                      = self.buttonsFont;
-        label.numberOfLines             = self.buttonsNumberOfLines;
-        label.lineBreakMode             = self.buttonsLineBreakMode;
-        label.adjustsFontSizeToFitWidth = self.buttonsAdjustsFontSizeToFitWidth;
-        label.minimumScaleFactor        = self.buttonsMinimumScaleFactor;
-
-        CGSize size = [label sizeThatFits:CGSizeMake(CGRectGetWidth(tableView.frame)-kLGAlertViewPaddingW*2, CGFLOAT_MAX)];
-        size.height += kLGAlertViewButtonTitleMarginH*2;
-
-        if (size.height < self.buttonsHeight) {
-            size.height = self.buttonsHeight;
-        }
-
-        return size.height;
-    }
-    else return self.buttonsHeight;
+    return size.height;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (self.destructiveButtonTitle.length && indexPath.row == 0) {
+    if (self.destructiveButtonTitle && indexPath.row == 0) {
         [self destructiveAction:nil];
     }
-    else if (self.cancelButtonTitle.length && indexPath.row == self.buttonTitles.count-1 && !kLGAlertViewIsCancelButtonSeparate(self)) {
+    else if (self.cancelButtonTitle && indexPath.row == self.buttonTitles.count-1 && !kLGAlertViewIsCancelButtonSeparate(self)) {
         [self cancelAction:nil];
     }
     else {
         NSUInteger index = indexPath.row;
 
-        if (self.destructiveButtonTitle.length) {
+        if (self.destructiveButtonTitle) {
             index--;
         }
 
@@ -1769,8 +1780,8 @@ static NSMutableArray *kLGAlertViewArray;
           completionHandler:^(void) {
               NSTimeInterval duration = 0.3;
 
-              BOOL cancelButtonSelf = kLGAlertViewIsCancelButtonSeparate(self) && self.cancelButtonTitle.length;
-              BOOL cancelButtonNext = kLGAlertViewIsCancelButtonSeparate(alertView) && alertView.cancelButtonTitle.length;
+              BOOL cancelButtonSelf = kLGAlertViewIsCancelButtonSeparate(self) && self.cancelButtonTitle;
+              BOOL cancelButtonNext = kLGAlertViewIsCancelButtonSeparate(alertView) && alertView.cancelButtonTitle;
 
               // -----
 
@@ -1926,7 +1937,7 @@ static NSMutableArray *kLGAlertViewArray;
 
         CGFloat offsetY = 0.0;
 
-        if (self.title.length) {
+        if (self.title) {
             self.titleLabel = [UILabel new];
             self.titleLabel.text = self.title;
             self.titleLabel.textColor = self.titleTextColor;
@@ -1949,7 +1960,7 @@ static NSMutableArray *kLGAlertViewArray;
             offsetY = CGRectGetMinY(self.titleLabel.frame)+CGRectGetHeight(self.titleLabel.frame);
         }
 
-        if (self.message.length) {
+        if (self.message) {
             self.messageLabel = [UILabel new];
             self.messageLabel.text = self.message;
             self.messageLabel.textColor = self.messageTextColor;
@@ -2145,11 +2156,11 @@ static NSMutableArray *kLGAlertViewArray;
 
         NSUInteger numberOfButtons = self.buttonTitles.count;
 
-        if (self.destructiveButtonTitle.length) {
+        if (self.destructiveButtonTitle) {
             numberOfButtons++;
         }
 
-        if (self.cancelButtonTitle.length && !kLGAlertViewIsCancelButtonSeparate(self)) {
+        if (self.cancelButtonTitle && !kLGAlertViewIsCancelButtonSeparate(self)) {
             numberOfButtons++;
         }
 
@@ -2165,34 +2176,44 @@ static NSMutableArray *kLGAlertViewArray;
                         showTable = YES;
                     }
 
-                    if (self.destructiveButtonTitle.length && !showTable) {
-                        self.destructiveButton = [UIButton new];
-                        self.destructiveButton.backgroundColor = [UIColor clearColor];
+                    if (self.destructiveButtonTitle && !showTable) {
+                        self.destructiveButton = [LGAlertViewButton new];
                         self.destructiveButton.titleLabel.numberOfLines = self.destructiveButtonNumberOfLines;
                         self.destructiveButton.titleLabel.lineBreakMode = self.destructiveButtonLineBreakMode;
                         self.destructiveButton.titleLabel.adjustsFontSizeToFitWidth = self.destructiveButtonAdjustsFontSizeToFitWidth;
                         self.destructiveButton.titleLabel.minimumScaleFactor = self.destructiveButtonMinimumScaleFactor;
                         self.destructiveButton.titleLabel.font = self.destructiveButtonFont;
+                        self.destructiveButton.titleLabel.textAlignment = self.destructiveButtonTextAlignment;
+                        self.destructiveButton.iconPosition = self.destructiveButtonIconPosition;
                         [self.destructiveButton setTitle:self.destructiveButtonTitle forState:UIControlStateNormal];
+
                         [self.destructiveButton setTitleColor:self.destructiveButtonTitleColor forState:UIControlStateNormal];
                         [self.destructiveButton setTitleColor:self.destructiveButtonTitleColorHighlighted forState:UIControlStateHighlighted];
                         [self.destructiveButton setTitleColor:self.destructiveButtonTitleColorHighlighted forState:UIControlStateSelected];
                         [self.destructiveButton setTitleColor:self.destructiveButtonTitleColorDisabled forState:UIControlStateDisabled];
-                        [self.destructiveButton setBackgroundImage:[LGAlertView image1x1WithColor:self.destructiveButtonBackgroundColor] forState:UIControlStateNormal];
-                        [self.destructiveButton setBackgroundImage:[LGAlertView image1x1WithColor:self.destructiveButtonBackgroundColorHighlighted] forState:UIControlStateHighlighted];
-                        [self.destructiveButton setBackgroundImage:[LGAlertView image1x1WithColor:self.destructiveButtonBackgroundColorHighlighted] forState:UIControlStateSelected];
-                        [self.destructiveButton setBackgroundImage:[LGAlertView image1x1WithColor:self.destructiveButtonBackgroundColorDisabled] forState:UIControlStateDisabled];
-                        self.destructiveButton.contentEdgeInsets = UIEdgeInsetsMake(kLGAlertViewButtonTitleMarginH, kLGAlertViewPaddingW, kLGAlertViewButtonTitleMarginH, kLGAlertViewPaddingW);
-                        self.destructiveButton.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
 
-                        if (self.destructiveButtonTextAlignment == NSTextAlignmentCenter) {
-                            self.destructiveButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentCenter;
-                        }
-                        else if (self.destructiveButtonTextAlignment == NSTextAlignmentLeft) {
+                        [self.destructiveButton setBackgroundColor:self.destructiveButtonBackgroundColor forState:UIControlStateNormal];
+                        [self.destructiveButton setBackgroundColor:self.destructiveButtonBackgroundColorHighlighted forState:UIControlStateHighlighted];
+                        [self.destructiveButton setBackgroundColor:self.destructiveButtonBackgroundColorHighlighted forState:UIControlStateSelected];
+                        [self.destructiveButton setBackgroundColor:self.destructiveButtonBackgroundColorDisabled forState:UIControlStateDisabled];
+
+                        [self.destructiveButton setImage:self.destructiveButtonIconImage forState:UIControlStateNormal];
+                        [self.destructiveButton setImage:self.destructiveButtonIconImageHighlighted forState:UIControlStateHighlighted];
+                        [self.destructiveButton setImage:self.destructiveButtonIconImageHighlighted forState:UIControlStateSelected];
+                        [self.destructiveButton setImage:self.destructiveButtonIconImageDisabled forState:UIControlStateDisabled];
+
+                        if (self.destructiveButtonTextAlignment == NSTextAlignmentLeft) {
                             self.destructiveButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
                         }
                         else if (self.destructiveButtonTextAlignment == NSTextAlignmentRight) {
                             self.destructiveButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
+                        }
+
+                        if (self.destructiveButton.imageView.image && self.destructiveButton.titleLabel.text.length) {
+                            self.destructiveButton.titleEdgeInsets = UIEdgeInsetsMake(0.0,
+                                                                                      kLGAlertViewButtonImageOffsetFromTitle/2.0,
+                                                                                      0.0,
+                                                                                      kLGAlertViewButtonImageOffsetFromTitle/2.0);
                         }
 
                         self.destructiveButton.enabled = self.destructiveButtonEnabled;
@@ -2205,7 +2226,7 @@ static NSMutableArray *kLGAlertViewArray;
                         }
                     }
 
-                    if (self.cancelButtonTitle.length && !kLGAlertViewIsCancelButtonSeparate(self) && !showTable) {
+                    if (self.cancelButtonTitle && !kLGAlertViewIsCancelButtonSeparate(self) && !showTable) {
                         [self cancelButtonInit];
 
                         CGSize size = [self.cancelButton sizeThatFits:CGSizeMake(CGFLOAT_MAX, CGFLOAT_MAX)];
@@ -2219,38 +2240,80 @@ static NSMutableArray *kLGAlertViewArray;
                         LGAlertViewButtonProperties *properties = nil;
 
                         if (self.buttonsPropertiesDictionary) {
-                            properties = self.buttonsPropertiesDictionary[[NSNumber numberWithInteger:0]];
+                            properties = self.buttonsPropertiesDictionary[@0];
                         }
 
-                        self.firstButton = [UIButton new];
-                        self.firstButton.backgroundColor = [UIColor clearColor];
+                        self.firstButton = [LGAlertViewButton new];
                         self.firstButton.titleLabel.numberOfLines = (properties.isUserNumberOfLines ? properties.numberOfLines : self.buttonsNumberOfLines);
                         self.firstButton.titleLabel.lineBreakMode = (properties.isUserLineBreakMode ? properties.lineBreakMode : self.buttonsLineBreakMode);
                         self.firstButton.titleLabel.adjustsFontSizeToFitWidth = (properties.isAdjustsFontSizeToFitWidth ? properties.adjustsFontSizeToFitWidth : self.buttonsAdjustsFontSizeToFitWidth);
                         self.firstButton.titleLabel.minimumScaleFactor = (properties.isUserMinimimScaleFactor ? properties.minimumScaleFactor : self.buttonsMinimumScaleFactor);
                         self.firstButton.titleLabel.font = (properties.isUserFont ? properties.font : self.buttonsFont);
+                        self.firstButton.titleLabel.textAlignment = (properties.isUserTextAlignment ? properties.textAlignment : self.buttonsTextAlignment);
+                        self.firstButton.iconPosition = (properties.isUserIconPosition ? properties.iconPosition : self.buttonsIconPosition);
                         [self.firstButton setTitle:self.buttonTitles[0] forState:UIControlStateNormal];
-                        [self.firstButton setTitleColor:(properties.isUserTitleColor ? properties.titleColor : self.buttonsTitleColor) forState:UIControlStateNormal];
-                        [self.firstButton setTitleColor:(properties.isUserTitleColorHighlighted ? properties.titleColorHighlighted : self.buttonsTitleColorHighlighted) forState:UIControlStateHighlighted];
-                        [self.firstButton setTitleColor:(properties.isUserTitleColorHighlighted ? properties.titleColorHighlighted : self.buttonsTitleColorHighlighted) forState:UIControlStateSelected];
-                        [self.firstButton setTitleColor:(properties.isUserTitleColorDisabled ? properties.titleColorDisabled : self.buttonsTitleColorDisabled) forState:UIControlStateDisabled];
-                        [self.firstButton setBackgroundImage:[LGAlertView image1x1WithColor:(properties.isUserBackgroundColor ? properties.backgroundColor : self.buttonsBackgroundColor)] forState:UIControlStateNormal];
-                        [self.firstButton setBackgroundImage:[LGAlertView image1x1WithColor:(properties.isUserBackgroundColorHighlighted ? properties.backgroundColorHighlighted : self.buttonsBackgroundColorHighlighted)] forState:UIControlStateHighlighted];
-                        [self.firstButton setBackgroundImage:[LGAlertView image1x1WithColor:(properties.isUserBackgroundColorHighlighted ? properties.backgroundColorHighlighted : self.buttonsBackgroundColorHighlighted)] forState:UIControlStateSelected];
-                        [self.firstButton setBackgroundImage:[LGAlertView image1x1WithColor:(properties.isUserBackgroundColorDisabled ? properties.backgroundColorDisabled : self.buttonsBackgroundColorDisabled)] forState:UIControlStateDisabled];
-                        self.firstButton.contentEdgeInsets = UIEdgeInsetsMake(kLGAlertViewButtonTitleMarginH, kLGAlertViewPaddingW, kLGAlertViewButtonTitleMarginH, kLGAlertViewPaddingW);
-                        self.firstButton.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
 
-                        NSTextAlignment textAlignment = (properties.isUserTextAlignment ? properties.textAlignment : self.buttonsTextAlignment);
+                        [self.firstButton setTitleColor:(properties.isUserTitleColor ? properties.titleColor : self.buttonsTitleColor)
+                                               forState:UIControlStateNormal];
+                        [self.firstButton setTitleColor:(properties.isUserTitleColorHighlighted ? properties.titleColorHighlighted : self.buttonsTitleColorHighlighted)
+                                               forState:UIControlStateHighlighted];
+                        [self.firstButton setTitleColor:(properties.isUserTitleColorHighlighted ? properties.titleColorHighlighted : self.buttonsTitleColorHighlighted)
+                                               forState:UIControlStateSelected];
+                        [self.firstButton setTitleColor:(properties.isUserTitleColorDisabled ? properties.titleColorDisabled : self.buttonsTitleColorDisabled)
+                                               forState:UIControlStateDisabled];
 
-                        if (textAlignment == NSTextAlignmentCenter) {
-                            self.firstButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentCenter;
+                        [self.firstButton setBackgroundColor:(properties.isUserBackgroundColor ? properties.backgroundColor : self.buttonsBackgroundColor)
+                                                    forState:UIControlStateNormal];
+                        [self.firstButton setBackgroundColor:(properties.isUserBackgroundColorHighlighted ? properties.backgroundColorHighlighted : self.buttonsBackgroundColorHighlighted)
+                                                    forState:UIControlStateHighlighted];
+                        [self.firstButton setBackgroundColor:(properties.isUserBackgroundColorHighlighted ? properties.backgroundColorHighlighted : self.buttonsBackgroundColorHighlighted)
+                                                    forState:UIControlStateSelected];
+                        [self.firstButton setBackgroundColor:(properties.isUserBackgroundColorDisabled ? properties.backgroundColorDisabled : self.buttonsBackgroundColorDisabled)
+                                                    forState:UIControlStateDisabled];
+
+                        UIImage *image = nil;
+                        if (properties.isUserImage) {
+                            image = properties.image;
                         }
-                        else if (textAlignment == NSTextAlignmentLeft) {
+                        else if (self.buttonsIconImages.count > 0) {
+                            image = self.buttonsIconImages[0];
+                        }
+
+                        [self.firstButton setImage:image forState:UIControlStateNormal];
+
+                        UIImage *imageHighlighted = nil;
+                        if (properties.isUserImageHighlighted) {
+                            imageHighlighted = properties.imageHighlighted;
+                        }
+                        else if (self.buttonsIconImagesHighlighted.count > 0) {
+                            imageHighlighted = self.buttonsIconImagesHighlighted[0];
+                        }
+
+                        [self.firstButton setImage:imageHighlighted forState:UIControlStateHighlighted];
+                        [self.firstButton setImage:imageHighlighted forState:UIControlStateSelected];
+
+                        UIImage *imageDisabled = nil;
+                        if (properties.isUserImageDisabled) {
+                            imageDisabled = properties.imageDisabled;
+                        }
+                        else if (self.buttonsIconImagesDisabled.count > 0) {
+                            imageDisabled = self.buttonsIconImagesDisabled[0];
+                        }
+
+                        [self.firstButton setImage:imageDisabled forState:UIControlStateDisabled];
+
+                        if (self.firstButton.titleLabel.textAlignment == NSTextAlignmentLeft) {
                             self.firstButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
                         }
-                        else if (textAlignment == NSTextAlignmentRight) {
+                        else if (self.firstButton.titleLabel.textAlignment == NSTextAlignmentRight) {
                             self.firstButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
+                        }
+
+                        if (self.firstButton.imageView.image && self.firstButton.titleLabel.text.length) {
+                            self.firstButton.titleEdgeInsets = UIEdgeInsetsMake(0.0,
+                                                                                kLGAlertViewButtonImageOffsetFromTitle/2.0,
+                                                                                0.0,
+                                                                                kLGAlertViewButtonImageOffsetFromTitle/2.0);
                         }
 
                         self.firstButton.enabled = [self.buttonsEnabledArray[0] boolValue];
@@ -2266,38 +2329,80 @@ static NSMutableArray *kLGAlertViewArray;
                             LGAlertViewButtonProperties *properties = nil;
 
                             if (self.buttonsPropertiesDictionary) {
-                                properties = self.buttonsPropertiesDictionary[[NSNumber numberWithInteger:1]];
+                                properties = self.buttonsPropertiesDictionary[@1];
                             }
 
-                            self.secondButton = [UIButton new];
-                            self.secondButton.backgroundColor = [UIColor clearColor];
+                            self.secondButton = [LGAlertViewButton new];
                             self.secondButton.titleLabel.numberOfLines = (properties.isUserNumberOfLines ? properties.numberOfLines : self.buttonsNumberOfLines);
                             self.secondButton.titleLabel.lineBreakMode = (properties.isUserLineBreakMode ? properties.lineBreakMode : self.buttonsLineBreakMode);
                             self.secondButton.titleLabel.adjustsFontSizeToFitWidth = (properties.isAdjustsFontSizeToFitWidth ? properties.adjustsFontSizeToFitWidth : self.buttonsAdjustsFontSizeToFitWidth);
                             self.secondButton.titleLabel.minimumScaleFactor = (properties.isUserMinimimScaleFactor ? properties.minimumScaleFactor : self.buttonsMinimumScaleFactor);
                             self.secondButton.titleLabel.font = (properties.isUserFont ? properties.font : self.buttonsFont);
+                            self.secondButton.titleLabel.textAlignment = (properties.isUserTextAlignment ? properties.textAlignment : self.buttonsTextAlignment);
+                            self.secondButton.iconPosition = (properties.isUserIconPosition ? properties.iconPosition : self.buttonsIconPosition);
                             [self.secondButton setTitle:self.buttonTitles[1] forState:UIControlStateNormal];
-                            [self.secondButton setTitleColor:(properties.isUserTitleColor ? properties.titleColor : self.buttonsTitleColor) forState:UIControlStateNormal];
-                            [self.secondButton setTitleColor:(properties.isUserTitleColorHighlighted ? properties.titleColorHighlighted : self.buttonsTitleColorHighlighted) forState:UIControlStateHighlighted];
-                            [self.secondButton setTitleColor:(properties.isUserTitleColorHighlighted ? properties.titleColorHighlighted : self.buttonsTitleColorHighlighted) forState:UIControlStateSelected];
-                            [self.secondButton setTitleColor:(properties.isUserTitleColorDisabled ? properties.titleColorDisabled : self.buttonsTitleColorDisabled) forState:UIControlStateDisabled];
-                            [self.secondButton setBackgroundImage:[LGAlertView image1x1WithColor:(properties.isUserBackgroundColor ? properties.backgroundColor : self.buttonsBackgroundColor)] forState:UIControlStateNormal];
-                            [self.secondButton setBackgroundImage:[LGAlertView image1x1WithColor:(properties.isUserBackgroundColorHighlighted ? properties.backgroundColorHighlighted : self.buttonsBackgroundColorHighlighted)] forState:UIControlStateHighlighted];
-                            [self.secondButton setBackgroundImage:[LGAlertView image1x1WithColor:(properties.isUserBackgroundColorHighlighted ? properties.backgroundColorHighlighted : self.buttonsBackgroundColorHighlighted)] forState:UIControlStateSelected];
-                            [self.secondButton setBackgroundImage:[LGAlertView image1x1WithColor:(properties.isUserBackgroundColorDisabled ? properties.backgroundColorDisabled : self.buttonsBackgroundColorDisabled)] forState:UIControlStateDisabled];
-                            self.secondButton.contentEdgeInsets = UIEdgeInsetsMake(kLGAlertViewButtonTitleMarginH, kLGAlertViewPaddingW, kLGAlertViewButtonTitleMarginH, kLGAlertViewPaddingW);
-                            self.secondButton.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
 
-                            NSTextAlignment textAlignment = (properties.isUserTextAlignment ? properties.textAlignment : self.buttonsTextAlignment);
+                            [self.secondButton setTitleColor:(properties.isUserTitleColor ? properties.titleColor : self.buttonsTitleColor)
+                                                    forState:UIControlStateNormal];
+                            [self.secondButton setTitleColor:(properties.isUserTitleColorHighlighted ? properties.titleColorHighlighted : self.buttonsTitleColorHighlighted)
+                                                    forState:UIControlStateHighlighted];
+                            [self.secondButton setTitleColor:(properties.isUserTitleColorHighlighted ? properties.titleColorHighlighted : self.buttonsTitleColorHighlighted)
+                                                    forState:UIControlStateSelected];
+                            [self.secondButton setTitleColor:(properties.isUserTitleColorDisabled ? properties.titleColorDisabled : self.buttonsTitleColorDisabled)
+                                                    forState:UIControlStateDisabled];
 
-                            if (textAlignment == NSTextAlignmentCenter) {
-                                self.secondButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentCenter;
+                            [self.secondButton setBackgroundColor:(properties.isUserBackgroundColor ? properties.backgroundColor : self.buttonsBackgroundColor)
+                                                         forState:UIControlStateNormal];
+                            [self.secondButton setBackgroundColor:(properties.isUserBackgroundColorHighlighted ? properties.backgroundColorHighlighted : self.buttonsBackgroundColorHighlighted)
+                                                         forState:UIControlStateHighlighted];
+                            [self.secondButton setBackgroundColor:(properties.isUserBackgroundColorHighlighted ? properties.backgroundColorHighlighted : self.buttonsBackgroundColorHighlighted)
+                                                         forState:UIControlStateSelected];
+                            [self.secondButton setBackgroundColor:(properties.isUserBackgroundColorDisabled ? properties.backgroundColorDisabled : self.buttonsBackgroundColorDisabled)
+                                                         forState:UIControlStateDisabled];
+
+                            UIImage *image = nil;
+                            if (properties.isUserImage) {
+                                image = properties.image;
                             }
-                            else if (textAlignment == NSTextAlignmentLeft) {
+                            else if (self.buttonsIconImages.count > 1) {
+                                image = self.buttonsIconImages[1];
+                            }
+
+                            [self.secondButton setImage:image forState:UIControlStateNormal];
+
+                            UIImage *imageHighlighted = nil;
+                            if (properties.isUserImageHighlighted) {
+                                imageHighlighted = properties.imageHighlighted;
+                            }
+                            else if (self.buttonsIconImagesHighlighted.count > 1) {
+                                imageHighlighted = self.buttonsIconImagesHighlighted[1];
+                            }
+
+                            [self.secondButton setImage:imageHighlighted forState:UIControlStateHighlighted];
+                            [self.secondButton setImage:imageHighlighted forState:UIControlStateSelected];
+
+                            UIImage *imageDisabled = nil;
+                            if (properties.isUserImageDisabled) {
+                                imageDisabled = properties.imageDisabled;
+                            }
+                            else if (self.buttonsIconImagesDisabled.count > 1) {
+                                imageDisabled = self.buttonsIconImagesDisabled[1];
+                            }
+                            
+                            [self.secondButton setImage:imageDisabled forState:UIControlStateDisabled];
+
+                            if (self.secondButton.titleLabel.textAlignment == NSTextAlignmentLeft) {
                                 self.secondButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
                             }
-                            else if (textAlignment == NSTextAlignmentRight) {
+                            else if (self.secondButton.titleLabel.textAlignment == NSTextAlignmentRight) {
                                 self.secondButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
+                            }
+
+                            if (self.secondButton.imageView.image && self.secondButton.titleLabel.text.length) {
+                                self.secondButton.titleEdgeInsets = UIEdgeInsetsMake(0.0,
+                                                                                     kLGAlertViewButtonImageOffsetFromTitle/2.0,
+                                                                                     0.0,
+                                                                                     kLGAlertViewButtonImageOffsetFromTitle/2.0);
                             }
 
                             self.secondButton.enabled = [self.buttonsEnabledArray[1] boolValue];
@@ -2313,38 +2418,80 @@ static NSMutableArray *kLGAlertViewArray;
                                 LGAlertViewButtonProperties *properties = nil;
 
                                 if (self.buttonsPropertiesDictionary) {
-                                    properties = self.buttonsPropertiesDictionary[[NSNumber numberWithInteger:2]];
+                                    properties = self.buttonsPropertiesDictionary[@2];
                                 }
 
-                                self.thirdButton = [UIButton new];
-                                self.thirdButton.backgroundColor = [UIColor clearColor];
+                                self.thirdButton = [LGAlertViewButton new];
                                 self.thirdButton.titleLabel.numberOfLines = (properties.isUserNumberOfLines ? properties.numberOfLines : self.buttonsNumberOfLines);
                                 self.thirdButton.titleLabel.lineBreakMode = (properties.isUserLineBreakMode ? properties.lineBreakMode : self.buttonsLineBreakMode);
                                 self.thirdButton.titleLabel.adjustsFontSizeToFitWidth = (properties.isAdjustsFontSizeToFitWidth ? properties.adjustsFontSizeToFitWidth : self.buttonsAdjustsFontSizeToFitWidth);
                                 self.thirdButton.titleLabel.minimumScaleFactor = (properties.isUserMinimimScaleFactor ? properties.minimumScaleFactor : self.buttonsMinimumScaleFactor);
                                 self.thirdButton.titleLabel.font = (properties.isUserFont ? properties.font : self.buttonsFont);
+                                self.thirdButton.titleLabel.textAlignment = (properties.isUserTextAlignment ? properties.textAlignment : self.buttonsTextAlignment);
+                                self.thirdButton.iconPosition = (properties.isUserIconPosition ? properties.iconPosition : self.buttonsIconPosition);
                                 [self.thirdButton setTitle:self.buttonTitles[2] forState:UIControlStateNormal];
-                                [self.thirdButton setTitleColor:(properties.isUserTitleColor ? properties.titleColor : self.buttonsTitleColor) forState:UIControlStateNormal];
-                                [self.thirdButton setTitleColor:(properties.isUserTitleColorHighlighted ? properties.titleColorHighlighted : self.buttonsTitleColorHighlighted) forState:UIControlStateHighlighted];
-                                [self.thirdButton setTitleColor:(properties.isUserTitleColorHighlighted ? properties.titleColorHighlighted : self.buttonsTitleColorHighlighted) forState:UIControlStateSelected];
-                                [self.thirdButton setTitleColor:(properties.isUserTitleColorDisabled ? properties.titleColorDisabled : self.buttonsTitleColorDisabled) forState:UIControlStateDisabled];
-                                [self.thirdButton setBackgroundImage:[LGAlertView image1x1WithColor:(properties.isUserBackgroundColor ? properties.backgroundColor : self.buttonsBackgroundColor)] forState:UIControlStateNormal];
-                                [self.thirdButton setBackgroundImage:[LGAlertView image1x1WithColor:(properties.isUserBackgroundColorHighlighted ? properties.backgroundColorHighlighted : self.buttonsBackgroundColorHighlighted)] forState:UIControlStateHighlighted];
-                                [self.thirdButton setBackgroundImage:[LGAlertView image1x1WithColor:(properties.isUserBackgroundColorHighlighted ? properties.backgroundColorHighlighted : self.buttonsBackgroundColorHighlighted)] forState:UIControlStateSelected];
-                                [self.thirdButton setBackgroundImage:[LGAlertView image1x1WithColor:(properties.isUserBackgroundColorDisabled ? properties.backgroundColorDisabled : self.buttonsBackgroundColorDisabled)] forState:UIControlStateDisabled];
-                                self.thirdButton.contentEdgeInsets = UIEdgeInsetsMake(kLGAlertViewButtonTitleMarginH, kLGAlertViewPaddingW, kLGAlertViewButtonTitleMarginH, kLGAlertViewPaddingW);
-                                self.thirdButton.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
 
-                                NSTextAlignment textAlignment = (properties.isUserTextAlignment ? properties.textAlignment : self.buttonsTextAlignment);
+                                [self.thirdButton setTitleColor:(properties.isUserTitleColor ? properties.titleColor : self.buttonsTitleColor)
+                                                       forState:UIControlStateNormal];
+                                [self.thirdButton setTitleColor:(properties.isUserTitleColorHighlighted ? properties.titleColorHighlighted : self.buttonsTitleColorHighlighted)
+                                                       forState:UIControlStateHighlighted];
+                                [self.thirdButton setTitleColor:(properties.isUserTitleColorHighlighted ? properties.titleColorHighlighted : self.buttonsTitleColorHighlighted)
+                                                       forState:UIControlStateSelected];
+                                [self.thirdButton setTitleColor:(properties.isUserTitleColorDisabled ? properties.titleColorDisabled : self.buttonsTitleColorDisabled)
+                                                       forState:UIControlStateDisabled];
 
-                                if (textAlignment == NSTextAlignmentCenter) {
-                                    self.thirdButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentCenter;
+                                [self.thirdButton setBackgroundColor:(properties.isUserBackgroundColor ? properties.backgroundColor : self.buttonsBackgroundColor)
+                                                            forState:UIControlStateNormal];
+                                [self.thirdButton setBackgroundColor:(properties.isUserBackgroundColorHighlighted ? properties.backgroundColorHighlighted : self.buttonsBackgroundColorHighlighted)
+                                                            forState:UIControlStateHighlighted];
+                                [self.thirdButton setBackgroundColor:(properties.isUserBackgroundColorHighlighted ? properties.backgroundColorHighlighted : self.buttonsBackgroundColorHighlighted)
+                                                            forState:UIControlStateSelected];
+                                [self.thirdButton setBackgroundColor:(properties.isUserBackgroundColorDisabled ? properties.backgroundColorDisabled : self.buttonsBackgroundColorDisabled)
+                                                            forState:UIControlStateDisabled];
+
+                                UIImage *image = nil;
+                                if (properties.isUserImage) {
+                                    image = properties.image;
                                 }
-                                else if (textAlignment == NSTextAlignmentLeft) {
+                                else if (self.buttonsIconImages.count > 2) {
+                                    image = self.buttonsIconImages[2];
+                                }
+
+                                [self.thirdButton setImage:image forState:UIControlStateNormal];
+
+                                UIImage *imageHighlighted = nil;
+                                if (properties.isUserImageHighlighted) {
+                                    imageHighlighted = properties.imageHighlighted;
+                                }
+                                else if (self.buttonsIconImagesHighlighted.count > 2) {
+                                    imageHighlighted = self.buttonsIconImagesHighlighted[2];
+                                }
+
+                                [self.thirdButton setImage:imageHighlighted forState:UIControlStateHighlighted];
+                                [self.thirdButton setImage:imageHighlighted forState:UIControlStateSelected];
+
+                                UIImage *imageDisabled = nil;
+                                if (properties.isUserImageDisabled) {
+                                    imageDisabled = properties.imageDisabled;
+                                }
+                                else if (self.buttonsIconImagesDisabled.count > 2) {
+                                    imageDisabled = self.buttonsIconImagesDisabled[2];
+                                }
+                                
+                                [self.thirdButton setImage:imageDisabled forState:UIControlStateDisabled];
+
+                                if (self.thirdButton.titleLabel.textAlignment == NSTextAlignmentLeft) {
                                     self.thirdButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
                                 }
-                                else if (textAlignment == NSTextAlignmentRight) {
+                                else if (self.thirdButton.titleLabel.textAlignment == NSTextAlignmentRight) {
                                     self.thirdButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
+                                }
+
+                                if (self.thirdButton.imageView.image && self.thirdButton.titleLabel.text.length) {
+                                    self.thirdButton.titleEdgeInsets = UIEdgeInsetsMake(0.0,
+                                                                                        kLGAlertViewButtonImageOffsetFromTitle/2.0,
+                                                                                        0.0,
+                                                                                        kLGAlertViewButtonImageOffsetFromTitle/2.0);
                                 }
 
                                 self.thirdButton.enabled = [self.buttonsEnabledArray[2] boolValue];
@@ -2524,17 +2671,24 @@ static NSMutableArray *kLGAlertViewArray;
                 self.secondButton = nil;
                 self.thirdButton = nil;
 
-                if (!self.buttonTitles) {
-                    self.buttonTitles = [NSMutableArray new];
+                NSMutableArray *buttonTitles = nil;
+
+                if (self.buttonTitles) {
+                    buttonTitles = self.buttonTitles.mutableCopy;
+                }
+                else {
+                    buttonTitles = [NSMutableArray new];
                 }
 
-                if (self.destructiveButtonTitle.length) {
-                    [self.buttonTitles insertObject:self.destructiveButtonTitle atIndex:0];
+                if (self.destructiveButtonTitle) {
+                    [buttonTitles insertObject:self.destructiveButtonTitle atIndex:0];
                 }
 
-                if (self.cancelButtonTitle.length && !kLGAlertViewIsCancelButtonSeparate(self)) {
-                    [self.buttonTitles addObject:self.cancelButtonTitle];
+                if (self.cancelButtonTitle && !kLGAlertViewIsCancelButtonSeparate(self)) {
+                    [buttonTitles addObject:self.cancelButtonTitle];
                 }
+
+                self.buttonTitles = buttonTitles;
 
                 self.tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStylePlain];
                 self.tableView.clipsToBounds = NO;
@@ -2610,7 +2764,7 @@ static NSMutableArray *kLGAlertViewArray;
     if (kLGAlertViewIsCancelButtonSeparate(self) && self.cancelButton) {
         heightMax -= (self.buttonsHeight+self.cancelButtonOffsetY);
     }
-    else if (self.cancelOnTouch && !self.cancelButtonTitle.length && size.width < width+self.buttonsHeight*2) {
+    else if (self.cancelOnTouch && !self.cancelButtonTitle && size.width < width+self.buttonsHeight*2) {
         heightMax -= self.buttonsHeight*2;
     }
 
@@ -2728,33 +2882,43 @@ static NSMutableArray *kLGAlertViewArray;
 }
 
 - (void)cancelButtonInit {
-    self.cancelButton = [UIButton new];
-    self.cancelButton.backgroundColor = [UIColor clearColor];
+    self.cancelButton = [LGAlertViewButton new];
     self.cancelButton.titleLabel.numberOfLines = self.cancelButtonNumberOfLines;
     self.cancelButton.titleLabel.lineBreakMode = self.cancelButtonLineBreakMode;
     self.cancelButton.titleLabel.adjustsFontSizeToFitWidth = self.cancelButtonAdjustsFontSizeToFitWidth;
     self.cancelButton.titleLabel.minimumScaleFactor = self.cancelButtonMinimumScaleFactor;
     self.cancelButton.titleLabel.font = self.cancelButtonFont;
+    self.cancelButton.titleLabel.textAlignment = self.cancelButtonTextAlignment;
+    self.cancelButton.iconPosition = self.cancelButtonIconPosition;
     [self.cancelButton setTitle:self.cancelButtonTitle forState:UIControlStateNormal];
+
     [self.cancelButton setTitleColor:self.cancelButtonTitleColor forState:UIControlStateNormal];
     [self.cancelButton setTitleColor:self.cancelButtonTitleColorHighlighted forState:UIControlStateHighlighted];
     [self.cancelButton setTitleColor:self.cancelButtonTitleColorHighlighted forState:UIControlStateSelected];
     [self.cancelButton setTitleColor:self.cancelButtonTitleColorDisabled forState:UIControlStateDisabled];
-    [self.cancelButton setBackgroundImage:[LGAlertView image1x1WithColor:self.cancelButtonBackgroundColor] forState:UIControlStateNormal];
-    [self.cancelButton setBackgroundImage:[LGAlertView image1x1WithColor:self.cancelButtonBackgroundColorHighlighted] forState:UIControlStateHighlighted];
-    [self.cancelButton setBackgroundImage:[LGAlertView image1x1WithColor:self.cancelButtonBackgroundColorHighlighted] forState:UIControlStateSelected];
-    [self.cancelButton setBackgroundImage:[LGAlertView image1x1WithColor:self.cancelButtonBackgroundColorDisabled] forState:UIControlStateDisabled];
-    self.cancelButton.contentEdgeInsets = UIEdgeInsetsMake(kLGAlertViewButtonTitleMarginH, kLGAlertViewPaddingW, kLGAlertViewButtonTitleMarginH, kLGAlertViewPaddingW);
-    self.cancelButton.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
 
-    if (self.cancelButtonTextAlignment == NSTextAlignmentCenter) {
-        self.cancelButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentCenter;
-    }
-    else if (self.cancelButtonTextAlignment == NSTextAlignmentLeft) {
+    [self.cancelButton setBackgroundColor:self.cancelButtonBackgroundColor forState:UIControlStateNormal];
+    [self.cancelButton setBackgroundColor:self.cancelButtonBackgroundColorHighlighted forState:UIControlStateHighlighted];
+    [self.cancelButton setBackgroundColor:self.cancelButtonBackgroundColorHighlighted forState:UIControlStateSelected];
+    [self.cancelButton setBackgroundColor:self.cancelButtonBackgroundColorDisabled forState:UIControlStateDisabled];
+
+    [self.cancelButton setImage:self.cancelButtonIconImage forState:UIControlStateNormal];
+    [self.cancelButton setImage:self.cancelButtonIconImageHighlighted forState:UIControlStateHighlighted];
+    [self.cancelButton setImage:self.cancelButtonIconImageHighlighted forState:UIControlStateSelected];
+    [self.cancelButton setImage:self.cancelButtonIconImageDisabled forState:UIControlStateDisabled];
+
+    if (self.cancelButtonTextAlignment == NSTextAlignmentLeft) {
         self.cancelButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
     }
     else if (self.cancelButtonTextAlignment == NSTextAlignmentRight) {
         self.cancelButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
+    }
+
+    if (self.cancelButton.imageView.image && self.cancelButton.titleLabel.text.length) {
+        self.cancelButton.titleEdgeInsets = UIEdgeInsetsMake(0.0,
+                                                             kLGAlertViewButtonImageOffsetFromTitle/2.0,
+                                                             0.0,
+                                                             kLGAlertViewButtonImageOffsetFromTitle/2.0);
     }
 
     self.cancelButton.enabled = self.cancelButtonEnabled;
@@ -3382,6 +3546,16 @@ static BOOL _classButtonsAdjustsFontSizeToFitWidth;
     return _classButtonsAdjustsFontSizeToFitWidth;
 }
 
+static LGAlertViewButtonIconPosition _classButtonsIconPosition;
+
++ (void)setButtonsIconPosition:(LGAlertViewButtonIconPosition)buttonsIconPosition {
+    _classButtonsIconPosition = buttonsIconPosition;
+}
+
++ (LGAlertViewButtonIconPosition)buttonsIconPosition {
+    return _classButtonsIconPosition;
+}
+
 #pragma mark - Cancel button properties
 
 static UIColor *_classCancelButtonTitleColor;
@@ -3502,6 +3676,16 @@ static BOOL _classCancelButtonAdjustsFontSizeToFitWidth;
 
 + (BOOL)isCancelButtonAdjustsFontSizeToFitWidth {
     return _classCancelButtonAdjustsFontSizeToFitWidth;
+}
+
+static LGAlertViewButtonIconPosition _classCancelButtonIconPosition;
+
++ (void)setCancelButtonIconPosition:(LGAlertViewButtonIconPosition)cancelButtonIconPosition {
+    _classCancelButtonIconPosition = cancelButtonIconPosition;
+}
+
++ (LGAlertViewButtonIconPosition)cancelButtonIconPosition {
+    return _classCancelButtonIconPosition;
 }
 
 #pragma mark - Destructive button properties
@@ -3626,6 +3810,16 @@ static BOOL _classDestructiveButtonAdjustsFontSizeToFitWidth;
     return _classDestructiveButtonAdjustsFontSizeToFitWidth;
 }
 
+static LGAlertViewButtonIconPosition _classDestructiveButtonIconPosition;
+
++ (void)setDestructiveButtonIconPosition:(LGAlertViewButtonIconPosition)destructiveButtonIconPosition {
+    _classDestructiveButtonIconPosition = destructiveButtonIconPosition;
+}
+
++ (LGAlertViewButtonIconPosition)destructiveButtonIconPosition {
+    return _classDestructiveButtonIconPosition;
+}
+
 #pragma mark - Activity indicator properties
 
 static UIActivityIndicatorViewStyle _classActivityIndicatorViewStyle;
@@ -3742,24 +3936,6 @@ static UIFont *_classProgressLabelFont;
                      completion:completion];
 }
 
-+ (UIImage *)image1x1WithColor:(UIColor *)color {
-    if (!color) return nil;
-    
-    CGRect rect = CGRectMake(0.0, 0.0, 1.0, 1.0);
-    
-    UIGraphicsBeginImageContext(rect.size);
-    
-    CGContextRef context = UIGraphicsGetCurrentContext();
-    
-    CGContextSetFillColorWithColor(context, color.CGColor);
-    CGContextFillRect(context, rect);
-    
-    UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
-    
-    return image;
-}
-
 + (void)keyboardAnimateWithNotificationUserInfo:(NSDictionary *)notificationUserInfo animations:(void(^)(CGFloat keyboardHeight))animations {
     CGFloat keyboardHeight = (notificationUserInfo[UIKeyboardFrameEndUserInfoKey] ? CGRectGetHeight([notificationUserInfo[UIKeyboardFrameEndUserInfoKey] CGRectValue]) : 0.0);
     
@@ -3777,6 +3953,16 @@ static UIFont *_classProgressLabelFont;
     }
     
     [UIView commitAnimations];
+}
+
+@end
+
+#pragma mark - Deprecated
+
+@implementation LGAlertView (Deprecated)
+
+- (void)setButtonAtIndex:(NSUInteger)index enabled:(BOOL)enabled {
+    [self setButtonEnabled:enabled atIndex:index];
 }
 
 @end

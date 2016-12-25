@@ -28,7 +28,7 @@
 //
 
 #import "LGAlertViewTextField.h"
-#import "LGAlertViewShared.h"
+#import "LGAlertViewSharedPrivate.h"
 
 @implementation LGAlertViewTextField
 

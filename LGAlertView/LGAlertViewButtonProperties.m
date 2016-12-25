@@ -31,19 +31,23 @@
 
 @interface LGAlertViewButtonProperties ()
 
-@property (assign, nonatomic, getter=isUserTitleColor)                 BOOL userTitleColor;
-@property (assign, nonatomic, getter=isUserTitleColorHighlighted)      BOOL userTitleColorHighlighted;
-@property (assign, nonatomic, getter=isUserTitleColorDisabled)         BOOL userTitleColorDisabled;
-@property (assign, nonatomic, getter=isUserTextAlignment)              BOOL userTextAlignment;
-@property (assign, nonatomic, getter=isUserFont)                       BOOL userFont;
-@property (assign, nonatomic, getter=isUserBackgroundColor)            BOOL userBackgroundColor;
-@property (assign, nonatomic, getter=isUserBackgroundColorHighlighted) BOOL userBackgroundColorHighlighted;
-@property (assign, nonatomic, getter=isUserBackgroundColorDisabled)    BOOL userBackgroundColorDisabled;
-@property (assign, nonatomic, getter=isUserNumberOfLines)              BOOL userNumberOfLines;
-@property (assign, nonatomic, getter=isUserLineBreakMode)              BOOL userLineBreakMode;
-@property (assign, nonatomic, getter=isUserMinimimScaleFactor)         BOOL userMinimumScaleFactor;
-@property (assign, nonatomic, getter=isUserAdjustsFontSizeTofitWidth)  BOOL userAdjustsFontSizeTofitWidth;
-@property (assign, nonatomic, getter=isUserEnabled)                    BOOL userEnabled;
+@property (readwrite) BOOL userTitleColor;
+@property (readwrite) BOOL userTitleColorHighlighted;
+@property (readwrite) BOOL userTitleColorDisabled;
+@property (readwrite) BOOL userBackgroundColor;
+@property (readwrite) BOOL userBackgroundColorHighlighted;
+@property (readwrite) BOOL userBackgroundColorDisabled;
+@property (readwrite) BOOL userImage;
+@property (readwrite) BOOL userImageHighlighted;
+@property (readwrite) BOOL userImageDisabled;
+@property (readwrite) BOOL userTextAlignment;
+@property (readwrite) BOOL userFont;
+@property (readwrite) BOOL userNumberOfLines;
+@property (readwrite) BOOL userLineBreakMode;
+@property (readwrite) BOOL userMinimumScaleFactor;
+@property (readwrite) BOOL userAdjustsFontSizeTofitWidth;
+@property (readwrite) BOOL userIconPosition;
+@property (readwrite) BOOL userEnabled;
 
 @end
 
@@ -55,10 +59,13 @@
         self.titleColor = [coder decodeObjectForKey:@"titleColor"];
         self.titleColorHighlighted = [coder decodeObjectForKey:@"titleColorHighlighted"];
         self.titleColorDisabled = [coder decodeObjectForKey:@"titleColorDisabled"];
-        self.font = [coder decodeObjectForKey:@"font"];
         self.backgroundColor = [coder decodeObjectForKey:@"backgroundColor"];
         self.backgroundColorHighlighted = [coder decodeObjectForKey:@"backgroundColorHighlighted"];
         self.backgroundColorDisabled = [coder decodeObjectForKey:@"backgroundColorDisabled"];
+        self.image = [coder decodeObjectForKey:@"image"];
+        self.imageHighlighted = [coder decodeObjectForKey:@"imageHighlighted"];
+        self.imageDisabled = [coder decodeObjectForKey:@"imageDisabled"];
+        self.font = [coder decodeObjectForKey:@"font"];
     }
     return self;
 }
@@ -67,10 +74,13 @@
     [coder encodeObject:self.titleColor forKey:@"titleColor"];
     [coder encodeObject:self.titleColorHighlighted forKey:@"titleColorHighlighted"];
     [coder encodeObject:self.titleColorDisabled forKey:@"titleColorDisabled"];
-    [coder encodeObject:self.font forKey:@"font"];
     [coder encodeObject:self.backgroundColor forKey:@"backgroundColor"];
     [coder encodeObject:self.backgroundColorHighlighted forKey:@"backgroundColorHighlighted"];
     [coder encodeObject:self.backgroundColorDisabled forKey:@"backgroundColorDisabled"];
+    [coder encodeObject:self.image forKey:@"image"];
+    [coder encodeObject:self.imageHighlighted forKey:@"imageHighlighted"];
+    [coder encodeObject:self.imageDisabled forKey:@"imageDisabled"];
+    [coder encodeObject:self.font forKey:@"font"];
 }
 
 #pragma mark -
@@ -90,16 +100,6 @@
     self.userTitleColorDisabled = YES;
 }
 
-- (void)setTextAlignment:(NSTextAlignment)textAlignment {
-    _textAlignment = textAlignment;
-    self.userTextAlignment = YES;
-}
-
-- (void)setFont:(UIFont *)font {
-    _font = font;
-    self.userFont = YES;
-}
-
 - (void)setBackgroundColor:(UIColor *)backgroundColor {
     _backgroundColor = backgroundColor;
     self.userBackgroundColor = YES;
@@ -113,6 +113,31 @@
 - (void)setBackgroundColorDisabled:(UIColor *)backgroundColorDisabled {
     _backgroundColorDisabled = backgroundColorDisabled;
     self.userBackgroundColorDisabled = YES;
+}
+
+- (void)setImage:(UIImage *)image {
+    _image = image;
+    self.userImage = YES;
+}
+
+- (void)setImageHighlighted:(UIImage *)imageHighlighted {
+    _imageHighlighted = imageHighlighted;
+    self.userImageHighlighted = YES;
+}
+
+- (void)setImageDisabled:(UIImage *)imageDisabled {
+    _imageDisabled = imageDisabled;
+    self.userImageDisabled = YES;
+}
+
+- (void)setTextAlignment:(NSTextAlignment)textAlignment {
+    _textAlignment = textAlignment;
+    self.userTextAlignment = YES;
+}
+
+- (void)setFont:(UIFont *)font {
+    _font = font;
+    self.userFont = YES;
 }
 
 - (void)setNumberOfLines:(NSUInteger)numberOfLines {
@@ -133,6 +158,11 @@
 - (void)setAdjustsFontSizeToFitWidth:(BOOL)adjustsFontSizeToFitWidth {
     _adjustsFontSizeToFitWidth = adjustsFontSizeToFitWidth;
     self.userAdjustsFontSizeTofitWidth = YES;
+}
+
+- (void)setIconPosition:(LGAlertViewButtonIconPosition)iconPosition {
+    _iconPosition = iconPosition;
+    self.userIconPosition = YES;
 }
 
 - (void)setEnabled:(BOOL)enabled {

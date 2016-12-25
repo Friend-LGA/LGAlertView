@@ -23,6 +23,8 @@
                              @"UIAlertController + 4 Buttons",
                              @"",
                              @"LGAlertView + 4 Buttons",
+                             @"LGAlertView + Icons left",
+                             @"LGAlertView + Icons right",
                              @"LGAlertView + Long texts adjusted",
                              @"LGAlertView + Long texts multiline",
                              @"LGAlertView + No cancel gesture",
@@ -67,7 +69,7 @@
 
     cell.textLabel.font = [UIFont systemFontOfSize:16.0];
     cell.textLabel.text = self.titlesArray[indexPath.row];
-    cell.userInteractionEnabled = (indexPath.row != 2 && indexPath.row != 15);
+    cell.userInteractionEnabled = (indexPath.row != 2 && indexPath.row != 17);
 
     return cell;
 }
@@ -129,6 +131,59 @@
             break;
         }
         case 4: {
+            LGAlertView *alertView = [[LGAlertView alloc] initWithTitle:@"With icons"
+                                                                message:@"On left side"
+                                                                  style:LGAlertViewStyleActionSheet
+                                                           buttonTitles:@[@"Button"]
+                                                      cancelButtonTitle:@"Cancel"
+                                                 destructiveButtonTitle:@"Destructive"
+                                                               delegate:self];
+
+            alertView.buttonsIconImages = @[[UIImage imageNamed:@"Button"]];
+            alertView.buttonsIconImagesHighlighted = @[[UIImage imageNamed:@"ButtonHighlighted"]];
+            alertView.buttonsTextAlignment = NSTextAlignmentLeft;
+
+            alertView.cancelButtonIconImage = [UIImage imageNamed:@"Cancel"];
+            alertView.cancelButtonIconImageHighlighted = [UIImage imageNamed:@"CancelHighlighted"];
+            alertView.cancelButtonTextAlignment = NSTextAlignmentLeft;
+
+            alertView.destructiveButtonIconImage = [UIImage imageNamed:@"Destructive"];
+            alertView.destructiveButtonIconImageHighlighted = [UIImage imageNamed:@"DestructiveHighlighted"];
+            alertView.destructiveButtonTextAlignment = NSTextAlignmentLeft;
+
+            [alertView showAnimated:YES completionHandler:nil];
+
+            break;
+        }
+        case 5: {
+            LGAlertView *alertView = [[LGAlertView alloc] initWithTitle:@"With icons"
+                                                                message:@"On right side"
+                                                                  style:LGAlertViewStyleActionSheet
+                                                           buttonTitles:@[@"Button"]
+                                                      cancelButtonTitle:@"Cancel"
+                                                 destructiveButtonTitle:@"Destructive"
+                                                               delegate:self];
+
+            alertView.buttonsIconImages = @[[UIImage imageNamed:@"Button"]];
+            alertView.buttonsIconImagesHighlighted = @[[UIImage imageNamed:@"ButtonHighlighted"]];
+            alertView.buttonsIconPosition = LGAlertViewButtonIconPositionRight;
+            alertView.buttonsTextAlignment = NSTextAlignmentLeft;
+
+            alertView.cancelButtonIconImage = [UIImage imageNamed:@"Cancel"];
+            alertView.cancelButtonIconImageHighlighted = [UIImage imageNamed:@"CancelHighlighted"];
+            alertView.cancelButtonIconPosition = LGAlertViewButtonIconPositionRight;
+            alertView.cancelButtonTextAlignment = NSTextAlignmentLeft;
+
+            alertView.destructiveButtonIconImage = [UIImage imageNamed:@"Destructive"];
+            alertView.destructiveButtonIconImageHighlighted = [UIImage imageNamed:@"DestructiveHighlighted"];
+            alertView.destructiveButtonIconPosition = LGAlertViewButtonIconPositionRight;
+            alertView.destructiveButtonTextAlignment = NSTextAlignmentLeft;
+
+            [alertView showAnimated:YES completionHandler:nil];
+
+            break;
+        }
+        case 6: {
             [[[LGAlertView alloc] initWithTitle:@"Some very really unbelievable long title text. For iPhone 6 and 6 Plus is even longer."
                                         message:@"Some unbelievable really very long message text. For iPhone 6 and 6 Plus is even longer."
                                           style:LGAlertViewStyleActionSheet
@@ -140,7 +195,7 @@
 
             break;
         }
-        case 5: {
+        case 7: {
             LGAlertView *alertView = [[LGAlertView alloc] initWithTitle:@"Some very really unbelievable long title text. For iPhone 6 and 6 Plus is even longer."
                                                                 message:@"Some unbelievable really very long message text. For iPhone 6 and 6 Plus is even longer."
                                                                   style:LGAlertViewStyleActionSheet
@@ -155,7 +210,7 @@
 
             break;
         }
-        case 6: {
+        case 8: {
             LGAlertView *alertView = [[LGAlertView alloc] initWithTitle:@"No cancel here"
                                                                 message:@"You need to make a decision"
                                                                   style:LGAlertViewStyleActionSheet
@@ -169,7 +224,7 @@
 
             break;
         }
-        case 7: {
+        case 9: {
             LGAlertView *alertView = [[LGAlertView alloc] initWithTitle:@"A lot of buttons"
                                                                 message:@"You can scroll it"
                                                                   style:LGAlertViewStyleActionSheet
@@ -206,7 +261,7 @@
 
             break;
         }
-        case 8: {
+        case 10: {
             LGAlertView *alertView = [[LGAlertView alloc] initWithTitle:@"A lot of buttons"
                                                                 message:@"You can scroll it"
                                                                   style:LGAlertViewStyleActionSheet
@@ -243,7 +298,7 @@
 
             break;
         }
-        case 9: {
+        case 11: {
             UIDatePicker *datePicker = [UIDatePicker new];
             datePicker.datePickerMode = UIDatePickerModeTime;
             datePicker.frame = CGRectMake(0.0, 0.0, self.view.frame.size.width, 110.0);
@@ -259,7 +314,7 @@
 
             break;
         }
-        case 10: {
+        case 12: {
             [[[LGAlertView alloc] initWithViewAndTitle:@"Autolayouts"
                                                message:@"You need to set width and height constraints"
                                                  style:LGAlertViewStyleActionSheet
@@ -271,7 +326,7 @@
 
             break;
         }
-        case 11: {
+        case 13: {
             LGAlertView *alertView = [[LGAlertView alloc] initWithActivityIndicatorAndTitle:@"Loading"
                                                                                     message:@"Waiting please"
                                                                                       style:LGAlertViewStyleActionSheet
@@ -290,7 +345,7 @@
 
             break;
         }
-        case 12: {
+        case 14: {
             LGAlertView *alertView = [[LGAlertView alloc] initWithActivityIndicatorAndTitle:@"Loading"
                                                                                     message:@"Waiting please"
                                                                                       style:LGAlertViewStyleActionSheet
@@ -309,7 +364,7 @@
 
             break;
         }
-        case 13: {
+        case 15: {
             LGAlertView *alertView = [[LGAlertView alloc] initWithProgressViewAndTitle:@"Loading"
                                                                                message:@"Waiting please"
                                                                                  style:LGAlertViewStyleActionSheet
@@ -325,7 +380,7 @@
 
             break;
         }
-        case 14: {
+        case 16: {
             LGAlertView *alertView = [[LGAlertView alloc] initWithProgressViewAndTitle:@"Loading"
                                                                                message:@"Waiting please"
                                                                                  style:LGAlertViewStyleActionSheet
@@ -338,60 +393,6 @@
             [alertView showAnimated:YES completionHandler:nil];
 
             [self updateProgressWithAlertView:alertView];
-
-            break;
-        }
-        case 16: {
-            LGAlertView *alertView1 = [[LGAlertView alloc] initWithActivityIndicatorAndTitle:@"Loading"
-                                                                                     message:@"Waiting please"
-                                                                                       style:LGAlertViewStyleActionSheet
-                                                                                buttonTitles:nil
-                                                                           cancelButtonTitle:@"I'm hurry"
-                                                                      destructiveButtonTitle:nil
-                                                                                    delegate:self];
-
-            [alertView1 showAnimated:YES completionHandler:nil];
-
-            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^(void) {
-                LGAlertView *alertView2 = [[LGAlertView alloc] initWithTitle:@"Title"
-                                                                     message:@"Message"
-                                                                       style:LGAlertViewStyleActionSheet
-                                                                buttonTitles:@[@"Button 1", @"Button 2"]
-                                                           cancelButtonTitle:@"Cancel"
-                                                      destructiveButtonTitle:@"Destructive"
-                                                                    delegate:self];
-
-                if (alertView1 && alertView1.isShowing) {
-                    [alertView1 transitionToAlertView:alertView2 completionHandler:nil];
-                }
-            });
-
-            break;
-        }
-        case 17: {
-            LGAlertView *alertView1 = [[LGAlertView alloc] initWithActivityIndicatorAndTitle:@"Loading"
-                                                                                     message:@"Waiting please"
-                                                                                       style:LGAlertViewStyleActionSheet
-                                                                                buttonTitles:nil
-                                                                           cancelButtonTitle:nil
-                                                                      destructiveButtonTitle:nil
-                                                                                    delegate:self];
-
-            [alertView1 showAnimated:YES completionHandler:nil];
-
-            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^(void) {
-                LGAlertView *alertView2 = [[LGAlertView alloc] initWithTitle:@"Title"
-                                                                     message:@"Message"
-                                                                       style:LGAlertViewStyleActionSheet
-                                                                buttonTitles:@[@"Button 1", @"Button 2"]
-                                                           cancelButtonTitle:nil
-                                                      destructiveButtonTitle:@"Destructive"
-                                                                    delegate:self];
-
-                if (alertView1 && alertView1.isShowing) {
-                    [alertView1 transitionToAlertView:alertView2 completionHandler:nil];
-                }
-            });
 
             break;
         }
@@ -411,7 +412,7 @@
                                                                      message:@"Message"
                                                                        style:LGAlertViewStyleActionSheet
                                                                 buttonTitles:@[@"Button 1", @"Button 2"]
-                                                           cancelButtonTitle:nil
+                                                           cancelButtonTitle:@"Cancel"
                                                       destructiveButtonTitle:@"Destructive"
                                                                     delegate:self];
 
@@ -438,7 +439,7 @@
                                                                      message:@"Message"
                                                                        style:LGAlertViewStyleActionSheet
                                                                 buttonTitles:@[@"Button 1", @"Button 2"]
-                                                           cancelButtonTitle:@"Cancel"
+                                                           cancelButtonTitle:nil
                                                       destructiveButtonTitle:@"Destructive"
                                                                     delegate:self];
 
@@ -450,6 +451,60 @@
             break;
         }
         case 20: {
+            LGAlertView *alertView1 = [[LGAlertView alloc] initWithActivityIndicatorAndTitle:@"Loading"
+                                                                                     message:@"Waiting please"
+                                                                                       style:LGAlertViewStyleActionSheet
+                                                                                buttonTitles:nil
+                                                                           cancelButtonTitle:@"I'm hurry"
+                                                                      destructiveButtonTitle:nil
+                                                                                    delegate:self];
+
+            [alertView1 showAnimated:YES completionHandler:nil];
+
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^(void) {
+                LGAlertView *alertView2 = [[LGAlertView alloc] initWithTitle:@"Title"
+                                                                     message:@"Message"
+                                                                       style:LGAlertViewStyleActionSheet
+                                                                buttonTitles:@[@"Button 1", @"Button 2"]
+                                                           cancelButtonTitle:nil
+                                                      destructiveButtonTitle:@"Destructive"
+                                                                    delegate:self];
+
+                if (alertView1 && alertView1.isShowing) {
+                    [alertView1 transitionToAlertView:alertView2 completionHandler:nil];
+                }
+            });
+
+            break;
+        }
+        case 21: {
+            LGAlertView *alertView1 = [[LGAlertView alloc] initWithActivityIndicatorAndTitle:@"Loading"
+                                                                                     message:@"Waiting please"
+                                                                                       style:LGAlertViewStyleActionSheet
+                                                                                buttonTitles:nil
+                                                                           cancelButtonTitle:nil
+                                                                      destructiveButtonTitle:nil
+                                                                                    delegate:self];
+
+            [alertView1 showAnimated:YES completionHandler:nil];
+
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^(void) {
+                LGAlertView *alertView2 = [[LGAlertView alloc] initWithTitle:@"Title"
+                                                                     message:@"Message"
+                                                                       style:LGAlertViewStyleActionSheet
+                                                                buttonTitles:@[@"Button 1", @"Button 2"]
+                                                           cancelButtonTitle:@"Cancel"
+                                                      destructiveButtonTitle:@"Destructive"
+                                                                    delegate:self];
+
+                if (alertView1 && alertView1.isShowing) {
+                    [alertView1 transitionToAlertView:alertView2 completionHandler:nil];
+                }
+            });
+
+            break;
+        }
+        case 22: {
             LGAlertView *alertView1 = [[LGAlertView alloc] initWithActivityIndicatorAndTitle:@"Loading"
                                                                                      message:@"Waiting please"
                                                                                        style:LGAlertViewStyleActionSheet
@@ -476,7 +531,7 @@
 
             break;
         }
-        case 21: {
+        case 23: {
             LGAlertView *alertView1 = [[LGAlertView alloc] initWithActivityIndicatorAndTitle:@"Loading"
                                                                                      message:@"Waiting please"
                                                                                        style:LGAlertViewStyleActionSheet

@@ -28,10 +28,11 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "LGAlertViewSharedOpen.h"
 
 @interface LGAlertViewCell : UITableViewCell
 
-@property (strong, nonatomic, nullable) NSString *title;
+@property (strong, nonatomic, readonly, nonnull) UIView *separatorView;
 
 @property (strong, nonatomic, nullable) UIColor *titleColor;
 @property (strong, nonatomic, nullable) UIColor *titleColorHighlighted;
@@ -41,15 +42,11 @@
 @property (strong, nonatomic, nullable) UIColor *backgroundColorHighlighted;
 @property (strong, nonatomic, nullable) UIColor *backgroundColorDisabled;
 
-@property (assign, nonatomic, getter=isSeparatorVisible) BOOL separatorVisible;
-@property (strong, nonatomic, nullable) UIColor *separatorColor_;
+@property (strong, nonatomic, nullable) UIImage *image;
+@property (strong, nonatomic, nullable) UIImage *imageHighlighted;
+@property (strong, nonatomic, nullable) UIImage *imageDisabled;
 
-@property (strong, nonatomic, nullable) UIFont *font;
-@property (assign, nonatomic) NSUInteger numberOfLines;
-@property (assign, nonatomic) NSLineBreakMode lineBreakMode;
-@property (assign, nonatomic) NSTextAlignment textAlignment;
-@property (assign, nonatomic) BOOL adjustsFontSizeToFitWidth;
-@property (assign, nonatomic) CGFloat minimumScaleFactor;
+@property (assign, nonatomic) LGAlertViewButtonIconPosition iconPosition;
 
 @property (assign, nonatomic) BOOL enabled;
 

@@ -1,5 +1,5 @@
 //
-//  LGAlertViewShared.h
+//  LGAlertViewButton.h
 //  LGAlertView
 //
 //
@@ -27,4 +27,13 @@
 //  SOFTWARE.
 //
 
-static CGFloat const kLGAlertViewPaddingW = 10.0;
+#import <UIKit/UIKit.h>
+#import "LGAlertViewSharedOpen.h"
+
+@interface LGAlertViewButton : UIButton
+
+@property (assign, nonatomic) LGAlertViewButtonIconPosition iconPosition;
+
+- (void)setBackgroundColor:(UIColor *)color forState:(UIControlState)state;
+
+@end

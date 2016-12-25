@@ -29,6 +29,7 @@
 
 #import <UIKit/UIKit.h>
 #import "LGAlertViewButtonProperties.h"
+#import "LGAlertViewSharedOpen.h"
 
 @class LGAlertView;
 @protocol LGAlertViewDelegate;
@@ -98,7 +99,7 @@ typedef NS_ENUM(NSUInteger, LGAlertViewWindowLevel) {
  */
 @property (class, assign, nonatomic, getter=isDismissOnAction) BOOL dismissOnAction;
 
-@property (strong, nonatomic, readonly, nullable) NSMutableArray *textFieldsArray;
+@property (copy, nonatomic, readonly, nullable) NSArray *textFieldsArray;
 
 /** View that you associate to alert view while initialization */
 @property (strong, nonatomic, readonly, nullable) UIView *innerView;
@@ -293,9 +294,12 @@ typedef NS_ENUM(NSUInteger, LGAlertViewWindowLevel) {
 
 #pragma mark - Buttons properties
 
-@property (strong, nonatomic, readonly, nullable) NSMutableArray *buttonTitles;
+@property (copy, nonatomic, readonly, nullable) NSArray *buttonTitles;
 /** Default is YES */
 @property (assign, nonatomic, getter=isCancelButtonEnabled) BOOL buttonsEnabled;
+@property (copy, nonatomic, nullable) NSArray *buttonsIconImages;
+@property (copy, nonatomic, nullable) NSArray *buttonsIconImagesHighlighted;
+@property (copy, nonatomic, nullable) NSArray *buttonsIconImagesDisabled;
 
 /** Default is tintColor */
 @property (strong, nonatomic, nullable) UIColor *buttonsTitleColor;
@@ -345,12 +349,19 @@ typedef NS_ENUM(NSUInteger, LGAlertViewWindowLevel) {
 @property (assign, nonatomic, getter=isButtonsAdjustsFontSizeToFitWidth) BOOL buttonsAdjustsFontSizeToFitWidth;
 /** Default is YES */
 @property (class, assign, nonatomic, getter=isButtonsAdjustsFontSizeToFitWidth) BOOL buttonsAdjustsFontSizeToFitWidth;
+/** Default is LGAlertViewButtonIconPositionLeft */
+@property (assign, nonatomic) LGAlertViewButtonIconPosition buttonsIconPosition;
+/** Default is LGAlertViewButtonIconPositionLeft */
+@property (class, assign, nonatomic) LGAlertViewButtonIconPosition buttonsIconPosition;
 
 #pragma mark - Cancel button properties
 
 @property (copy, nonatomic, readonly, nullable) NSString *cancelButtonTitle;
 /** Default is YES */
 @property (assign, nonatomic, getter=isCancelButtonEnabled) BOOL cancelButtonEnabled;
+@property (strong, nonatomic, nullable) UIImage *cancelButtonIconImage;
+@property (strong, nonatomic, nullable) UIImage *cancelButtonIconImageHighlighted;
+@property (strong, nonatomic, nullable) UIImage *cancelButtonIconImageDisabled;
 
 /** Default is tintColor */
 @property (strong, nonatomic, nullable) UIColor *cancelButtonTitleColor;
@@ -400,12 +411,19 @@ typedef NS_ENUM(NSUInteger, LGAlertViewWindowLevel) {
 @property (assign, nonatomic, getter=isCancelButtonAdjustsFontSizeToFitWidth) BOOL cancelButtonAdjustsFontSizeToFitWidth;
 /** Default is YES */
 @property (class, assign, nonatomic, getter=isCancelButtonAdjustsFontSizeToFitWidth) BOOL cancelButtonAdjustsFontSizeToFitWidth;
+/** Default is LGAlertViewButtonIconPositionLeft */
+@property (assign, nonatomic) LGAlertViewButtonIconPosition cancelButtonIconPosition;
+/** Default is LGAlertViewButtonIconPositionLeft */
+@property (class, assign, nonatomic) LGAlertViewButtonIconPosition cancelButtonIconPosition;
 
 #pragma mark - Destructive button properties
 
 @property (copy, nonatomic, readonly, nullable) NSString *destructiveButtonTitle;
 /** Default is YES */
 @property (assign, nonatomic, getter=isDestructiveButtonEnabled) BOOL destructiveButtonEnabled;
+@property (strong, nonatomic, nullable) UIImage *destructiveButtonIconImage;
+@property (strong, nonatomic, nullable) UIImage *destructiveButtonIconImageHighlighted;
+@property (strong, nonatomic, nullable) UIImage *destructiveButtonIconImageDisabled;
 
 /** Default is [UIColor redColor] */
 @property (strong, nonatomic, nullable) UIColor *destructiveButtonTitleColor;
@@ -455,6 +473,10 @@ typedef NS_ENUM(NSUInteger, LGAlertViewWindowLevel) {
 @property (assign, nonatomic, getter=isDestructiveButtonAdjustsFontSizeToFitWidth) BOOL destructiveButtonAdjustsFontSizeToFitWidth;
 /** Default is YES */
 @property (class, assign, nonatomic, getter=isDestructiveButtonAdjustsFontSizeToFitWidth) BOOL destructiveButtonAdjustsFontSizeToFitWidth;
+/** Default is LGAlertViewButtonIconPositionLeft */
+@property (assign, nonatomic) LGAlertViewButtonIconPosition destructiveButtonIconPosition;
+/** Default is LGAlertViewButtonIconPositionLeft */
+@property (class, assign, nonatomic) LGAlertViewButtonIconPosition destructiveButtonIconPosition;
 
 #pragma mark - Activity indicator properties
 
@@ -826,7 +848,7 @@ typedef NS_ENUM(NSUInteger, LGAlertViewWindowLevel) {
 
 - (void)setButtonPropertiesAtIndex:(NSUInteger)index handler:(void(^ _Nonnull)(LGAlertViewButtonProperties * _Nonnull properties))handler;
 
-- (void)setButtonAtIndex:(NSUInteger)index enabled:(BOOL)enabled;
+- (void)setButtonEnabled:(BOOL)enabled atIndex:(NSUInteger)index;
 - (BOOL)isButtonEnabledAtIndex:(NSUInteger)index;
 
 - (void)layoutValidateWithSize:(CGSize)size;
@@ -858,5 +880,13 @@ typedef NS_ENUM(NSUInteger, LGAlertViewWindowLevel) {
 - (void)alertView:(nonnull LGAlertView *)alertView buttonPressedWithTitle:(nullable NSString *)title index:(NSUInteger)index;
 - (void)alertViewCancelled:(nonnull LGAlertView *)alertView;
 - (void)alertViewDestructiveButtonPressed:(nonnull LGAlertView *)alertView;
+
+@end
+
+#pragma mark - Deprecated
+
+@interface LGAlertView (Deprecated)
+
+- (void)setButtonAtIndex:(NSUInteger)index enabled:(BOOL)enabled DEPRECATED_MSG_ATTRIBUTE("use setButtonEnabled:atIndex instead");
 
 @end
