@@ -226,7 +226,7 @@ More init methods you can find in [LGAlertView.h](https://github.com/Friend-LGA/
 
 ### Setup
 
-You can change properties only before you show alert view, after this change anything is impossible.
+You can change properties only before you show alert view, after this to change something is impossible.
 
 Instead of change properties for every new alert view, you can use global class properties to set them all only once and
 new alert views will use it by default:
@@ -466,6 +466,14 @@ LGAlertViewDestructiveNotification
 ### More
 
 For more details try Xcode [Demo project](https://github.com/Friend-LGA/LGAlertView/blob/master/Demo) and see [LGAlertView.h](https://github.com/Friend-LGA/LGAlertView/blob/master/LGAlertView/LGAlertView.h)
+
+## Frameworks
+
+If you like LGAlertView, check out my other useful libraries:
+* [LGSideMenuController](https://github.com/Friend-LGA/LGSideMenuController)
+  iOS view controller, shows left and right views by pressing button or gesture.
+* [LGPlusButtonsView](https://github.com/Friend-LGA/LGPlusButtonsView)
+  Customizable iOS implementation of Floating Action Button (Google Plus Button, fab).
 
 ## License
 
