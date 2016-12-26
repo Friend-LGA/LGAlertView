@@ -859,9 +859,11 @@ typedef NS_ENUM(NSUInteger, LGAlertViewWindowLevel) {
 
 + (nonnull NSArray *)alertViewsArray;
 
-#pragma mark -
+#pragma mark - Unavailable
 
-- (nonnull instancetype)initWithFrame:(CGRect)frame UNAVAILABLE_ATTRIBUTE;
+- (nonnull instancetype)init __attribute__((unavailable("use -initWithTitle... instead")));
++ (nonnull instancetype)new __attribute__((unavailable("use +alertViewWithTitle... instead")));
+- (nonnull instancetype)initWithFrame:(CGRect)frame __attribute__((unavailable("use -initWithTitle... instead")));
 
 @end
 

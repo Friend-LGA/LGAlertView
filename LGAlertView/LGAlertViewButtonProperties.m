@@ -37,9 +37,9 @@
 @property (readwrite) BOOL userBackgroundColor;
 @property (readwrite) BOOL userBackgroundColorHighlighted;
 @property (readwrite) BOOL userBackgroundColorDisabled;
-@property (readwrite) BOOL userImage;
-@property (readwrite) BOOL userImageHighlighted;
-@property (readwrite) BOOL userImageDisabled;
+@property (readwrite) BOOL userIconImage;
+@property (readwrite) BOOL userIconImageHighlighted;
+@property (readwrite) BOOL userIconImageDisabled;
 @property (readwrite) BOOL userTextAlignment;
 @property (readwrite) BOOL userFont;
 @property (readwrite) BOOL userNumberOfLines;
@@ -62,9 +62,9 @@
         self.backgroundColor = [coder decodeObjectForKey:@"backgroundColor"];
         self.backgroundColorHighlighted = [coder decodeObjectForKey:@"backgroundColorHighlighted"];
         self.backgroundColorDisabled = [coder decodeObjectForKey:@"backgroundColorDisabled"];
-        self.image = [coder decodeObjectForKey:@"image"];
-        self.imageHighlighted = [coder decodeObjectForKey:@"imageHighlighted"];
-        self.imageDisabled = [coder decodeObjectForKey:@"imageDisabled"];
+        self.iconImage = [coder decodeObjectForKey:@"iconImage"];
+        self.iconImageHighlighted = [coder decodeObjectForKey:@"iconImageHighlighted"];
+        self.iconImageDisabled = [coder decodeObjectForKey:@"iconImageDisabled"];
         self.font = [coder decodeObjectForKey:@"font"];
     }
     return self;
@@ -77,9 +77,9 @@
     [coder encodeObject:self.backgroundColor forKey:@"backgroundColor"];
     [coder encodeObject:self.backgroundColorHighlighted forKey:@"backgroundColorHighlighted"];
     [coder encodeObject:self.backgroundColorDisabled forKey:@"backgroundColorDisabled"];
-    [coder encodeObject:self.image forKey:@"image"];
-    [coder encodeObject:self.imageHighlighted forKey:@"imageHighlighted"];
-    [coder encodeObject:self.imageDisabled forKey:@"imageDisabled"];
+    [coder encodeObject:self.iconImage forKey:@"iconImage"];
+    [coder encodeObject:self.iconImageHighlighted forKey:@"iconImageHighlighted"];
+    [coder encodeObject:self.iconImageDisabled forKey:@"iconImageDisabled"];
     [coder encodeObject:self.font forKey:@"font"];
 }
 
@@ -115,19 +115,19 @@
     self.userBackgroundColorDisabled = YES;
 }
 
-- (void)setImage:(UIImage *)image {
-    _image = image;
-    self.userImage = YES;
+- (void)setIconImage:(UIImage *)iconImage {
+    _iconImage = iconImage;
+    self.userIconImage = YES;
 }
 
-- (void)setImageHighlighted:(UIImage *)imageHighlighted {
-    _imageHighlighted = imageHighlighted;
-    self.userImageHighlighted = YES;
+- (void)setIconImageHighlighted:(UIImage *)iconImageHighlighted {
+    _iconImageHighlighted = iconImageHighlighted;
+    self.userIconImageHighlighted = YES;
 }
 
-- (void)setImageDisabled:(UIImage *)imageDisabled {
-    _imageDisabled = imageDisabled;
-    self.userImageDisabled = YES;
+- (void)seticonImageDisabled:(UIImage *)iconImageDisabled {
+    _iconImageDisabled = iconImageDisabled;
+    self.userIconImageDisabled = YES;
 }
 
 - (void)setTextAlignment:(NSTextAlignment)textAlignment {

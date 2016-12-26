@@ -40,9 +40,9 @@
 @property (strong, nonatomic, nullable) UIColor *backgroundColorHighlighted;
 @property (strong, nonatomic, nullable) UIColor *backgroundColorDisabled;
 
-@property (strong, nonatomic, nullable) UIImage *image;
-@property (strong, nonatomic, nullable) UIImage *imageHighlighted;
-@property (strong, nonatomic, nullable) UIImage *imageDisabled;
+@property (strong, nonatomic, nullable) UIImage *iconImage;
+@property (strong, nonatomic, nullable) UIImage *iconImageHighlighted;
+@property (strong, nonatomic, nullable) UIImage *iconImageDisabled;
 
 @property (assign, nonatomic) NSTextAlignment textAlignment;
 @property (strong, nonatomic, nullable) UIFont *font;
@@ -60,9 +60,9 @@
 @property (assign, nonatomic, readonly, getter=isUserBackgroundColor)            BOOL userBackgroundColor;
 @property (assign, nonatomic, readonly, getter=isUserBackgroundColorHighlighted) BOOL userBackgroundColorHighlighted;
 @property (assign, nonatomic, readonly, getter=isUserBackgroundColorDisabled)    BOOL userBackgroundColorDisabled;
-@property (assign, nonatomic, readonly, getter=isUserImage)                      BOOL userImage;
-@property (assign, nonatomic, readonly, getter=isUserImageHighlighted)           BOOL userImageHighlighted;
-@property (assign, nonatomic, readonly, getter=isUserImageDisabled)              BOOL userImageDisabled;
+@property (assign, nonatomic, readonly, getter=isUserIconImage)                  BOOL userIconImage;
+@property (assign, nonatomic, readonly, getter=isUserIconImageHighlighted)       BOOL userIconImageHighlighted;
+@property (assign, nonatomic, readonly, getter=isUserIconImageDisabled)          BOOL userIconImageDisabled;
 @property (assign, nonatomic, readonly, getter=isUserTextAlignment)              BOOL userTextAlignment;
 @property (assign, nonatomic, readonly, getter=isUserFont)                       BOOL userFont;
 @property (assign, nonatomic, readonly, getter=isUserNumberOfLines)              BOOL userNumberOfLines;

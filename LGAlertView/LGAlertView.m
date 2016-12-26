@@ -1441,8 +1441,8 @@ static NSMutableArray *kLGAlertViewArray;
 
         UIImage *image = nil;
 
-        if (properties.isUserImage) {
-            image = properties.image;
+        if (properties.isUserIconImage) {
+            image = properties.iconImage;
         }
         else if (self.buttonsIconImages.count > buttonIndex) {
             image = self.buttonsIconImages[buttonIndex];
@@ -1452,8 +1452,8 @@ static NSMutableArray *kLGAlertViewArray;
 
         UIImage *imageHighlighted = nil;
 
-        if (properties.isUserImageHighlighted) {
-            imageHighlighted = properties.imageHighlighted;
+        if (properties.isUserIconImageHighlighted) {
+            imageHighlighted = properties.iconImageHighlighted;
         }
         else if (self.buttonsIconImagesHighlighted.count > buttonIndex) {
             imageHighlighted = self.buttonsIconImagesHighlighted[buttonIndex];
@@ -1463,8 +1463,8 @@ static NSMutableArray *kLGAlertViewArray;
 
         UIImage *imageDisabled = nil;
 
-        if (properties.isUserImageDisabled) {
-            imageDisabled = properties.imageDisabled;
+        if (properties.isUserIconImageDisabled) {
+            imageDisabled = properties.iconImageDisabled;
         }
         else if (self.buttonsIconImagesDisabled.count > buttonIndex) {
             imageDisabled = self.buttonsIconImagesDisabled[buttonIndex];
@@ -2272,8 +2272,8 @@ static NSMutableArray *kLGAlertViewArray;
                                                     forState:UIControlStateDisabled];
 
                         UIImage *image = nil;
-                        if (properties.isUserImage) {
-                            image = properties.image;
+                        if (properties.isUserIconImage) {
+                            image = properties.iconImage;
                         }
                         else if (self.buttonsIconImages.count > 0) {
                             image = self.buttonsIconImages[0];
@@ -2282,8 +2282,8 @@ static NSMutableArray *kLGAlertViewArray;
                         [self.firstButton setImage:image forState:UIControlStateNormal];
 
                         UIImage *imageHighlighted = nil;
-                        if (properties.isUserImageHighlighted) {
-                            imageHighlighted = properties.imageHighlighted;
+                        if (properties.isUserIconImageHighlighted) {
+                            imageHighlighted = properties.iconImageHighlighted;
                         }
                         else if (self.buttonsIconImagesHighlighted.count > 0) {
                             imageHighlighted = self.buttonsIconImagesHighlighted[0];
@@ -2293,8 +2293,8 @@ static NSMutableArray *kLGAlertViewArray;
                         [self.firstButton setImage:imageHighlighted forState:UIControlStateSelected];
 
                         UIImage *imageDisabled = nil;
-                        if (properties.isUserImageDisabled) {
-                            imageDisabled = properties.imageDisabled;
+                        if (properties.isUserIconImageDisabled) {
+                            imageDisabled = properties.iconImageDisabled;
                         }
                         else if (self.buttonsIconImagesDisabled.count > 0) {
                             imageDisabled = self.buttonsIconImagesDisabled[0];
@@ -2361,8 +2361,8 @@ static NSMutableArray *kLGAlertViewArray;
                                                          forState:UIControlStateDisabled];
 
                             UIImage *image = nil;
-                            if (properties.isUserImage) {
-                                image = properties.image;
+                            if (properties.isUserIconImage) {
+                                image = properties.iconImage;
                             }
                             else if (self.buttonsIconImages.count > 1) {
                                 image = self.buttonsIconImages[1];
@@ -2371,8 +2371,8 @@ static NSMutableArray *kLGAlertViewArray;
                             [self.secondButton setImage:image forState:UIControlStateNormal];
 
                             UIImage *imageHighlighted = nil;
-                            if (properties.isUserImageHighlighted) {
-                                imageHighlighted = properties.imageHighlighted;
+                            if (properties.isUserIconImageHighlighted) {
+                                imageHighlighted = properties.iconImageHighlighted;
                             }
                             else if (self.buttonsIconImagesHighlighted.count > 1) {
                                 imageHighlighted = self.buttonsIconImagesHighlighted[1];
@@ -2382,8 +2382,8 @@ static NSMutableArray *kLGAlertViewArray;
                             [self.secondButton setImage:imageHighlighted forState:UIControlStateSelected];
 
                             UIImage *imageDisabled = nil;
-                            if (properties.isUserImageDisabled) {
-                                imageDisabled = properties.imageDisabled;
+                            if (properties.isUserIconImageDisabled) {
+                                imageDisabled = properties.iconImageDisabled;
                             }
                             else if (self.buttonsIconImagesDisabled.count > 1) {
                                 imageDisabled = self.buttonsIconImagesDisabled[1];
@@ -2450,8 +2450,8 @@ static NSMutableArray *kLGAlertViewArray;
                                                             forState:UIControlStateDisabled];
 
                                 UIImage *image = nil;
-                                if (properties.isUserImage) {
-                                    image = properties.image;
+                                if (properties.isUserIconImage) {
+                                    image = properties.iconImage;
                                 }
                                 else if (self.buttonsIconImages.count > 2) {
                                     image = self.buttonsIconImages[2];
@@ -2460,8 +2460,8 @@ static NSMutableArray *kLGAlertViewArray;
                                 [self.thirdButton setImage:image forState:UIControlStateNormal];
 
                                 UIImage *imageHighlighted = nil;
-                                if (properties.isUserImageHighlighted) {
-                                    imageHighlighted = properties.imageHighlighted;
+                                if (properties.isUserIconImageHighlighted) {
+                                    imageHighlighted = properties.iconImageHighlighted;
                                 }
                                 else if (self.buttonsIconImagesHighlighted.count > 2) {
                                     imageHighlighted = self.buttonsIconImagesHighlighted[2];
@@ -2471,8 +2471,8 @@ static NSMutableArray *kLGAlertViewArray;
                                 [self.thirdButton setImage:imageHighlighted forState:UIControlStateSelected];
 
                                 UIImage *imageDisabled = nil;
-                                if (properties.isUserImageDisabled) {
-                                    imageDisabled = properties.imageDisabled;
+                                if (properties.isUserIconImageDisabled) {
+                                    imageDisabled = properties.iconImageDisabled;
                                 }
                                 else if (self.buttonsIconImagesDisabled.count > 2) {
                                     imageDisabled = self.buttonsIconImagesDisabled[2];
