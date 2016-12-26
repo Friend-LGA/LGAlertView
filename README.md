@@ -348,7 +348,7 @@ alertView.coverBlurEffect = UIBlurEffect(style: .regular)
 If you want to change color of blurred view, use:
 
 ```objective-c
-UIColor* coverColor;
+UIColor *coverColor;
 ```
 
 For example:
