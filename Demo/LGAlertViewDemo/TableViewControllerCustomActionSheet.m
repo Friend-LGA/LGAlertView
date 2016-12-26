@@ -89,7 +89,7 @@
 
             alertView.coverColor = [UIColor colorWithWhite:1.0 alpha:0.25];
             alertView.coverBlurEffect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleExtraLight];
-            alertView.coverAlpha = 0.9;
+            alertView.coverAlpha = 0.85;
             alertView.layerShadowColor = [UIColor colorWithWhite:0.0 alpha:0.3];
             alertView.layerShadowRadius = 4.0;
             alertView.layerShadowOpacity = 1.0;
@@ -114,7 +114,7 @@
 
             alertView.coverColor = [UIColor colorWithWhite:1.0 alpha:0.25];
             alertView.coverBlurEffect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleExtraLight];
-            alertView.coverAlpha = 0.9;
+            alertView.coverAlpha = 0.85;
             alertView.layerShadowColor = [UIColor colorWithWhite:0.0 alpha:0.3];
             alertView.layerShadowRadius = 4.0;
             alertView.layerShadowOpacity = 1.0;
@@ -143,7 +143,7 @@
 
             alertView.coverColor = [UIColor colorWithWhite:1.0 alpha:0.25];
             alertView.coverBlurEffect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleExtraLight];
-            alertView.coverAlpha = 0.9;
+            alertView.coverAlpha = 0.85;
             alertView.layerShadowColor = [UIColor colorWithWhite:0.0 alpha:0.3];
             alertView.layerShadowRadius = 4.0;
             alertView.layerShadowOpacity = 1.0;
@@ -175,7 +175,7 @@
 
             alertView.coverColor = [UIColor colorWithWhite:1.0 alpha:0.25];
             alertView.coverBlurEffect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleExtraLight];
-            alertView.coverAlpha = 0.9;
+            alertView.coverAlpha = 0.85;
             alertView.layerShadowColor = [UIColor colorWithWhite:0.0 alpha:0.3];
             alertView.layerShadowRadius = 4.0;
             alertView.layerShadowOpacity = 1.0;
@@ -212,7 +212,7 @@
 
             alertView.coverColor = [UIColor colorWithWhite:1.0 alpha:0.25];
             alertView.coverBlurEffect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleExtraLight];
-            alertView.coverAlpha = 0.9;
+            alertView.coverAlpha = 0.85;
             alertView.layerShadowColor = [UIColor colorWithWhite:0.0 alpha:0.3];
             alertView.layerShadowRadius = 4.0;
             alertView.layerShadowOpacity = 1.0;
@@ -250,7 +250,7 @@
 
             alertView.coverColor = [UIColor colorWithWhite:1.0 alpha:0.25];
             alertView.coverBlurEffect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleExtraLight];
-            alertView.coverAlpha = 0.9;
+            alertView.coverAlpha = 0.85;
             alertView.layerShadowColor = [UIColor colorWithWhite:0.0 alpha:0.3];
             alertView.layerShadowRadius = 4.0;
             alertView.layerShadowOpacity = 1.0;
