@@ -12,44 +12,24 @@ You can customize every detail. Make AlertView of your dream! :)
 
 ### Default Alert View Style
 
-<img src="https://raw.githubusercontent.com/Friend-LGA/ReadmeFiles/master/LGAlertView/Default_Alert_View_Style/Preview.gif" width="218"/>
-<img src="https://raw.githubusercontent.com/Friend-LGA/ReadmeFiles/master/LGAlertView/Default_Alert_View_Style/1.png" width="218"/>
-<img src="https://raw.githubusercontent.com/Friend-LGA/ReadmeFiles/master/LGAlertView/Default_Alert_View_Style/2.png" width="218"/>
-<img src="https://raw.githubusercontent.com/Friend-LGA/ReadmeFiles/master/LGAlertView/Default_Alert_View_Style/3.png" width="218"/>
-<img src="https://raw.githubusercontent.com/Friend-LGA/ReadmeFiles/master/LGAlertView/Default_Alert_View_Style/4.png" width="218"/>
-<img src="https://raw.githubusercontent.com/Friend-LGA/ReadmeFiles/master/LGAlertView/Default_Alert_View_Style/5.png" width="218"/>
-<img src="https://raw.githubusercontent.com/Friend-LGA/ReadmeFiles/master/LGAlertView/Default_Alert_View_Style/6.png" width="218"/>
-<img src="https://raw.githubusercontent.com/Friend-LGA/ReadmeFiles/master/LGAlertView/Default_Alert_View_Style/7.png" width="218"/>
-<img src="https://raw.githubusercontent.com/Friend-LGA/ReadmeFiles/master/LGAlertView/Default_Alert_View_Style/8.png" width="218"/>
-<img src="https://raw.githubusercontent.com/Friend-LGA/ReadmeFiles/master/LGAlertView/Default_Alert_View_Style/9.png" width="218"/>
-<img src="https://raw.githubusercontent.com/Friend-LGA/ReadmeFiles/master/LGAlertView/Default_Alert_View_Style/10.png" width="218"/>
-<img src="https://raw.githubusercontent.com/Friend-LGA/ReadmeFiles/master/LGAlertView/Default_Alert_View_Style/11.png" width="218"/>
-<img src="https://raw.githubusercontent.com/Friend-LGA/ReadmeFiles/master/LGAlertView/Default_Alert_View_Style/12.png" width="218"/>
-<img src="https://raw.githubusercontent.com/Friend-LGA/ReadmeFiles/master/LGAlertView/Default_Alert_View_Style/13.png" width="218"/>
+<img src="https://raw.githubusercontent.com/Friend-LGA/ReadmeFiles/master/LGAlertView/Default_Alert_View_Style/Preview.gif" width="214"/> <img src="https://raw.githubusercontent.com/Friend-LGA/ReadmeFiles/master/LGAlertView/Default_Alert_View_Style/1.png" width="214"/> <img src="https://raw.githubusercontent.com/Friend-LGA/ReadmeFiles/master/LGAlertView/Default_Alert_View_Style/2.png" width="214"/> <img src="https://raw.githubusercontent.com/Friend-LGA/ReadmeFiles/master/LGAlertView/Default_Alert_View_Style/3.png" width="214"/>
+<img src="https://raw.githubusercontent.com/Friend-LGA/ReadmeFiles/master/LGAlertView/Default_Alert_View_Style/4.png" width="214"/> <img src="https://raw.githubusercontent.com/Friend-LGA/ReadmeFiles/master/LGAlertView/Default_Alert_View_Style/5.png" width="214"/> <img src="https://raw.githubusercontent.com/Friend-LGA/ReadmeFiles/master/LGAlertView/Default_Alert_View_Style/6.png" width="214"/> <img src="https://raw.githubusercontent.com/Friend-LGA/ReadmeFiles/master/LGAlertView/Default_Alert_View_Style/7.png" width="214"/>
+<img src="https://raw.githubusercontent.com/Friend-LGA/ReadmeFiles/master/LGAlertView/Default_Alert_View_Style/8.png" width="214"/> <img src="https://raw.githubusercontent.com/Friend-LGA/ReadmeFiles/master/LGAlertView/Default_Alert_View_Style/9.png" width="214"/> <img src="https://raw.githubusercontent.com/Friend-LGA/ReadmeFiles/master/LGAlertView/Default_Alert_View_Style/10.png" width="214"/> <img src="https://raw.githubusercontent.com/Friend-LGA/ReadmeFiles/master/LGAlertView/Default_Alert_View_Style/11.png" width="214"/>
+<img src="https://raw.githubusercontent.com/Friend-LGA/ReadmeFiles/master/LGAlertView/Default_Alert_View_Style/12.png" width="214"/> <img src="https://raw.githubusercontent.com/Friend-LGA/ReadmeFiles/master/LGAlertView/Default_Alert_View_Style/13.png" width="214"/>
 
 ### Default Action Sheet Style
 
-<img src="https://raw.githubusercontent.com/Friend-LGA/ReadmeFiles/master/LGAlertView/Default_Action_Sheet_Style/Preview.gif" width="218"/>
-<img src="https://raw.githubusercontent.com/Friend-LGA/ReadmeFiles/master/LGAlertView/Default_Action_Sheet_Style/1.png" width="218"/>
-<img src="https://raw.githubusercontent.com/Friend-LGA/ReadmeFiles/master/LGAlertView/Default_Action_Sheet_Style/2.png" width="218"/>
-<img src="https://raw.githubusercontent.com/Friend-LGA/ReadmeFiles/master/LGAlertView/Default_Action_Sheet_Style/3.png" width="218"/>
-<img src="https://raw.githubusercontent.com/Friend-LGA/ReadmeFiles/master/LGAlertView/Default_Action_Sheet_Style/4.png" width="218"/>
-<img src="https://raw.githubusercontent.com/Friend-LGA/ReadmeFiles/master/LGAlertView/Default_Action_Sheet_Style/5.png" width="218"/>
-<img src="https://raw.githubusercontent.com/Friend-LGA/ReadmeFiles/master/LGAlertView/Default_Action_Sheet_Style/6.png" width="218"/>
-<img src="https://raw.githubusercontent.com/Friend-LGA/ReadmeFiles/master/LGAlertView/Default_Action_Sheet_Style/7.png" width="218"/>
-<img src="https://raw.githubusercontent.com/Friend-LGA/ReadmeFiles/master/LGAlertView/Default_Action_Sheet_Style/8.png" width="218"/>
+<img src="https://raw.githubusercontent.com/Friend-LGA/ReadmeFiles/master/LGAlertView/Default_Action_Sheet_Style/Preview.gif" width="214"/> <img src="https://raw.githubusercontent.com/Friend-LGA/ReadmeFiles/master/LGAlertView/Default_Action_Sheet_Style/1.png" width="214"/> <img src="https://raw.githubusercontent.com/Friend-LGA/ReadmeFiles/master/LGAlertView/Default_Action_Sheet_Style/2.png" width="214"/> <img src="https://raw.githubusercontent.com/Friend-LGA/ReadmeFiles/master/LGAlertView/Default_Action_Sheet_Style/3.png" width="214"/>
+<img src="https://raw.githubusercontent.com/Friend-LGA/ReadmeFiles/master/LGAlertView/Default_Action_Sheet_Style/4.png" width="214"/> <img src="https://raw.githubusercontent.com/Friend-LGA/ReadmeFiles/master/LGAlertView/Default_Action_Sheet_Style/5.png" width="214"/> <img src="https://raw.githubusercontent.com/Friend-LGA/ReadmeFiles/master/LGAlertView/Default_Action_Sheet_Style/6.png" width="214"/> <img src="https://raw.githubusercontent.com/Friend-LGA/ReadmeFiles/master/LGAlertView/Default_Action_Sheet_Style/7.png" width="214"/>
+<img src="https://raw.githubusercontent.com/Friend-LGA/ReadmeFiles/master/LGAlertView/Default_Action_Sheet_Style/8.png" width="214"/>
 
 ### Custom Alert View Styles
 
-<img src="https://raw.githubusercontent.com/Friend-LGA/ReadmeFiles/master/LGAlertView/Custom_Alert_View_Styles/1.png" width="218"/>
-<img src="https://raw.githubusercontent.com/Friend-LGA/ReadmeFiles/master/LGAlertView/Custom_Alert_View_Styles/2.png" width="218"/>
-<img src="https://raw.githubusercontent.com/Friend-LGA/ReadmeFiles/master/LGAlertView/Custom_Alert_View_Styles/3.png" width="218"/>
+<img src="https://raw.githubusercontent.com/Friend-LGA/ReadmeFiles/master/LGAlertView/Custom_Alert_View_Styles/1.png" width="214"/> <img src="https://raw.githubusercontent.com/Friend-LGA/ReadmeFiles/master/LGAlertView/Custom_Alert_View_Styles/2.png" width="214"/> <img src="https://raw.githubusercontent.com/Friend-LGA/ReadmeFiles/master/LGAlertView/Custom_Alert_View_Styles/3.png" width="214"/>
 
 ### Custom Action Sheet Styles
 
-<img src="https://raw.githubusercontent.com/Friend-LGA/ReadmeFiles/master/LGAlertView/Custom_Action_Sheet_Styles/1.png" width="218"/>
-<img src="https://raw.githubusercontent.com/Friend-LGA/ReadmeFiles/master/LGAlertView/Custom_Action_Sheet_Styles/2.png" width="218"/>
-<img src="https://raw.githubusercontent.com/Friend-LGA/ReadmeFiles/master/LGAlertView/Custom_Action_Sheet_Styles/3.png" width="218"/>
+<img src="https://raw.githubusercontent.com/Friend-LGA/ReadmeFiles/master/LGAlertView/Custom_Action_Sheet_Styles/1.png" width="214"/> <img src="https://raw.githubusercontent.com/Friend-LGA/ReadmeFiles/master/LGAlertView/Custom_Action_Sheet_Styles/2.png" width="214"/> <img src="https://raw.githubusercontent.com/Friend-LGA/ReadmeFiles/master/LGAlertView/Custom_Action_Sheet_Styles/3.png" width="214"/>
 
 ## Installation
 
