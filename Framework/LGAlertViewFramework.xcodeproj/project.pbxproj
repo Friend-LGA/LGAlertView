@@ -7,10 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4A95DE0C1E8C01D40079BC49 /* LGAlertViewHelper.h in Headers */ = {isa = PBXBuildFile; fileRef = 4A95DE091E8C01D40079BC49 /* LGAlertViewHelper.h */; };
+		4A95DE0D1E8C01D40079BC49 /* LGAlertViewHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A95DE0A1E8C01D40079BC49 /* LGAlertViewHelper.m */; };
+		4A95DE0E1E8C01D40079BC49 /* LGAlertViewShared.h in Headers */ = {isa = PBXBuildFile; fileRef = 4A95DE0B1E8C01D40079BC49 /* LGAlertViewShared.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4AA4DFE01E11623100CBB6AC /* LGAlertViewButton.h in Headers */ = {isa = PBXBuildFile; fileRef = 4AA4DFDE1E11623100CBB6AC /* LGAlertViewButton.h */; };
 		4AA4DFE11E11623100CBB6AC /* LGAlertViewButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 4AA4DFDF1E11623100CBB6AC /* LGAlertViewButton.m */; };
-		4AA4DFE41E11623800CBB6AC /* LGAlertViewSharedOpen.h in Headers */ = {isa = PBXBuildFile; fileRef = 4AA4DFE21E11623800CBB6AC /* LGAlertViewSharedOpen.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		4AA4DFE51E11623800CBB6AC /* LGAlertViewSharedPrivate.h in Headers */ = {isa = PBXBuildFile; fileRef = 4AA4DFE31E11623800CBB6AC /* LGAlertViewSharedPrivate.h */; };
 		4AF138F21BF383540037B073 /* LGAlertViewFramework.h in Headers */ = {isa = PBXBuildFile; fileRef = 4AF138F11BF383540037B073 /* LGAlertViewFramework.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4AF139F01BF385380037B073 /* LGAlertView.h in Headers */ = {isa = PBXBuildFile; fileRef = 4AF139E11BF385380037B073 /* LGAlertView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4AF139F11BF385380037B073 /* LGAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4AF139E21BF385380037B073 /* LGAlertView.m */; };
@@ -29,10 +30,11 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		4A95DE091E8C01D40079BC49 /* LGAlertViewHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGAlertViewHelper.h; sourceTree = "<group>"; };
+		4A95DE0A1E8C01D40079BC49 /* LGAlertViewHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGAlertViewHelper.m; sourceTree = "<group>"; };
+		4A95DE0B1E8C01D40079BC49 /* LGAlertViewShared.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGAlertViewShared.h; sourceTree = "<group>"; };
 		4AA4DFDE1E11623100CBB6AC /* LGAlertViewButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGAlertViewButton.h; sourceTree = "<group>"; };
 		4AA4DFDF1E11623100CBB6AC /* LGAlertViewButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGAlertViewButton.m; sourceTree = "<group>"; };
-		4AA4DFE21E11623800CBB6AC /* LGAlertViewSharedOpen.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGAlertViewSharedOpen.h; sourceTree = "<group>"; };
-		4AA4DFE31E11623800CBB6AC /* LGAlertViewSharedPrivate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGAlertViewSharedPrivate.h; sourceTree = "<group>"; };
 		4AF138EE1BF383540037B073 /* LGAlertView.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = LGAlertView.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		4AF138F11BF383540037B073 /* LGAlertViewFramework.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LGAlertViewFramework.h; sourceTree = "<group>"; };
 		4AF138F31BF383540037B073 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -96,22 +98,23 @@
 			children = (
 				4AF139E11BF385380037B073 /* LGAlertView.h */,
 				4AF139E21BF385380037B073 /* LGAlertView.m */,
+				4AA4DFDE1E11623100CBB6AC /* LGAlertViewButton.h */,
+				4AA4DFDF1E11623100CBB6AC /* LGAlertViewButton.m */,
 				4AF139E31BF385380037B073 /* LGAlertViewButtonProperties.h */,
 				4AF139E41BF385380037B073 /* LGAlertViewButtonProperties.m */,
 				4AF139E51BF385380037B073 /* LGAlertViewCell.h */,
 				4AF139E61BF385380037B073 /* LGAlertViewCell.m */,
-				4AA4DFDE1E11623100CBB6AC /* LGAlertViewButton.h */,
-				4AA4DFDF1E11623100CBB6AC /* LGAlertViewButton.m */,
 				4AF139E71BF385380037B073 /* LGAlertViewController.h */,
 				4AF139E81BF385380037B073 /* LGAlertViewController.m */,
+				4A95DE091E8C01D40079BC49 /* LGAlertViewHelper.h */,
+				4A95DE0A1E8C01D40079BC49 /* LGAlertViewHelper.m */,
+				4A95DE0B1E8C01D40079BC49 /* LGAlertViewShared.h */,
 				4AF139EA1BF385380037B073 /* LGAlertViewTextField.h */,
 				4AF139EB1BF385380037B073 /* LGAlertViewTextField.m */,
 				4AF139EC1BF385380037B073 /* LGAlertViewWindow.h */,
 				4AF139ED1BF385380037B073 /* LGAlertViewWindow.m */,
 				4AF139EE1BF385380037B073 /* UIWindow+LGAlertView.h */,
 				4AF139EF1BF385380037B073 /* UIWindow+LGAlertView.m */,
-				4AA4DFE21E11623800CBB6AC /* LGAlertViewSharedOpen.h */,
-				4AA4DFE31E11623800CBB6AC /* LGAlertViewSharedPrivate.h */,
 			);
 			name = LGAlertView;
 			path = ../LGAlertView;
@@ -126,15 +129,15 @@
 			files = (
 				4AF139F21BF385380037B073 /* LGAlertViewButtonProperties.h in Headers */,
 				4AF139F01BF385380037B073 /* LGAlertView.h in Headers */,
+				4A95DE0E1E8C01D40079BC49 /* LGAlertViewShared.h in Headers */,
 				4AF138F21BF383540037B073 /* LGAlertViewFramework.h in Headers */,
-				4AA4DFE41E11623800CBB6AC /* LGAlertViewSharedOpen.h in Headers */,
 				4AF139FD1BF385380037B073 /* UIWindow+LGAlertView.h in Headers */,
 				4AA4DFE01E11623100CBB6AC /* LGAlertViewButton.h in Headers */,
 				4AF139F41BF385380037B073 /* LGAlertViewCell.h in Headers */,
 				4AF139F61BF385380037B073 /* LGAlertViewController.h in Headers */,
 				4AF139F91BF385380037B073 /* LGAlertViewTextField.h in Headers */,
-				4AA4DFE51E11623800CBB6AC /* LGAlertViewSharedPrivate.h in Headers */,
 				4AF139FB1BF385380037B073 /* LGAlertViewWindow.h in Headers */,
+				4A95DE0C1E8C01D40079BC49 /* LGAlertViewHelper.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -206,6 +209,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4A95DE0D1E8C01D40079BC49 /* LGAlertViewHelper.m in Sources */,
 				4AA4DFE11E11623100CBB6AC /* LGAlertViewButton.m in Sources */,
 				4AF139FC1BF385380037B073 /* LGAlertViewWindow.m in Sources */,
 				4AF139F71BF385380037B073 /* LGAlertViewController.m in Sources */,

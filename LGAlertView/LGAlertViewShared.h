@@ -1,5 +1,5 @@
 //
-//  LGAlertViewSharedPrivate.h
+//  LGAlertViewShared.h
 //  LGAlertView
 //
 //
@@ -27,6 +27,7 @@
 //  SOFTWARE.
 //
 
-#define kLGAlertViewPaddingW 10.0
-#define kLGAlertViewPaddingH 8.0
-#define kLGAlertViewButtonImageOffsetFromTitle 8.0
+typedef NS_ENUM(NSUInteger, LGAlertViewButtonIconPosition) {
+    LGAlertViewButtonIconPositionLeft  = 0,
+    LGAlertViewButtonIconPositionRight = 1
+};

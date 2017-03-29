@@ -28,7 +28,7 @@
 //
 
 #import "LGAlertViewCell.h"
-#import "LGAlertViewSharedPrivate.h"
+#import "LGAlertViewHelper.h"
 
 @interface LGAlertViewCell ()
 
@@ -57,8 +57,8 @@
 - (void)layoutSubviews {
     [super layoutSubviews];
 
-    CGFloat frameWidth = CGRectGetWidth(self.frame);
-    CGFloat frameHeight = CGRectGetHeight(self.frame);
+    CGFloat frameWidth = CGRectGetWidth(self.bounds);
+    CGFloat frameHeight = CGRectGetHeight(self.bounds);
 
     // -----
 
@@ -68,42 +68,45 @@
     CGFloat textLabelMaxWidth;
 
     if (imageExists) {
-        textLabelMaxWidth = frameWidth-kLGAlertViewPaddingW*2-imageSize.width-kLGAlertViewButtonImageOffsetFromTitle;
+        textLabelMaxWidth = frameWidth - (LGAlertViewPaddingWidth * 2.0) - imageSize.width - LGAlertViewButtonImageOffsetFromTitle;
     }
     else {
-        textLabelMaxWidth = frameWidth-kLGAlertViewPaddingW*2;
+        textLabelMaxWidth = frameWidth - (LGAlertViewPaddingWidth * 2.0);
     }
 
-    CGRect textLabelFrame = CGRectMake(NSNotFound, kLGAlertViewPaddingH, textLabelMaxWidth, frameHeight-kLGAlertViewPaddingH*2);
+    CGRect textLabelFrame = CGRectMake(NSNotFound,
+                                       LGAlertViewPaddingHeight,
+                                       textLabelMaxWidth,
+                                       frameHeight - (LGAlertViewPaddingHeight * 2.0));
 
     if (self.textLabel.textAlignment == NSTextAlignmentLeft) {
-        textLabelFrame.origin.x = kLGAlertViewPaddingW;
+        textLabelFrame.origin.x = LGAlertViewPaddingWidth;
 
         if (imageExists && self.iconPosition == LGAlertViewButtonIconPositionLeft) {
-            textLabelFrame.origin.x += imageSize.width + kLGAlertViewButtonImageOffsetFromTitle;
+            textLabelFrame.origin.x += imageSize.width + LGAlertViewButtonImageOffsetFromTitle;
         }
     }
     else if (self.textLabel.textAlignment == NSTextAlignmentRight) {
-        textLabelFrame.origin.x = frameWidth - textLabelMaxWidth - kLGAlertViewPaddingW;
+        textLabelFrame.origin.x = frameWidth - textLabelMaxWidth - LGAlertViewPaddingWidth;
 
         if (imageExists && self.iconPosition == LGAlertViewButtonIconPositionRight) {
-            textLabelFrame.origin.x -= (imageSize.width + kLGAlertViewButtonImageOffsetFromTitle);
+            textLabelFrame.origin.x -= imageSize.width + LGAlertViewButtonImageOffsetFromTitle;
         }
     }
     else {
-        textLabelFrame.origin.x = frameWidth/2.0 - textLabelMaxWidth/2.0;
+        textLabelFrame.origin.x = (frameWidth / 2.0) - (textLabelMaxWidth / 2.0);
 
         if (imageExists) {
             if (self.iconPosition == LGAlertViewButtonIconPositionLeft) {
-                textLabelFrame.origin.x += imageSize.width/2.0 + kLGAlertViewButtonImageOffsetFromTitle/2.0;
+                textLabelFrame.origin.x += (imageSize.width / 2.0) + (LGAlertViewButtonImageOffsetFromTitle / 2.0);
             }
             else {
-                textLabelFrame.origin.x -= (imageSize.width/2.0 + kLGAlertViewButtonImageOffsetFromTitle/2.0);
+                textLabelFrame.origin.x -= (imageSize.width / 2.0) + (LGAlertViewButtonImageOffsetFromTitle / 2.0);
             }
         }
     }
 
-    if ([UIScreen mainScreen].scale == 1.0) {
+    if (LGAlertViewHelper.isNotRetina) {
         textLabelFrame = CGRectIntegral(textLabelFrame);
     }
 
@@ -114,29 +117,32 @@
     if (self.imageView.image) {
         CGSize imageSize = self.imageView.image.size;
 
-        CGRect imageViewFrame = CGRectMake(NSNotFound, frameHeight/2.0 - imageSize.height/2.0, imageSize.width, imageSize.height);
+        CGRect imageViewFrame = CGRectMake(NSNotFound,
+                                           (frameHeight / 2.0) - (imageSize.height / 2.0),
+                                           imageSize.width,
+                                           imageSize.height);
 
         if (self.textLabel.textAlignment == NSTextAlignmentCenter) {
             CGSize textLabelSize = [self.textLabel sizeThatFits:CGSizeMake(textLabelMaxWidth, CGFLOAT_MAX)];
-            CGFloat imageAndTextWidth = imageSize.width + textLabelSize.width + kLGAlertViewButtonImageOffsetFromTitle;
+            CGFloat imageAndTextWidth = imageSize.width + textLabelSize.width + LGAlertViewButtonImageOffsetFromTitle;
 
             if (self.iconPosition == LGAlertViewButtonIconPositionLeft) {
-                imageViewFrame.origin.x = frameWidth/2.0 - imageAndTextWidth/2.0;
+                imageViewFrame.origin.x = (frameWidth / 2.0) - (imageAndTextWidth / 2.0);
             }
             else {
-                imageViewFrame.origin.x = frameWidth/2.0 + imageAndTextWidth/2.0 - imageSize.width;
+                imageViewFrame.origin.x = (frameWidth / 2.0) + (imageAndTextWidth / 2.0) - imageSize.width;
             }
         }
         else {
             if (self.iconPosition == LGAlertViewButtonIconPositionLeft) {
-                imageViewFrame.origin.x = kLGAlertViewPaddingW;
+                imageViewFrame.origin.x = LGAlertViewPaddingWidth;
             }
             else {
-                imageViewFrame.origin.x = frameWidth - imageSize.width - kLGAlertViewPaddingW;
+                imageViewFrame.origin.x = frameWidth - imageSize.width - LGAlertViewPaddingWidth;
             }
         }
 
-        if ([UIScreen mainScreen].scale == 1.0) {
+        if (LGAlertViewHelper.isNotRetina) {
             imageViewFrame = CGRectIntegral(imageViewFrame);
         }
 
@@ -146,12 +152,10 @@
     // -----
 
     if (!self.separatorView.hidden) {
-        CGFloat separatorHeight = [UIScreen mainScreen].scale == 1.0 ? 1.0 : 0.5;
-
         self.separatorView.frame = CGRectMake(0.0,
-                                              CGRectGetHeight(self.frame)-separatorHeight,
-                                              CGRectGetWidth(self.frame),
-                                              separatorHeight);
+                                              CGRectGetHeight(self.bounds) - LGAlertViewHelper.separatorHeight,
+                                              CGRectGetWidth(self.bounds),
+                                              LGAlertViewHelper.separatorHeight);
     }
 }
 
@@ -200,10 +204,10 @@
 
 - (CGSize)sizeThatFits:(CGSize)size {
     CGSize sizeForTextLabel = size;
-    sizeForTextLabel.width -= kLGAlertViewPaddingW * 2;
+    sizeForTextLabel.width -= LGAlertViewPaddingWidth * 2.0;
 
     if (self.imageView.image) {
-        sizeForTextLabel.width -= (self.imageView.image.size.width + kLGAlertViewButtonImageOffsetFromTitle);
+        sizeForTextLabel.width -= self.imageView.image.size.width + LGAlertViewButtonImageOffsetFromTitle;
     }
 
     CGSize labelSize = [self.textLabel sizeThatFits:size];
@@ -224,7 +228,7 @@
         resultSize = labelSize;
     }
 
-    resultSize.height += kLGAlertViewPaddingH * 2;
+    resultSize.height += LGAlertViewPaddingHeight * 2.0;
 
     return resultSize;
 }

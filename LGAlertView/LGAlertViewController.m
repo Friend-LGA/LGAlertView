@@ -44,7 +44,7 @@
     if (self) {
         self.alertView = alertView;
 
-        self.view.backgroundColor = [UIColor clearColor];
+        self.view.backgroundColor = UIColor.clearColor;
         [self.view addSubview:view];
     }
     return self;

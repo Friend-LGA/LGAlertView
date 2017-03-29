@@ -29,22 +29,22 @@
 
 #import <UIKit/UIKit.h>
 #import "LGAlertViewButtonProperties.h"
-#import "LGAlertViewSharedOpen.h"
+#import "LGAlertViewShared.h"
 
 @class LGAlertView;
 @protocol LGAlertViewDelegate;
 
 #pragma mark - Constants
 
-static NSString *_Nonnull const LGAlertViewWillShowNotification = @"LGAlertViewWillShowNotification";
-static NSString *_Nonnull const LGAlertViewDidShowNotification  = @"LGAlertViewDidShowNotification";
+extern NSString *_Nonnull const LGAlertViewWillShowNotification;
+extern NSString *_Nonnull const LGAlertViewDidShowNotification;
 
-static NSString *_Nonnull const LGAlertViewWillDismissNotification = @"LGAlertViewWillDismissNotification";
-static NSString *_Nonnull const LGAlertViewDidDismissNotification  = @"LGAlertViewDidDismissNotification";
+extern NSString *_Nonnull const LGAlertViewWillDismissNotification;
+extern NSString *_Nonnull const LGAlertViewDidDismissNotification;
 
-static NSString *_Nonnull const LGAlertViewActionNotification      = @"LGAlertViewActionNotification";
-static NSString *_Nonnull const LGAlertViewCancelNotification      = @"LGAlertViewCancelNotification";
-static NSString *_Nonnull const LGAlertViewDestructiveNotification = @"LGAlertViewDestructiveNotification";
+extern NSString *_Nonnull const LGAlertViewActionNotification;
+extern NSString *_Nonnull const LGAlertViewCancelNotification;
+extern NSString *_Nonnull const LGAlertViewDestructiveNotification;
 
 #pragma mark - Types
 
@@ -81,7 +81,7 @@ typedef NS_ENUM(NSUInteger, LGAlertViewWindowLevel) {
 
 /**
  Default:
- if (alert with activityIndicator || progressView || textFields), then NO
+ if (alert with activityIndicator || progressView || textFields) then NO
  else YES
  */
 @property (assign, nonatomic, getter=isCancelOnTouch) BOOL cancelOnTouch;
@@ -143,7 +143,7 @@ typedef NS_ENUM(NSUInteger, LGAlertViewWindowLevel) {
 @property (class, strong, nonatomic, nullable) UIColor *backgroundColor;
 /**
  Default:
- if (style == LGAlertViewStyleAlert || iOS < 9.0), then 44.0
+ if (style == LGAlertViewStyleAlert || iOS < 9.0) then 44.0
  else 56.0
  */
 @property (assign, nonatomic) CGFloat buttonsHeight;
@@ -179,8 +179,8 @@ typedef NS_ENUM(NSUInteger, LGAlertViewWindowLevel) {
 @property (class, assign, nonatomic) CGFloat heightMax;
 /**
  Default:
- if (style == LGAlertViewStyleAlert), then 280.0
- else if (iPad), then 304.0
+ if (style == LGAlertViewStyleAlert) then 280.0
+ else if (iPad) then 304.0
  else window.width - 16.0
  */
 @property (assign, nonatomic) CGFloat width;
@@ -211,13 +211,13 @@ typedef NS_ENUM(NSUInteger, LGAlertViewWindowLevel) {
 
 /**
  Default:
- if (iOS < 9.0), then 6.0
+ if (iOS < 9.0) then 6.0
  else 12.0
  */
 @property (assign, nonatomic) CGFloat layerCornerRadius;
 /**
  Default:
- if (iOS < 9.0), then 6.0
+ if (iOS < 9.0) then 6.0
  else 12.0
  */
 @property (class, assign, nonatomic) CGFloat layerCornerRadius;
@@ -252,7 +252,7 @@ typedef NS_ENUM(NSUInteger, LGAlertViewWindowLevel) {
 
 /**
  Default:
- if (style == LGAlertViewStyleAlert), then [UIColor blackColor]
+ if (style == LGAlertViewStyleAlert) then [UIColor blackColor]
  else [UIColor grayColor]
  */
 @property (strong, nonatomic, nullable) UIColor *titleTextColor;
@@ -264,7 +264,7 @@ typedef NS_ENUM(NSUInteger, LGAlertViewWindowLevel) {
 @property (class, assign, nonatomic) NSTextAlignment titleTextAlignment;
 /**
  Default:
- if (style == LGAlertViewStyleAlert), then [UIFont boldSystemFontOfSize:18.0]
+ if (style == LGAlertViewStyleAlert) then [UIFont boldSystemFontOfSize:18.0]
  else [UIFont boldSystemFontOfSize:14.0]
  */
 @property (strong, nonatomic, nullable) UIFont *titleFont;
@@ -277,7 +277,7 @@ typedef NS_ENUM(NSUInteger, LGAlertViewWindowLevel) {
 
 /**
  Default:
- if (style == LGAlertViewStyleAlert), then [UIColor blackColor]
+ if (style == LGAlertViewStyleAlert) then [UIColor blackColor]
  else [UIColor grayColor]
  */
 @property (strong, nonatomic, nullable) UIColor *messageTextColor;
@@ -524,22 +524,22 @@ typedef NS_ENUM(NSUInteger, LGAlertViewWindowLevel) {
 
 #pragma mark - Callbacks
 
-/** Do not forget about weak reference to self */
-@property (strong, nonatomic) LGAlertViewHandler willShowHandler;
-/** Do not forget about weak reference to self */
-@property (strong, nonatomic) LGAlertViewHandler didShowHandler;
+/** To avoid retain cycle, do not forget about weak reference to self */
+@property (copy, nonatomic) LGAlertViewHandler willShowHandler;
+/** To avoid retain cycle, do not forget about weak reference to self */
+@property (copy, nonatomic) LGAlertViewHandler didShowHandler;
 
-/** Do not forget about weak reference to self */
-@property (strong, nonatomic) LGAlertViewHandler willDismissHandler;
-/** Do not forget about weak reference to self */
-@property (strong, nonatomic) LGAlertViewHandler didDismissHandler;
+/** To avoid retain cycle, do not forget about weak reference to self */
+@property (copy, nonatomic) LGAlertViewHandler willDismissHandler;
+/** To avoid retain cycle, do not forget about weak reference to self */
+@property (copy, nonatomic) LGAlertViewHandler didDismissHandler;
 
-/** Do not forget about weak reference to self */
-@property (strong, nonatomic) LGAlertViewActionHandler actionHandler;
-/** Do not forget about weak reference to self */
-@property (strong, nonatomic) LGAlertViewHandler cancelHandler;
-/** Do not forget about weak reference to self */
-@property (strong, nonatomic) LGAlertViewHandler destructiveHandler;
+/** To avoid retain cycle, do not forget about weak reference to self */
+@property (copy, nonatomic) LGAlertViewActionHandler actionHandler;
+/** To avoid retain cycle, do not forget about weak reference to self */
+@property (copy, nonatomic) LGAlertViewHandler cancelHandler;
+/** To avoid retain cycle, do not forget about weak reference to self */
+@property (copy, nonatomic) LGAlertViewHandler destructiveHandler;
 
 #pragma mark - Delegate
 
@@ -625,7 +625,7 @@ typedef NS_ENUM(NSUInteger, LGAlertViewWindowLevel) {
 
 #pragma mark -
 
-/** Do not forget about weak reference to self for actionHandler, cancelHandler and destructiveHandler blocks */
+/** To avoid retain cycle, do not forget about weak reference to self for actionHandler, cancelHandler and destructiveHandler blocks */
 - (nonnull instancetype)initWithTitle:(nullable NSString *)title
                               message:(nullable NSString *)message
                                 style:(LGAlertViewStyle)style
@@ -636,7 +636,7 @@ typedef NS_ENUM(NSUInteger, LGAlertViewWindowLevel) {
                         cancelHandler:(LGAlertViewHandler)cancelHandler
                    destructiveHandler:(LGAlertViewHandler)destructiveHandler;
 
-/** Do not forget about weak reference to self for actionHandler, cancelHandler and destructiveHandler blocks */
+/** To avoid retain cycle, do not forget about weak reference to self for actionHandler, cancelHandler and destructiveHandler blocks */
 - (nonnull instancetype)initWithViewAndTitle:(nullable NSString *)title
                                      message:(nullable NSString *)message
                                        style:(LGAlertViewStyle)style
@@ -648,7 +648,7 @@ typedef NS_ENUM(NSUInteger, LGAlertViewWindowLevel) {
                                cancelHandler:(LGAlertViewHandler)cancelHandler
                           destructiveHandler:(LGAlertViewHandler)destructiveHandler;
 
-/** Do not forget about weak reference to self for actionHandler, cancelHandler and destructiveHandler blocks */
+/** To avoid retain cycle, do not forget about weak reference to self for actionHandler, cancelHandler and destructiveHandler blocks */
 - (nonnull instancetype)initWithActivityIndicatorAndTitle:(nullable NSString *)title
                                                   message:(nullable NSString *)message
                                                     style:(LGAlertViewStyle)style
@@ -659,7 +659,7 @@ typedef NS_ENUM(NSUInteger, LGAlertViewWindowLevel) {
                                             cancelHandler:(LGAlertViewHandler)cancelHandler
                                        destructiveHandler:(LGAlertViewHandler)destructiveHandler;
 
-/** Do not forget about weak reference to self for actionHandler, cancelHandler and destructiveHandler blocks */
+/** To avoid retain cycle, do not forget about weak reference to self for actionHandler, cancelHandler and destructiveHandler blocks */
 - (nonnull instancetype)initWithProgressViewAndTitle:(nullable NSString *)title
                                              message:(nullable NSString *)message
                                                style:(LGAlertViewStyle)style
@@ -671,7 +671,7 @@ typedef NS_ENUM(NSUInteger, LGAlertViewWindowLevel) {
                                        cancelHandler:(LGAlertViewHandler)cancelHandler
                                   destructiveHandler:(LGAlertViewHandler)destructiveHandler;
 
-/** Do not forget about weak reference to self for actionHandler, cancelHandler and destructiveHandler blocks */
+/** To avoid retain cycle, do not forget about weak reference to self for actionHandler, cancelHandler and destructiveHandler blocks */
 - (nonnull instancetype)initWithTextFieldsAndTitle:(nullable NSString *)title
                                            message:(nullable NSString *)message
                                 numberOfTextFields:(NSUInteger)numberOfTextFields
@@ -683,7 +683,7 @@ typedef NS_ENUM(NSUInteger, LGAlertViewWindowLevel) {
                                      cancelHandler:(LGAlertViewHandler)cancelHandler
                                 destructiveHandler:(LGAlertViewHandler)destructiveHandler;
 
-/** Do not forget about weak reference to self for actionHandler, cancelHandler and destructiveHandler blocks */
+/** To avoid retain cycle, do not forget about weak reference to self for actionHandler, cancelHandler and destructiveHandler blocks */
 + (nonnull instancetype)alertViewWithTitle:(nullable NSString *)title
                                    message:(nullable NSString *)message
                                      style:(LGAlertViewStyle)style
@@ -694,7 +694,7 @@ typedef NS_ENUM(NSUInteger, LGAlertViewWindowLevel) {
                              cancelHandler:(LGAlertViewHandler)cancelHandler
                         destructiveHandler:(LGAlertViewHandler)destructiveHandler;
 
-/** Do not forget about weak reference to self for actionHandler, cancelHandler and destructiveHandler blocks */
+/** To avoid retain cycle, do not forget about weak reference to self for actionHandler, cancelHandler and destructiveHandler blocks */
 + (nonnull instancetype)alertViewWithViewAndTitle:(nullable NSString *)title
                                           message:(nullable NSString *)message
                                             style:(LGAlertViewStyle)style
@@ -706,7 +706,7 @@ typedef NS_ENUM(NSUInteger, LGAlertViewWindowLevel) {
                                     cancelHandler:(LGAlertViewHandler)cancelHandler
                                destructiveHandler:(LGAlertViewHandler)destructiveHandler;
 
-/** Do not forget about weak reference to self for actionHandler, cancelHandler and destructiveHandler blocks */
+/** To avoid retain cycle, do not forget about weak reference to self for actionHandler, cancelHandler and destructiveHandler blocks */
 + (nonnull instancetype)alertViewWithActivityIndicatorAndTitle:(nullable NSString *)title
                                                        message:(nullable NSString *)message
                                                          style:(LGAlertViewStyle)style
@@ -717,7 +717,7 @@ typedef NS_ENUM(NSUInteger, LGAlertViewWindowLevel) {
                                                  cancelHandler:(LGAlertViewHandler)cancelHandler
                                             destructiveHandler:(LGAlertViewHandler)destructiveHandler;
 
-/** Do not forget about weak reference to self for actionHandler, cancelHandler and destructiveHandler blocks */
+/** To avoid retain cycle, do not forget about weak reference to self for actionHandler, cancelHandler and destructiveHandler blocks */
 + (nonnull instancetype)alertViewWithProgressViewAndTitle:(nullable NSString *)title
                                                   message:(nullable NSString *)message
                                                     style:(LGAlertViewStyle)style
@@ -729,7 +729,7 @@ typedef NS_ENUM(NSUInteger, LGAlertViewWindowLevel) {
                                             cancelHandler:(LGAlertViewHandler)cancelHandler
                                        destructiveHandler:(LGAlertViewHandler)destructiveHandler;
 
-/** Do not forget about weak reference to self for actionHandler, cancelHandler and destructiveHandler blocks */
+/** To avoid retain cycle, do not forget about weak reference to self for actionHandler, cancelHandler and destructiveHandler blocks */
 + (nonnull instancetype)alertViewWithTextFieldsAndTitle:(nullable NSString *)title
                                                 message:(nullable NSString *)message
                                      numberOfTextFields:(NSUInteger)numberOfTextFields

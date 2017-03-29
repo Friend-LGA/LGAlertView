@@ -28,7 +28,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "LGAlertViewSharedOpen.h"
+#import "LGAlertViewShared.h"
 
 @interface LGAlertViewButtonProperties : NSObject
 
