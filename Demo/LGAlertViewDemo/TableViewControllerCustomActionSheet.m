@@ -281,11 +281,11 @@
             alertView.buttonsBackgroundColorHighlighted = [UIColor colorWithRed:0.0 green:0.5 blue:1.0 alpha:1.0];
             alertView.cancelButtonBackgroundColorHighlighted = [UIColor colorWithWhite:0.5 alpha:1.0];
             [alertView showAnimated:YES completionHandler:nil];
-            
+
             break;
         }
     }
-    
+
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 

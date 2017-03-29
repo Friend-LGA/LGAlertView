@@ -65,7 +65,7 @@ typedef NS_ENUM(NSUInteger, LGAlertViewWindowLevel) {
 
 #pragma mark -
 
-@interface LGAlertView : NSObject
+@interface LGAlertView : NSObject <UIAppearance>
 
 /** Is action "show" already had been executed */
 @property (assign, nonatomic, readonly, getter=isShowing) BOOL showing;
@@ -75,29 +75,20 @@ typedef NS_ENUM(NSUInteger, LGAlertViewWindowLevel) {
 @property (assign, nonatomic, readonly) LGAlertViewStyle style;
 
 /** Default is LGAlertViewWindowLevelAboveStatusBar */
-@property (assign, nonatomic) LGAlertViewWindowLevel windowLevel;
-/** Default is LGAlertViewWindowLevelAboveStatusBar */
-@property (class, assign, nonatomic) LGAlertViewWindowLevel windowLevel;
+@property (assign, nonatomic) LGAlertViewWindowLevel windowLevel UI_APPEARANCE_SELECTOR;
 
 /**
  Default:
  if (alert with activityIndicator || progressView || textFields) then NO
  else YES
  */
-@property (assign, nonatomic, getter=isCancelOnTouch) BOOL cancelOnTouch;
-/** Default is nil */
-@property (class, strong, nonatomic, nullable) NSNumber *cancelOnTouch;
+@property (assign, nonatomic, getter=isCancelOnTouch) BOOL cancelOnTouch UI_APPEARANCE_SELECTOR;
 
 /**
  Dismiss alert view on action, cancel and destructive
  Default is YES
  */
-@property (assign, nonatomic, getter=isDismissOnAction) BOOL dismissOnAction;
-/**
- Dismiss alert view on action, cancel and destructive
- Default is YES
- */
-@property (class, assign, nonatomic, getter=isDismissOnAction) BOOL dismissOnAction;
+@property (assign, nonatomic, getter=isDismissOnAction) BOOL dismissOnAction UI_APPEARANCE_SELECTOR;
 
 @property (copy, nonatomic, readonly, nullable) NSArray *textFieldsArray;
 
@@ -113,99 +104,55 @@ typedef NS_ENUM(NSUInteger, LGAlertViewWindowLevel) {
  Set colors of buttons title and highlighted background, cancel button title and highlighted background, activity indicator and progress view
  Default is [UIColor colorWithRed:0.0 green:0.5 blue:1.0 alpha:1.0]
  */
-@property (strong, nonatomic, nullable) UIColor *tintColor;
-/**
- Set colors of buttons title and highlighted background, cancel button title and highlighted background, activity indicator and progress view
- Default is [UIColor colorWithRed:0.0 green:0.5 blue:1.0 alpha:1.0]
- */
-@property (class, strong, nonatomic, nullable) UIColor *tintColor;
+@property (strong, nonatomic, nullable) UIColor *tintColor UI_APPEARANCE_SELECTOR;
 /**
  Color hides main view when alert view is showing
  Default is [UIColor colorWithWhite:0.0 alpha:0.4]
  */
-@property (strong, nonatomic, nullable) UIColor *coverColor;
-/**
- Color hides main view when alert view is showing
- Default is [UIColor colorWithWhite:0.0 alpha:0.4]
- */
-@property (class, strong, nonatomic, nullable) UIColor *coverColor;
+@property (strong, nonatomic, nullable) UIColor *coverColor UI_APPEARANCE_SELECTOR;
 /** Default is nil */
-@property (strong, nonatomic, nullable) UIBlurEffect *coverBlurEffect;
-/** Default is nil */
-@property (class, strong, nonatomic, nullable) UIBlurEffect *coverBlurEffect;
+@property (strong, nonatomic, nullable) UIBlurEffect *coverBlurEffect UI_APPEARANCE_SELECTOR;
 /** Default is 1.0 */
-@property (assign, nonatomic) CGFloat coverAlpha;
-/** Default is 1.0 */
-@property (class, assign, nonatomic) CGFloat coverAlpha;
+@property (assign, nonatomic) CGFloat coverAlpha UI_APPEARANCE_SELECTOR;
 /** Default is [UIColor whiteColor] */
-@property (strong, nonatomic, nullable) UIColor *backgroundColor;
-/** Default is [UIColor whiteColor] */
-@property (class, strong, nonatomic, nullable) UIColor *backgroundColor;
+@property (strong, nonatomic, nullable) UIColor *backgroundColor UI_APPEARANCE_SELECTOR;
 /**
  Default:
  if (style == LGAlertViewStyleAlert || iOS < 9.0) then 44.0
  else 56.0
  */
-@property (assign, nonatomic) CGFloat buttonsHeight;
-/** Default is NSNotFound */
-@property (class, assign, nonatomic) CGFloat buttonsHeight;
+@property (assign, nonatomic) CGFloat buttonsHeight UI_APPEARANCE_SELECTOR;
 /** Default is 44.0 */
-@property (assign, nonatomic) CGFloat textFieldsHeight;
-/** Default is 44.0 */
-@property (class, assign, nonatomic) CGFloat textFieldsHeight;
+@property (assign, nonatomic) CGFloat textFieldsHeight UI_APPEARANCE_SELECTOR;
 /**
  Top and bottom offsets from borders of the screen
  Default is 8.0
  */
-@property (assign, nonatomic) CGFloat offsetVertical;
-/**
- Top and bottom offsets from borders of the screen
- Default is 8.0
- */
-@property (class, assign, nonatomic) CGFloat offsetVertical;
+@property (assign, nonatomic) CGFloat offsetVertical UI_APPEARANCE_SELECTOR;
 /**
  Offset between cancel button and main view when style is LGAlertViewStyleActionSheet
  Default is 8.0
  */
-@property (assign, nonatomic) CGFloat cancelButtonOffsetY;
-/**
- Offset between cancel button and main view when style is LGAlertViewStyleActionSheet
- Default is 8.0
- */
-@property (class, assign, nonatomic) CGFloat cancelButtonOffsetY;
+@property (assign, nonatomic) CGFloat cancelButtonOffsetY UI_APPEARANCE_SELECTOR;
 /** Default is NSNotFound */
-@property (assign, nonatomic) CGFloat heightMax;
-/** Default is NSNotFound */
-@property (class, assign, nonatomic) CGFloat heightMax;
+@property (assign, nonatomic) CGFloat heightMax UI_APPEARANCE_SELECTOR;
 /**
  Default:
  if (style == LGAlertViewStyleAlert) then 280.0
  else if (iPad) then 304.0
  else window.width - 16.0
  */
-@property (assign, nonatomic) CGFloat width;
-/** Default is NSNotFound */
-@property (class, assign, nonatomic) CGFloat width;
+@property (assign, nonatomic) CGFloat width UI_APPEARANCE_SELECTOR;
 /** Default is [UIColor colorWithWhite:0.85 alpha:1.0] */
-@property (strong, nonatomic, nullable) UIColor *separatorsColor;
-/** Default is [UIColor colorWithWhite:0.85 alpha:1.0] */
-@property (class, strong, nonatomic, nullable) UIColor *separatorsColor;
+@property (strong, nonatomic, nullable) UIColor *separatorsColor UI_APPEARANCE_SELECTOR;
 /** Default is UIScrollViewIndicatorStyleBlack */
-@property (assign, nonatomic) UIScrollViewIndicatorStyle indicatorStyle;
-/** Default is UIScrollViewIndicatorStyleBlack */
-@property (class, assign, nonatomic) UIScrollViewIndicatorStyle indicatorStyle;
+@property (assign, nonatomic) UIScrollViewIndicatorStyle indicatorStyle UI_APPEARANCE_SELECTOR;
 /** Default is NO */
-@property (assign, nonatomic, getter=isShowsVerticalScrollIndicator) BOOL showsVerticalScrollIndicator;
+@property (assign, nonatomic, getter=isShowsVerticalScrollIndicator) BOOL showsVerticalScrollIndicator UI_APPEARANCE_SELECTOR;
 /** Default is NO */
-@property (class, assign, nonatomic, getter=isShowsVerticalScrollIndicator) BOOL showsVerticalScrollIndicator;
+@property (assign, nonatomic, getter=isPadShowsActionSheetFromBottom) BOOL padShowsActionSheetFromBottom UI_APPEARANCE_SELECTOR;
 /** Default is NO */
-@property (assign, nonatomic, getter=isPadShowsActionSheetFromBottom) BOOL padShowsActionSheetFromBottom;
-/** Default is NO */
-@property (class, assign, nonatomic, getter=isPadShowsActionSheetFromBottom) BOOL padShowsActionSheetFromBottom;
-/** Default is NO */
-@property (assign, nonatomic, getter=isOneRowOneButton) BOOL oneRowOneButton;
-/** Default is NO */
-@property (class, assign, nonatomic, getter=isOneRowOneButton) BOOL oneRowOneButton;
+@property (assign, nonatomic, getter=isOneRowOneButton) BOOL oneRowOneButton UI_APPEARANCE_SELECTOR;
 
 #pragma marl - Layer properties
 
@@ -214,37 +161,19 @@ typedef NS_ENUM(NSUInteger, LGAlertViewWindowLevel) {
  if (iOS < 9.0) then 6.0
  else 12.0
  */
-@property (assign, nonatomic) CGFloat layerCornerRadius;
-/**
- Default:
- if (iOS < 9.0) then 6.0
- else 12.0
- */
-@property (class, assign, nonatomic) CGFloat layerCornerRadius;
+@property (assign, nonatomic) CGFloat layerCornerRadius UI_APPEARANCE_SELECTOR;
 /** Default is nil */
-@property (strong, nonatomic, nullable) UIColor *layerBorderColor;
+@property (strong, nonatomic, nullable) UIColor *layerBorderColor UI_APPEARANCE_SELECTOR;
+/** Default is 0.0 */
+@property (assign, nonatomic) CGFloat layerBorderWidth UI_APPEARANCE_SELECTOR;
 /** Default is nil */
-@property (class, strong, nonatomic, nullable) UIColor *layerBorderColor;
+@property (strong, nonatomic, nullable) UIColor *layerShadowColor UI_APPEARANCE_SELECTOR;
 /** Default is 0.0 */
-@property (assign, nonatomic) CGFloat layerBorderWidth;
+@property (assign, nonatomic) CGFloat layerShadowRadius UI_APPEARANCE_SELECTOR;
 /** Default is 0.0 */
-@property (class, assign, nonatomic) CGFloat layerBorderWidth;
-/** Default is nil */
-@property (strong, nonatomic, nullable) UIColor *layerShadowColor;
-/** Default is nil */
-@property (class, strong, nonatomic, nullable) UIColor *layerShadowColor;
-/** Default is 0.0 */
-@property (assign, nonatomic) CGFloat layerShadowRadius;
-/** Default is 0.0 */
-@property (class, assign, nonatomic) CGFloat layerShadowRadius;
-/** Default is 0.0 */
-@property (assign, nonatomic) CGFloat layerShadowOpacity;
-/** Default is 0.0 */
-@property (class, assign, nonatomic) CGFloat layerShadowOpacity;
+@property (assign, nonatomic) CGFloat layerShadowOpacity UI_APPEARANCE_SELECTOR;
 /** Default is CGSizeZero */
-@property (assign, nonatomic) CGSize  layerShadowOffset;
-/** Default is CGSizeZero */
-@property (class, assign, nonatomic) CGSize  layerShadowOffset;
+@property (assign, nonatomic) CGSize  layerShadowOffset UI_APPEARANCE_SELECTOR;
 
 #pragma mark - Title properties
 
@@ -255,21 +184,15 @@ typedef NS_ENUM(NSUInteger, LGAlertViewWindowLevel) {
  if (style == LGAlertViewStyleAlert) then [UIColor blackColor]
  else [UIColor grayColor]
  */
-@property (strong, nonatomic, nullable) UIColor *titleTextColor;
-/** Default is nil */
-@property (class, strong, nonatomic, nullable) UIColor *titleTextColor;
+@property (strong, nonatomic, nullable) UIColor *titleTextColor UI_APPEARANCE_SELECTOR;
 /** Default is NSTextAlignmentCenter */
-@property (assign, nonatomic) NSTextAlignment titleTextAlignment;
-/** Default is NSTextAlignmentCenter */
-@property (class, assign, nonatomic) NSTextAlignment titleTextAlignment;
+@property (assign, nonatomic) NSTextAlignment titleTextAlignment UI_APPEARANCE_SELECTOR;
 /**
  Default:
  if (style == LGAlertViewStyleAlert) then [UIFont boldSystemFontOfSize:18.0]
  else [UIFont boldSystemFontOfSize:14.0]
  */
-@property (strong, nonatomic, nullable) UIFont *titleFont;
-/** Default is nil */
-@property (class, strong, nonatomic, nullable) UIFont *titleFont;
+@property (strong, nonatomic, nullable) UIFont *titleFont UI_APPEARANCE_SELECTOR;
 
 #pragma mark - Message properties
 
@@ -280,17 +203,11 @@ typedef NS_ENUM(NSUInteger, LGAlertViewWindowLevel) {
  if (style == LGAlertViewStyleAlert) then [UIColor blackColor]
  else [UIColor grayColor]
  */
-@property (strong, nonatomic, nullable) UIColor *messageTextColor;
-/** Default is nil */
-@property (class, strong, nonatomic, nullable) UIColor *messageTextColor;
+@property (strong, nonatomic, nullable) UIColor *messageTextColor UI_APPEARANCE_SELECTOR;
 /** Default is NSTextAlignmentCenter */
-@property (assign, nonatomic) NSTextAlignment messageTextAlignment;
-/** Default is NSTextAlignmentCenter */
-@property (class, assign, nonatomic) NSTextAlignment messageTextAlignment;
+@property (assign, nonatomic) NSTextAlignment messageTextAlignment UI_APPEARANCE_SELECTOR;
 /** Default is [UIFont systemFontOfSize:14.0] */
-@property (class, strong, nonatomic, nullable) UIFont *messageFont;
-/** Default is [UIFont systemFontOfSize:14.0] */
-@property (strong, nonatomic, nullable) UIFont *messageFont;
+@property (strong, nonatomic, nullable) UIFont *messageFont UI_APPEARANCE_SELECTOR;
 
 #pragma mark - Buttons properties
 
@@ -302,57 +219,31 @@ typedef NS_ENUM(NSUInteger, LGAlertViewWindowLevel) {
 @property (copy, nonatomic, nullable) NSArray *buttonsIconImagesDisabled;
 
 /** Default is tintColor */
-@property (strong, nonatomic, nullable) UIColor *buttonsTitleColor;
-/** Default is tintColor */
-@property (class, strong, nonatomic, nullable) UIColor *buttonsTitleColor;
+@property (strong, nonatomic, nullable) UIColor *buttonsTitleColor UI_APPEARANCE_SELECTOR;
 /** Default is [UIColor whiteColor] */
-@property (strong, nonatomic, nullable) UIColor *buttonsTitleColorHighlighted;
-/** Default is [UIColor whiteColor] */
-@property (class, strong, nonatomic, nullable) UIColor *buttonsTitleColorHighlighted;
+@property (strong, nonatomic, nullable) UIColor *buttonsTitleColorHighlighted UI_APPEARANCE_SELECTOR;
 /** Default is [UIColor grayColor] */
-@property (strong, nonatomic, nullable) UIColor *buttonsTitleColorDisabled;
-/** Default is [UIColor grayColor] */
-@property (class, strong, nonatomic, nullable) UIColor *buttonsTitleColorDisabled;
+@property (strong, nonatomic, nullable) UIColor *buttonsTitleColorDisabled UI_APPEARANCE_SELECTOR;
 /** Default is NSTextAlignmentCenter */
-@property (assign, nonatomic) NSTextAlignment buttonsTextAlignment;
-/** Default is NSTextAlignmentCenter */
-@property (class, assign, nonatomic) NSTextAlignment buttonsTextAlignment;
+@property (assign, nonatomic) NSTextAlignment buttonsTextAlignment UI_APPEARANCE_SELECTOR;
 /** Default is [UIFont systemFontOfSize:18.0] */
-@property (strong, nonatomic, nullable) UIFont *buttonsFont;
-/** Default is [UIFont systemFontOfSize:18.0] */
-@property (class, strong, nonatomic, nullable) UIFont *buttonsFont;
+@property (strong, nonatomic, nullable) UIFont *buttonsFont UI_APPEARANCE_SELECTOR;
 /** Default is nil */
-@property (strong, nonatomic, nullable) UIColor *buttonsBackgroundColor;
-/** Default is nil */
-@property (class, strong, nonatomic, nullable) UIColor *buttonsBackgroundColor;
+@property (strong, nonatomic, nullable) UIColor *buttonsBackgroundColor UI_APPEARANCE_SELECTOR;
 /** Default is tintColor */
-@property (strong, nonatomic, nullable) UIColor *buttonsBackgroundColorHighlighted;
-/** Default is tintColor */
-@property (class, strong, nonatomic, nullable) UIColor *buttonsBackgroundColorHighlighted;
+@property (strong, nonatomic, nullable) UIColor *buttonsBackgroundColorHighlighted UI_APPEARANCE_SELECTOR;
 /** Default is nil */
-@property (strong, nonatomic, nullable) UIColor *buttonsBackgroundColorDisabled;
-/** Default is nil */
-@property (class, strong, nonatomic, nullable) UIColor *buttonsBackgroundColorDisabled;
+@property (strong, nonatomic, nullable) UIColor *buttonsBackgroundColorDisabled UI_APPEARANCE_SELECTOR;
 /** Default is 1 */
-@property (assign, nonatomic) NSUInteger buttonsNumberOfLines;
-/** Default is 1 */
-@property (class, assign, nonatomic) NSUInteger buttonsNumberOfLines;
+@property (assign, nonatomic) NSUInteger buttonsNumberOfLines UI_APPEARANCE_SELECTOR;
 /** Default is NSLineBreakByTruncatingMiddle */
-@property (assign, nonatomic) NSLineBreakMode buttonsLineBreakMode;
-/** Default is NSLineBreakByTruncatingMiddle */
-@property (class, assign, nonatomic) NSLineBreakMode buttonsLineBreakMode;
-/** Default is 14.0/18.0 */
-@property (assign, nonatomic) CGFloat buttonsMinimumScaleFactor;
-/** Default is 14.0/18.0 */
-@property (class, assign, nonatomic) CGFloat buttonsMinimumScaleFactor;
+@property (assign, nonatomic) NSLineBreakMode buttonsLineBreakMode UI_APPEARANCE_SELECTOR;
+/** Default is 14.0 / 18.0 */
+@property (assign, nonatomic) CGFloat buttonsMinimumScaleFactor UI_APPEARANCE_SELECTOR;
 /** Default is YES */
-@property (assign, nonatomic, getter=isButtonsAdjustsFontSizeToFitWidth) BOOL buttonsAdjustsFontSizeToFitWidth;
-/** Default is YES */
-@property (class, assign, nonatomic, getter=isButtonsAdjustsFontSizeToFitWidth) BOOL buttonsAdjustsFontSizeToFitWidth;
+@property (assign, nonatomic, getter=isButtonsAdjustsFontSizeToFitWidth) BOOL buttonsAdjustsFontSizeToFitWidth UI_APPEARANCE_SELECTOR;
 /** Default is LGAlertViewButtonIconPositionLeft */
-@property (assign, nonatomic) LGAlertViewButtonIconPosition buttonsIconPosition;
-/** Default is LGAlertViewButtonIconPositionLeft */
-@property (class, assign, nonatomic) LGAlertViewButtonIconPosition buttonsIconPosition;
+@property (assign, nonatomic) LGAlertViewButtonIconPosition buttonsIconPosition UI_APPEARANCE_SELECTOR;
 
 #pragma mark - Cancel button properties
 
@@ -364,57 +255,31 @@ typedef NS_ENUM(NSUInteger, LGAlertViewWindowLevel) {
 @property (strong, nonatomic, nullable) UIImage *cancelButtonIconImageDisabled;
 
 /** Default is tintColor */
-@property (strong, nonatomic, nullable) UIColor *cancelButtonTitleColor;
-/** Default is tintColor */
-@property (class, strong, nonatomic, nullable) UIColor *cancelButtonTitleColor;
+@property (strong, nonatomic, nullable) UIColor *cancelButtonTitleColor UI_APPEARANCE_SELECTOR;
 /** Default is [UIColor whiteColor] */
-@property (strong, nonatomic, nullable) UIColor *cancelButtonTitleColorHighlighted;
-/** Default is [UIColor whiteColor] */
-@property (class, strong, nonatomic, nullable) UIColor *cancelButtonTitleColorHighlighted;
+@property (strong, nonatomic, nullable) UIColor *cancelButtonTitleColorHighlighted UI_APPEARANCE_SELECTOR;
 /** Default is [UIColor grayColor] */
-@property (strong, nonatomic, nullable) UIColor *cancelButtonTitleColorDisabled;
-/** Default is [UIColor grayColor] */
-@property (class, strong, nonatomic, nullable) UIColor *cancelButtonTitleColorDisabled;
+@property (strong, nonatomic, nullable) UIColor *cancelButtonTitleColorDisabled UI_APPEARANCE_SELECTOR;
 /** Default is NSTextAlignmentCenter */
-@property (assign, nonatomic) NSTextAlignment cancelButtonTextAlignment;
-/** Default is NSTextAlignmentCenter */
-@property (class, assign, nonatomic) NSTextAlignment cancelButtonTextAlignment;
+@property (assign, nonatomic) NSTextAlignment cancelButtonTextAlignment UI_APPEARANCE_SELECTOR;
 /** Default is [UIFont boldSystemFontOfSize:18.0] */
-@property (strong, nonatomic, nullable) UIFont *cancelButtonFont;
-/** Default is [UIFont boldSystemFontOfSize:18.0] */
-@property (class, strong, nonatomic, nullable) UIFont *cancelButtonFont;
+@property (strong, nonatomic, nullable) UIFont *cancelButtonFont UI_APPEARANCE_SELECTOR;
 /** Default is nil */
-@property (strong, nonatomic, nullable) UIColor *cancelButtonBackgroundColor;
-/** Default is nil */
-@property (class, strong, nonatomic, nullable) UIColor *cancelButtonBackgroundColor;
+@property (strong, nonatomic, nullable) UIColor *cancelButtonBackgroundColor UI_APPEARANCE_SELECTOR;
 /** Default is tintColor */
-@property (strong, nonatomic, nullable) UIColor *cancelButtonBackgroundColorHighlighted;
-/** Default is tintColor */
-@property (class, strong, nonatomic, nullable) UIColor *cancelButtonBackgroundColorHighlighted;
+@property (strong, nonatomic, nullable) UIColor *cancelButtonBackgroundColorHighlighted UI_APPEARANCE_SELECTOR;
 /** Default is nil */
-@property (strong, nonatomic, nullable) UIColor *cancelButtonBackgroundColorDisabled;
-/** Default is nil */
-@property (class, strong, nonatomic, nullable) UIColor *cancelButtonBackgroundColorDisabled;
+@property (strong, nonatomic, nullable) UIColor *cancelButtonBackgroundColorDisabled UI_APPEARANCE_SELECTOR;
 /** Default is 1 */
-@property (assign, nonatomic) NSUInteger cancelButtonNumberOfLines;
-/** Default is 1 */
-@property (class, assign, nonatomic) NSUInteger cancelButtonNumberOfLines;
+@property (assign, nonatomic) NSUInteger cancelButtonNumberOfLines UI_APPEARANCE_SELECTOR;
 /** Default is NSLineBreakByTruncatingMiddle */
-@property (assign, nonatomic) NSLineBreakMode cancelButtonLineBreakMode;
-/** Default is NSLineBreakByTruncatingMiddle */
-@property (class, assign, nonatomic) NSLineBreakMode cancelButtonLineBreakMode;
-/** Default is 14.0/18.0 */
-@property (assign, nonatomic) CGFloat cancelButtonMinimumScaleFactor;
-/** Default is 14.0/18.0 */
-@property (class, assign, nonatomic) CGFloat cancelButtonMinimumScaleFactor;
+@property (assign, nonatomic) NSLineBreakMode cancelButtonLineBreakMode UI_APPEARANCE_SELECTOR;
+/** Default is 14.0 / 18.0 */
+@property (assign, nonatomic) CGFloat cancelButtonMinimumScaleFactor UI_APPEARANCE_SELECTOR;
 /** Default is YES */
-@property (assign, nonatomic, getter=isCancelButtonAdjustsFontSizeToFitWidth) BOOL cancelButtonAdjustsFontSizeToFitWidth;
-/** Default is YES */
-@property (class, assign, nonatomic, getter=isCancelButtonAdjustsFontSizeToFitWidth) BOOL cancelButtonAdjustsFontSizeToFitWidth;
+@property (assign, nonatomic, getter=isCancelButtonAdjustsFontSizeToFitWidth) BOOL cancelButtonAdjustsFontSizeToFitWidth UI_APPEARANCE_SELECTOR;
 /** Default is LGAlertViewButtonIconPositionLeft */
-@property (assign, nonatomic) LGAlertViewButtonIconPosition cancelButtonIconPosition;
-/** Default is LGAlertViewButtonIconPositionLeft */
-@property (class, assign, nonatomic) LGAlertViewButtonIconPosition cancelButtonIconPosition;
+@property (assign, nonatomic) LGAlertViewButtonIconPosition cancelButtonIconPosition UI_APPEARANCE_SELECTOR;
 
 #pragma mark - Destructive button properties
 
@@ -426,101 +291,57 @@ typedef NS_ENUM(NSUInteger, LGAlertViewWindowLevel) {
 @property (strong, nonatomic, nullable) UIImage *destructiveButtonIconImageDisabled;
 
 /** Default is [UIColor redColor] */
-@property (strong, nonatomic, nullable) UIColor *destructiveButtonTitleColor;
-/** Default is [UIColor redColor] */
-@property (class, strong, nonatomic, nullable) UIColor *destructiveButtonTitleColor;
+@property (strong, nonatomic, nullable) UIColor *destructiveButtonTitleColor UI_APPEARANCE_SELECTOR;
 /** Default is [UIColor whiteColor] */
-@property (strong, nonatomic, nullable) UIColor *destructiveButtonTitleColorHighlighted;
-/** Default is [UIColor whiteColor] */
-@property (class, strong, nonatomic, nullable) UIColor *destructiveButtonTitleColorHighlighted;
+@property (strong, nonatomic, nullable) UIColor *destructiveButtonTitleColorHighlighted UI_APPEARANCE_SELECTOR;
 /** Default is [UIColor grayColor] */
-@property (strong, nonatomic, nullable) UIColor *destructiveButtonTitleColorDisabled;
-/** Default is [UIColor grayColor] */
-@property (class, strong, nonatomic, nullable) UIColor *destructiveButtonTitleColorDisabled;
+@property (strong, nonatomic, nullable) UIColor *destructiveButtonTitleColorDisabled UI_APPEARANCE_SELECTOR;
 /** Default is NSTextAlignmentCenter */
-@property (assign, nonatomic) NSTextAlignment destructiveButtonTextAlignment;
-/** Default is NSTextAlignmentCenter */
-@property (class, assign, nonatomic) NSTextAlignment destructiveButtonTextAlignment;
+@property (assign, nonatomic) NSTextAlignment destructiveButtonTextAlignment UI_APPEARANCE_SELECTOR;
 /** Default is [UIFont systemFontOfSize:18.0] */
-@property (strong, nonatomic, nullable) UIFont *destructiveButtonFont;
-/** Default is [UIFont systemFontOfSize:18.0] */
-@property (class, strong, nonatomic, nullable) UIFont *destructiveButtonFont;
+@property (strong, nonatomic, nullable) UIFont *destructiveButtonFont UI_APPEARANCE_SELECTOR;
 /** Default is nil */
-@property (strong, nonatomic, nullable) UIColor *destructiveButtonBackgroundColor;
-/** Default is nil */
-@property (class, strong, nonatomic, nullable) UIColor *destructiveButtonBackgroundColor;
+@property (strong, nonatomic, nullable) UIColor *destructiveButtonBackgroundColor UI_APPEARANCE_SELECTOR;
 /** Default is [UIColor redColor] */
-@property (strong, nonatomic, nullable) UIColor *destructiveButtonBackgroundColorHighlighted;
-/** Default is [UIColor redColor] */
-@property (class, strong, nonatomic, nullable) UIColor *destructiveButtonBackgroundColorHighlighted;
+@property (strong, nonatomic, nullable) UIColor *destructiveButtonBackgroundColorHighlighted UI_APPEARANCE_SELECTOR;
 /** Default is nil */
-@property (strong, nonatomic, nullable) UIColor *destructiveButtonBackgroundColorDisabled;
-/** Default is nil */
-@property (class, strong, nonatomic, nullable) UIColor *destructiveButtonBackgroundColorDisabled;
+@property (strong, nonatomic, nullable) UIColor *destructiveButtonBackgroundColorDisabled UI_APPEARANCE_SELECTOR;
 /** Default is 1 */
-@property (assign, nonatomic) NSUInteger destructiveButtonNumberOfLines;
-/** Default is 1 */
-@property (class, assign, nonatomic) NSUInteger destructiveButtonNumberOfLines;
+@property (assign, nonatomic) NSUInteger destructiveButtonNumberOfLines UI_APPEARANCE_SELECTOR;
 /** Default is NSLineBreakByTruncatingMiddle */
-@property (assign, nonatomic) NSLineBreakMode destructiveButtonLineBreakMode;
-/** Default is NSLineBreakByTruncatingMiddle */
-@property (class, assign, nonatomic) NSLineBreakMode destructiveButtonLineBreakMode;
-/** Default is 14.0/18.0 */
-@property (assign, nonatomic) CGFloat destructiveButtonMinimumScaleFactor;
-/** Default is 14.0/18.0 */
-@property (class, assign, nonatomic) CGFloat destructiveButtonMinimumScaleFactor;
+@property (assign, nonatomic) NSLineBreakMode destructiveButtonLineBreakMode UI_APPEARANCE_SELECTOR;
+/** Default is 14.0 / 18.0 */
+@property (assign, nonatomic) CGFloat destructiveButtonMinimumScaleFactor UI_APPEARANCE_SELECTOR;
 /** Default is YES */
-@property (assign, nonatomic, getter=isDestructiveButtonAdjustsFontSizeToFitWidth) BOOL destructiveButtonAdjustsFontSizeToFitWidth;
-/** Default is YES */
-@property (class, assign, nonatomic, getter=isDestructiveButtonAdjustsFontSizeToFitWidth) BOOL destructiveButtonAdjustsFontSizeToFitWidth;
+@property (assign, nonatomic, getter=isDestructiveButtonAdjustsFontSizeToFitWidth) BOOL destructiveButtonAdjustsFontSizeToFitWidth UI_APPEARANCE_SELECTOR;
 /** Default is LGAlertViewButtonIconPositionLeft */
-@property (assign, nonatomic) LGAlertViewButtonIconPosition destructiveButtonIconPosition;
-/** Default is LGAlertViewButtonIconPositionLeft */
-@property (class, assign, nonatomic) LGAlertViewButtonIconPosition destructiveButtonIconPosition;
+@property (assign, nonatomic) LGAlertViewButtonIconPosition destructiveButtonIconPosition UI_APPEARANCE_SELECTOR;
 
 #pragma mark - Activity indicator properties
 
 /** Default is UIActivityIndicatorViewStyleWhiteLarge */
-@property (assign, nonatomic) UIActivityIndicatorViewStyle activityIndicatorViewStyle;
-/** Default is UIActivityIndicatorViewStyleWhiteLarge */
-@property (class, assign, nonatomic) UIActivityIndicatorViewStyle activityIndicatorViewStyle;
+@property (assign, nonatomic) UIActivityIndicatorViewStyle activityIndicatorViewStyle UI_APPEARANCE_SELECTOR;
 /** Default is tintColor */
-@property (strong, nonatomic, nullable) UIColor *activityIndicatorViewColor;
-/** Default is tintColor */
-@property (class, strong, nonatomic, nullable) UIColor *activityIndicatorViewColor;
+@property (strong, nonatomic, nullable) UIColor *activityIndicatorViewColor UI_APPEARANCE_SELECTOR;
 
 #pragma mark - Progress view properties
 
 @property (assign, nonatomic, readonly) float progress;
 
 /** Default is tintColor */
-@property (strong, nonatomic, nullable) UIColor *progressViewProgressTintColor;
-/** Default is tintColor */
-@property (class, strong, nonatomic, nullable) UIColor *progressViewProgressTintColor;
+@property (strong, nonatomic, nullable) UIColor *progressViewProgressTintColor UI_APPEARANCE_SELECTOR;
 /** Default is [UIColor colorWithWhite:0.8 alpha:1.0] */
-@property (strong, nonatomic, nullable) UIColor *progressViewTrackTintColor;
-/** Default is [UIColor colorWithWhite:0.8 alpha:1.0] */
-@property (class, strong, nonatomic, nullable) UIColor *progressViewTrackTintColor;
+@property (strong, nonatomic, nullable) UIColor *progressViewTrackTintColor UI_APPEARANCE_SELECTOR;
 /** Default is nil */
-@property (strong, nonatomic, nullable) UIImage *progressViewProgressImage;
+@property (strong, nonatomic, nullable) UIImage *progressViewProgressImage UI_APPEARANCE_SELECTOR;
 /** Default is nil */
-@property (class, strong, nonatomic, nullable) UIImage *progressViewProgressImage;
-/** Default is nil */
-@property (strong, nonatomic, nullable) UIImage *progressViewTrackImage;
-/** Default is nil */
-@property (class, strong, nonatomic, nullable) UIImage *progressViewTrackImage;
+@property (strong, nonatomic, nullable) UIImage *progressViewTrackImage UI_APPEARANCE_SELECTOR;
 /** Default is [UIColor blackColor] */
-@property (strong, nonatomic, nullable) UIColor *progressLabelTextColor;
-/** Default is [UIColor blackColor] */
-@property (class, strong, nonatomic, nullable) UIColor *progressLabelTextColor;
+@property (strong, nonatomic, nullable) UIColor *progressLabelTextColor UI_APPEARANCE_SELECTOR;
 /** Defailt is NSTextAlignmentCenter */
-@property (assign, nonatomic) NSTextAlignment progressLabelTextAlignment;
-/** Defailt is NSTextAlignmentCenter */
-@property (class, assign, nonatomic) NSTextAlignment progressLabelTextAlignment;
+@property (assign, nonatomic) NSTextAlignment progressLabelTextAlignment UI_APPEARANCE_SELECTOR;
 /** Default is [UIFont systemFontOfSize:14.0] */
-@property (strong, nonatomic, nullable) UIFont *progressLabelFont;
-/** Default is [UIFont systemFontOfSize:14.0] */
-@property (class, strong, nonatomic, nullable) UIFont *progressLabelFont;
+@property (strong, nonatomic, nullable) UIFont *progressLabelFont UI_APPEARANCE_SELECTOR;
 
 #pragma mark - Callbacks
 
@@ -861,9 +682,8 @@ typedef NS_ENUM(NSUInteger, LGAlertViewWindowLevel) {
 
 #pragma mark - Unavailable
 
-- (nonnull instancetype)init __attribute__((unavailable("use -initWithTitle... instead")));
-+ (nonnull instancetype)new __attribute__((unavailable("use +alertViewWithTitle... instead")));
-- (nonnull instancetype)initWithFrame:(CGRect)frame __attribute__((unavailable("use -initWithTitle... instead")));
+- (nonnull instancetype)init __attribute__((unavailable("use \"- initWith...\" instead")));
++ (nonnull instancetype)new __attribute__((unavailable("use \"+ alertViewWith...\" instead")));
 
 @end
 

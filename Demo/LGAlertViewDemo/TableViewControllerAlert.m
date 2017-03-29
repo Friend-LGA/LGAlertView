@@ -217,7 +217,7 @@
             alertView.destructiveButtonTextAlignment = NSTextAlignmentLeft;
 
             [alertView showAnimated:YES completionHandler:nil];
-            
+
             break;
         }
         case 9: {
@@ -239,7 +239,7 @@
             alertView.destructiveButtonIconImageHighlighted = [UIImage imageNamed:@"DestructiveHighlighted"];
 
             [alertView showAnimated:YES completionHandler:nil];
-            
+
             break;
         }
         case 10: {
@@ -626,13 +626,13 @@
         }
         else {
             float progress = alertView.progress+0.0025;
-            
+
             if (progress > 1.0) {
                 progress = 1.0;
             }
-            
+
             [alertView setProgress:progress progressLabelText:[NSString stringWithFormat:@"%.0f %%", progress*100]];
-            
+
             [self updateProgressWithAlertView:alertView];
         }
     });
