@@ -99,8 +99,6 @@ LGAlertViewType;
 @property (strong, nonatomic) LGAlertViewButton *secondButton;
 @property (strong, nonatomic) LGAlertViewButton *thirdButton;
 
-@property (strong, nonatomic) NSArray *textFieldSeparatorsArray;
-
 @property (strong, nonatomic) UIView *separatorHorizontalView;
 @property (strong, nonatomic) UIView *separatorVerticalView1;
 @property (strong, nonatomic) UIView *separatorVerticalView2;
@@ -126,6 +124,10 @@ LGAlertViewType;
 @property (strong, nonatomic) NSMutableArray *buttonsEnabledArray;
 
 @property (strong, nonatomic) LGAlertViewCell *heightCell;
+
+@property (assign, nonatomic) NSUInteger numberOfTextFields;
+
+@property (copy, nonatomic) LGAlertViewTextFieldsSetupHandler textFieldsSetupHandler;
 
 @property (assign, nonatomic, getter=isUserCancelOnTouch)                          BOOL userCancelOnTouch;
 @property (assign, nonatomic, getter=isUserButtonsHeight)                          BOOL userButtonsHeight;
@@ -246,41 +248,13 @@ LGAlertViewType;
     if (self) {
         self.title = title;
         self.message = message;
+        self.numberOfTextFields = numberOfTextFields;
+        self.textFieldsSetupHandler = textFieldsSetupHandler;
         self.buttonTitles = buttonTitles.mutableCopy;
         self.cancelButtonTitle = cancelButtonTitle;
         self.destructiveButtonTitle = destructiveButtonTitle;
 
         self.type = LGAlertViewTypeTextFields;
-
-        NSMutableArray *textFieldsArray = [NSMutableArray new];
-        NSMutableArray *textFieldSeparatorsArray = [NSMutableArray new];
-
-        for (NSUInteger i = 0; i < numberOfTextFields; i++) {
-            LGAlertViewTextField *textField = [LGAlertViewTextField new];
-            textField.delegate = self;
-            textField.tag = i;
-
-            if (i == numberOfTextFields - 1) {
-                textField.returnKeyType = UIReturnKeyDone;
-            }
-            else {
-                textField.returnKeyType = UIReturnKeyNext;
-            }
-
-            if (textFieldsSetupHandler) {
-                textFieldsSetupHandler(textField, i);
-            }
-
-            [textFieldsArray addObject:textField];
-
-            // -----
-
-            UIView *separatorView = [UIView new];
-            [textFieldSeparatorsArray addObject:separatorView];
-        }
-
-        self.textFieldsArray = textFieldsArray;
-        self.textFieldSeparatorsArray = textFieldSeparatorsArray;
 
         [self setupDefaults];
     }
@@ -877,6 +851,15 @@ LGAlertViewType;
         _progressLabelTextColor = UIColor.blackColor;
         _progressLabelTextAlignment = NSTextAlignmentCenter;
         _progressLabelFont = [UIFont systemFontOfSize:14.0];
+
+        _textFieldsBackgroundColor = [UIColor colorWithWhite:0.97 alpha:1.0];
+        _textFieldsTextColor = UIColor.blackColor;
+        _textFieldsFont = [UIFont systemFontOfSize:16.0];
+        _textFieldsTextAlignment = NSTextAlignmentLeft;
+        _textFieldsClearsOnBeginEditing = NO;
+        _textFieldsAdjustsFontSizeToFitWidth = NO;
+        _textFieldsMinimumFontSize = 12.0;
+        _textFieldsClearButtonMode = UITextFieldViewModeAlways;
     }
     return self;
 }
@@ -1024,6 +1007,15 @@ LGAlertViewType;
     _progressLabelTextColor = appearance.progressLabelTextColor;
     _progressLabelTextAlignment = appearance.progressLabelTextAlignment;
     _progressLabelFont = appearance.progressLabelFont;
+
+    _textFieldsBackgroundColor = appearance.textFieldsBackgroundColor;
+    _textFieldsTextColor = appearance.textFieldsTextColor;
+    _textFieldsFont = appearance.textFieldsFont;
+    _textFieldsTextAlignment = appearance.textFieldsTextAlignment;
+    _textFieldsClearsOnBeginEditing = appearance.textFieldsClearsOnBeginEditing;
+    _textFieldsAdjustsFontSizeToFitWidth = appearance.textFieldsAdjustsFontSizeToFitWidth;
+    _textFieldsMinimumFontSize = appearance.textFieldsMinimumFontSize;
+    _textFieldsClearButtonMode = appearance.textFieldsClearButtonMode;
 
     // -----
 
@@ -2144,8 +2136,10 @@ LGAlertViewType;
             offsetY = CGRectGetMinY(self.progressLabel.frame) + CGRectGetHeight(self.progressLabel.frame);
         }
         else if (self.type == LGAlertViewTypeTextFields) {
-            for (NSUInteger i = 0; i < self.textFieldsArray.count; i++) {
-                UIView *separatorView = self.textFieldSeparatorsArray[i];
+            NSMutableArray *textFieldsArray = [NSMutableArray new];
+
+            for (NSUInteger i = 0; i < self.numberOfTextFields; i++) {
+                UIView *separatorView = [UIView new];
                 separatorView.backgroundColor = self.separatorsColor;
 
                 CGRect separatorViewFrame = CGRectMake(0.0,
@@ -2164,7 +2158,28 @@ LGAlertViewType;
 
                 // -----
 
-                LGAlertViewTextField *textField = self.textFieldsArray[i];
+                LGAlertViewTextField *textField = [LGAlertViewTextField new];
+                textField.delegate = self;
+                textField.tag = i;
+                textField.backgroundColor = self.textFieldsBackgroundColor;
+                textField.textColor = self.textFieldsTextColor;
+                textField.font = self.textFieldsFont;
+                textField.textAlignment = self.textFieldsTextAlignment;
+                textField.clearsOnBeginEditing = self.textFieldsClearsOnBeginEditing;
+                textField.adjustsFontSizeToFitWidth = self.textFieldsAdjustsFontSizeToFitWidth;
+                textField.minimumFontSize = self.textFieldsMinimumFontSize;
+                textField.clearButtonMode = self.textFieldsClearButtonMode;
+
+                if (i == self.numberOfTextFields - 1) {
+                    textField.returnKeyType = UIReturnKeyDone;
+                }
+                else {
+                    textField.returnKeyType = UIReturnKeyNext;
+                }
+
+                if (self.textFieldsSetupHandler) {
+                    self.textFieldsSetupHandler(textField, i);
+                }
 
                 CGRect textFieldFrame = CGRectMake(0.0, offsetY, width, self.textFieldsHeight);
 
@@ -2174,9 +2189,12 @@ LGAlertViewType;
 
                 textField.frame = textFieldFrame;
                 [self.scrollView addSubview:textField];
+                [textFieldsArray addObject:textField];
 
                 offsetY = CGRectGetMinY(textField.frame) + CGRectGetHeight(textField.frame);
             }
+
+            self.textFieldsArray = textFieldsArray;
 
             offsetY -= self.innerMarginHeight;
         }

@@ -114,7 +114,7 @@ typedef NS_ENUM(NSUInteger, LGAlertViewWindowLevel) {
 @property (strong, nonatomic, nullable) UIBlurEffect *coverBlurEffect UI_APPEARANCE_SELECTOR;
 /** Default is 1.0 */
 @property (assign, nonatomic) CGFloat coverAlpha UI_APPEARANCE_SELECTOR;
-/** Default is [UIColor whiteColor] */
+/** Default is UIColor.whiteColor */
 @property (strong, nonatomic, nullable) UIColor *backgroundColor UI_APPEARANCE_SELECTOR;
 /**
  Default:
@@ -181,8 +181,8 @@ typedef NS_ENUM(NSUInteger, LGAlertViewWindowLevel) {
 
 /**
  Default:
- if (style == LGAlertViewStyleAlert) then [UIColor blackColor]
- else [UIColor grayColor]
+ if (style == LGAlertViewStyleAlert) then UIColor.blackColor
+ else UIColor.grayColor
  */
 @property (strong, nonatomic, nullable) UIColor *titleTextColor UI_APPEARANCE_SELECTOR;
 /** Default is NSTextAlignmentCenter */
@@ -200,8 +200,8 @@ typedef NS_ENUM(NSUInteger, LGAlertViewWindowLevel) {
 
 /**
  Default:
- if (style == LGAlertViewStyleAlert) then [UIColor blackColor]
- else [UIColor grayColor]
+ if (style == LGAlertViewStyleAlert) then UIColor.blackColor
+ else UIColor.grayColor
  */
 @property (strong, nonatomic, nullable) UIColor *messageTextColor UI_APPEARANCE_SELECTOR;
 /** Default is NSTextAlignmentCenter */
@@ -220,9 +220,9 @@ typedef NS_ENUM(NSUInteger, LGAlertViewWindowLevel) {
 
 /** Default is tintColor */
 @property (strong, nonatomic, nullable) UIColor *buttonsTitleColor UI_APPEARANCE_SELECTOR;
-/** Default is [UIColor whiteColor] */
+/** Default is UIColor.whiteColor */
 @property (strong, nonatomic, nullable) UIColor *buttonsTitleColorHighlighted UI_APPEARANCE_SELECTOR;
-/** Default is [UIColor grayColor] */
+/** Default is UIColor.grayColor */
 @property (strong, nonatomic, nullable) UIColor *buttonsTitleColorDisabled UI_APPEARANCE_SELECTOR;
 /** Default is NSTextAlignmentCenter */
 @property (assign, nonatomic) NSTextAlignment buttonsTextAlignment UI_APPEARANCE_SELECTOR;
@@ -256,9 +256,9 @@ typedef NS_ENUM(NSUInteger, LGAlertViewWindowLevel) {
 
 /** Default is tintColor */
 @property (strong, nonatomic, nullable) UIColor *cancelButtonTitleColor UI_APPEARANCE_SELECTOR;
-/** Default is [UIColor whiteColor] */
+/** Default is UIColor.whiteColor */
 @property (strong, nonatomic, nullable) UIColor *cancelButtonTitleColorHighlighted UI_APPEARANCE_SELECTOR;
-/** Default is [UIColor grayColor] */
+/** Default is UIColor.grayColor */
 @property (strong, nonatomic, nullable) UIColor *cancelButtonTitleColorDisabled UI_APPEARANCE_SELECTOR;
 /** Default is NSTextAlignmentCenter */
 @property (assign, nonatomic) NSTextAlignment cancelButtonTextAlignment UI_APPEARANCE_SELECTOR;
@@ -290,11 +290,11 @@ typedef NS_ENUM(NSUInteger, LGAlertViewWindowLevel) {
 @property (strong, nonatomic, nullable) UIImage *destructiveButtonIconImageHighlighted;
 @property (strong, nonatomic, nullable) UIImage *destructiveButtonIconImageDisabled;
 
-/** Default is [UIColor redColor] */
+/** Default is UIColor.redColor */
 @property (strong, nonatomic, nullable) UIColor *destructiveButtonTitleColor UI_APPEARANCE_SELECTOR;
-/** Default is [UIColor whiteColor] */
+/** Default is UIColor.whiteColor */
 @property (strong, nonatomic, nullable) UIColor *destructiveButtonTitleColorHighlighted UI_APPEARANCE_SELECTOR;
-/** Default is [UIColor grayColor] */
+/** Default is UIColor.grayColor */
 @property (strong, nonatomic, nullable) UIColor *destructiveButtonTitleColorDisabled UI_APPEARANCE_SELECTOR;
 /** Default is NSTextAlignmentCenter */
 @property (assign, nonatomic) NSTextAlignment destructiveButtonTextAlignment UI_APPEARANCE_SELECTOR;
@@ -302,7 +302,7 @@ typedef NS_ENUM(NSUInteger, LGAlertViewWindowLevel) {
 @property (strong, nonatomic, nullable) UIFont *destructiveButtonFont UI_APPEARANCE_SELECTOR;
 /** Default is nil */
 @property (strong, nonatomic, nullable) UIColor *destructiveButtonBackgroundColor UI_APPEARANCE_SELECTOR;
-/** Default is [UIColor redColor] */
+/** Default is UIColor.redColor */
 @property (strong, nonatomic, nullable) UIColor *destructiveButtonBackgroundColorHighlighted UI_APPEARANCE_SELECTOR;
 /** Default is nil */
 @property (strong, nonatomic, nullable) UIColor *destructiveButtonBackgroundColorDisabled UI_APPEARANCE_SELECTOR;
@@ -336,12 +336,31 @@ typedef NS_ENUM(NSUInteger, LGAlertViewWindowLevel) {
 @property (strong, nonatomic, nullable) UIImage *progressViewProgressImage UI_APPEARANCE_SELECTOR;
 /** Default is nil */
 @property (strong, nonatomic, nullable) UIImage *progressViewTrackImage UI_APPEARANCE_SELECTOR;
-/** Default is [UIColor blackColor] */
+/** Default is UIColor.blackColor */
 @property (strong, nonatomic, nullable) UIColor *progressLabelTextColor UI_APPEARANCE_SELECTOR;
 /** Defailt is NSTextAlignmentCenter */
 @property (assign, nonatomic) NSTextAlignment progressLabelTextAlignment UI_APPEARANCE_SELECTOR;
 /** Default is [UIFont systemFontOfSize:14.0] */
 @property (strong, nonatomic, nullable) UIFont *progressLabelFont UI_APPEARANCE_SELECTOR;
+
+#pragma mark - Text fields properties
+
+/** Default is [UIColor colorWithWhite:0.97 alpha:1.0] */
+@property (strong, nonatomic, nullable) UIColor *textFieldsBackgroundColor UI_APPEARANCE_SELECTOR;
+/** Default is UIColor.blackColor */
+@property (strong, nonatomic, nullable) UIColor *textFieldsTextColor UI_APPEARANCE_SELECTOR;
+/** Default is [UIFont systemFontOfSize:16.0] */
+@property (strong, nonatomic, nullable) UIFont *textFieldsFont UI_APPEARANCE_SELECTOR;
+/** Default is NSTextAlignmentLeft */
+@property (assign, nonatomic) NSTextAlignment textFieldsTextAlignment UI_APPEARANCE_SELECTOR;
+/** Default is NO */
+@property (assign, nonatomic) BOOL textFieldsClearsOnBeginEditing UI_APPEARANCE_SELECTOR;
+/** Default is NO */
+@property (assign, nonatomic) BOOL textFieldsAdjustsFontSizeToFitWidth UI_APPEARANCE_SELECTOR;
+/** Default is 12.0 */
+@property (assign, nonatomic) CGFloat textFieldsMinimumFontSize UI_APPEARANCE_SELECTOR;
+/** Default is UITextFieldViewModeAlways */
+@property (assign, nonatomic) UITextFieldViewMode textFieldsClearButtonMode UI_APPEARANCE_SELECTOR;
 
 #pragma mark - Callbacks
 
@@ -398,6 +417,7 @@ typedef NS_ENUM(NSUInteger, LGAlertViewWindowLevel) {
                                    cancelButtonTitle:(nullable NSString *)cancelButtonTitle
                               destructiveButtonTitle:(nullable NSString *)destructiveButtonTitle;
 
+/** To avoid retain cycle, do not forget about weak reference to self for textFieldsSetupHandler block */
 - (nonnull instancetype)initWithTextFieldsAndTitle:(nullable NSString *)title
                                            message:(nullable NSString *)message
                                 numberOfTextFields:(NSUInteger)numberOfTextFields
@@ -492,7 +512,7 @@ typedef NS_ENUM(NSUInteger, LGAlertViewWindowLevel) {
                                        cancelHandler:(LGAlertViewHandler)cancelHandler
                                   destructiveHandler:(LGAlertViewHandler)destructiveHandler;
 
-/** To avoid retain cycle, do not forget about weak reference to self for actionHandler, cancelHandler and destructiveHandler blocks */
+/** To avoid retain cycle, do not forget about weak reference to self for textFieldsSetupHandler, actionHandler, cancelHandler and destructiveHandler blocks */
 - (nonnull instancetype)initWithTextFieldsAndTitle:(nullable NSString *)title
                                            message:(nullable NSString *)message
                                 numberOfTextFields:(NSUInteger)numberOfTextFields
@@ -550,7 +570,7 @@ typedef NS_ENUM(NSUInteger, LGAlertViewWindowLevel) {
                                             cancelHandler:(LGAlertViewHandler)cancelHandler
                                        destructiveHandler:(LGAlertViewHandler)destructiveHandler;
 
-/** To avoid retain cycle, do not forget about weak reference to self for actionHandler, cancelHandler and destructiveHandler blocks */
+/** To avoid retain cycle, do not forget about weak reference to self for textFieldsSetupHandler, actionHandler, cancelHandler and destructiveHandler blocks */
 + (nonnull instancetype)alertViewWithTextFieldsAndTitle:(nullable NSString *)title
                                                 message:(nullable NSString *)message
                                      numberOfTextFields:(NSUInteger)numberOfTextFields
@@ -599,6 +619,7 @@ typedef NS_ENUM(NSUInteger, LGAlertViewWindowLevel) {
                               destructiveButtonTitle:(nullable NSString *)destructiveButtonTitle
                                             delegate:(nullable id<LGAlertViewDelegate>)delegate;
 
+/** To avoid retain cycle, do not forget about weak reference to self for textFieldsSetupHandler block */
 - (nonnull instancetype)initWithTextFieldsAndTitle:(nullable NSString *)title
                                            message:(nullable NSString *)message
                                 numberOfTextFields:(NSUInteger)numberOfTextFields
@@ -643,6 +664,7 @@ typedef NS_ENUM(NSUInteger, LGAlertViewWindowLevel) {
                                    destructiveButtonTitle:(nullable NSString *)destructiveButtonTitle
                                                  delegate:(nullable id<LGAlertViewDelegate>)delegate;
 
+/** To avoid retain cycle, do not forget about weak reference to self for textFieldsSetupHandler block */
 + (nonnull instancetype)alertViewWithTextFieldsAndTitle:(nullable NSString *)title
                                                 message:(nullable NSString *)message
                                      numberOfTextFields:(NSUInteger)numberOfTextFields

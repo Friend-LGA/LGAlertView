@@ -32,17 +32,6 @@
 
 @implementation LGAlertViewTextField
 
-- (instancetype)init {
-    self = [super init];
-    if (self) {
-        self.backgroundColor = [UIColor colorWithWhite:0.97 alpha:1.0];
-        self.textColor = UIColor.blackColor;
-        self.font = [UIFont systemFontOfSize:16.0];
-        self.clearButtonMode = UITextFieldViewModeAlways;
-    }
-    return self;
-}
-
 - (CGRect)textRectForBounds:(CGRect)bounds {
     bounds.origin.x += LGAlertViewPaddingWidth;
     bounds.size.width -= LGAlertViewPaddingWidth * 2.0;
