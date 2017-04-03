@@ -12,24 +12,24 @@ You can customize every detail. Make AlertView of your dream! :)
 
 ### Default Alert View Style
 
-<img src="https://raw.githubusercontent.com/Friend-LGA/ReadmeFiles/master/LGAlertView/Default_Alert_View_Style/Preview.gif" width="214"/> <img src="https://raw.githubusercontent.com/Friend-LGA/ReadmeFiles/master/LGAlertView/Default_Alert_View_Style/1.png" width="214"/> <img src="https://raw.githubusercontent.com/Friend-LGA/ReadmeFiles/master/LGAlertView/Default_Alert_View_Style/2.png" width="214"/> <img src="https://raw.githubusercontent.com/Friend-LGA/ReadmeFiles/master/LGAlertView/Default_Alert_View_Style/3.png" width="214"/>
-<img src="https://raw.githubusercontent.com/Friend-LGA/ReadmeFiles/master/LGAlertView/Default_Alert_View_Style/4.png" width="214"/> <img src="https://raw.githubusercontent.com/Friend-LGA/ReadmeFiles/master/LGAlertView/Default_Alert_View_Style/5.png" width="214"/> <img src="https://raw.githubusercontent.com/Friend-LGA/ReadmeFiles/master/LGAlertView/Default_Alert_View_Style/6.png" width="214"/> <img src="https://raw.githubusercontent.com/Friend-LGA/ReadmeFiles/master/LGAlertView/Default_Alert_View_Style/7.png" width="214"/>
-<img src="https://raw.githubusercontent.com/Friend-LGA/ReadmeFiles/master/LGAlertView/Default_Alert_View_Style/8.png" width="214"/> <img src="https://raw.githubusercontent.com/Friend-LGA/ReadmeFiles/master/LGAlertView/Default_Alert_View_Style/9.png" width="214"/> <img src="https://raw.githubusercontent.com/Friend-LGA/ReadmeFiles/master/LGAlertView/Default_Alert_View_Style/10.png" width="214"/> <img src="https://raw.githubusercontent.com/Friend-LGA/ReadmeFiles/master/LGAlertView/Default_Alert_View_Style/11.png" width="214"/>
-<img src="https://raw.githubusercontent.com/Friend-LGA/ReadmeFiles/master/LGAlertView/Default_Alert_View_Style/12.png" width="214"/> <img src="https://raw.githubusercontent.com/Friend-LGA/ReadmeFiles/master/LGAlertView/Default_Alert_View_Style/13.png" width="214"/>
+<img src="https://raw.githubusercontent.com/Friend-LGA/ReadmeFiles/502ec9002f52270f5a9d531952f3a44bd30a796d/LGAlertView/Default_Alert_View_Style/Preview.gif" width="214"/> <img src="https://raw.githubusercontent.com/Friend-LGA/ReadmeFiles/502ec9002f52270f5a9d531952f3a44bd30a796d/LGAlertView/Default_Alert_View_Style/1.png" width="214"/> <img src="https://raw.githubusercontent.com/Friend-LGA/ReadmeFiles/502ec9002f52270f5a9d531952f3a44bd30a796d/LGAlertView/Default_Alert_View_Style/2.png" width="214"/> <img src="https://raw.githubusercontent.com/Friend-LGA/ReadmeFiles/502ec9002f52270f5a9d531952f3a44bd30a796d/LGAlertView/Default_Alert_View_Style/3.png" width="214"/>
+<img src="https://raw.githubusercontent.com/Friend-LGA/ReadmeFiles/502ec9002f52270f5a9d531952f3a44bd30a796d/LGAlertView/Default_Alert_View_Style/4.png" width="214"/> <img src="https://raw.githubusercontent.com/Friend-LGA/ReadmeFiles/502ec9002f52270f5a9d531952f3a44bd30a796d/LGAlertView/Default_Alert_View_Style/5.png" width="214"/> <img src="https://raw.githubusercontent.com/Friend-LGA/ReadmeFiles/502ec9002f52270f5a9d531952f3a44bd30a796d/LGAlertView/Default_Alert_View_Style/6.png" width="214"/> <img src="https://raw.githubusercontent.com/Friend-LGA/ReadmeFiles/502ec9002f52270f5a9d531952f3a44bd30a796d/LGAlertView/Default_Alert_View_Style/7.png" width="214"/>
+<img src="https://raw.githubusercontent.com/Friend-LGA/ReadmeFiles/502ec9002f52270f5a9d531952f3a44bd30a796d/LGAlertView/Default_Alert_View_Style/8.png" width="214"/> <img src="https://raw.githubusercontent.com/Friend-LGA/ReadmeFiles/502ec9002f52270f5a9d531952f3a44bd30a796d/LGAlertView/Default_Alert_View_Style/9.png" width="214"/> <img src="https://raw.githubusercontent.com/Friend-LGA/ReadmeFiles/502ec9002f52270f5a9d531952f3a44bd30a796d/LGAlertView/Default_Alert_View_Style/10.png" width="214"/> <img src="https://raw.githubusercontent.com/Friend-LGA/ReadmeFiles/502ec9002f52270f5a9d531952f3a44bd30a796d/LGAlertView/Default_Alert_View_Style/11.png" width="214"/>
+<img src="https://raw.githubusercontent.com/Friend-LGA/ReadmeFiles/502ec9002f52270f5a9d531952f3a44bd30a796d/LGAlertView/Default_Alert_View_Style/12.png" width="214"/> <img src="https://raw.githubusercontent.com/Friend-LGA/ReadmeFiles/502ec9002f52270f5a9d531952f3a44bd30a796d/LGAlertView/Default_Alert_View_Style/13.png" width="214"/>
 
 ### Default Action Sheet Style
 
-<img src="https://raw.githubusercontent.com/Friend-LGA/ReadmeFiles/master/LGAlertView/Default_Action_Sheet_Style/Preview.gif" width="214"/> <img src="https://raw.githubusercontent.com/Friend-LGA/ReadmeFiles/master/LGAlertView/Default_Action_Sheet_Style/1.png" width="214"/> <img src="https://raw.githubusercontent.com/Friend-LGA/ReadmeFiles/master/LGAlertView/Default_Action_Sheet_Style/2.png" width="214"/> <img src="https://raw.githubusercontent.com/Friend-LGA/ReadmeFiles/master/LGAlertView/Default_Action_Sheet_Style/3.png" width="214"/>
-<img src="https://raw.githubusercontent.com/Friend-LGA/ReadmeFiles/master/LGAlertView/Default_Action_Sheet_Style/4.png" width="214"/> <img src="https://raw.githubusercontent.com/Friend-LGA/ReadmeFiles/master/LGAlertView/Default_Action_Sheet_Style/5.png" width="214"/> <img src="https://raw.githubusercontent.com/Friend-LGA/ReadmeFiles/master/LGAlertView/Default_Action_Sheet_Style/6.png" width="214"/> <img src="https://raw.githubusercontent.com/Friend-LGA/ReadmeFiles/master/LGAlertView/Default_Action_Sheet_Style/7.png" width="214"/>
-<img src="https://raw.githubusercontent.com/Friend-LGA/ReadmeFiles/master/LGAlertView/Default_Action_Sheet_Style/8.png" width="214"/>
+<img src="https://raw.githubusercontent.com/Friend-LGA/ReadmeFiles/502ec9002f52270f5a9d531952f3a44bd30a796d/LGAlertView/Default_Action_Sheet_Style/Preview.gif" width="214"/> <img src="https://raw.githubusercontent.com/Friend-LGA/ReadmeFiles/502ec9002f52270f5a9d531952f3a44bd30a796d/LGAlertView/Default_Action_Sheet_Style/1.png" width="214"/> <img src="https://raw.githubusercontent.com/Friend-LGA/ReadmeFiles/502ec9002f52270f5a9d531952f3a44bd30a796d/LGAlertView/Default_Action_Sheet_Style/2.png" width="214"/> <img src="https://raw.githubusercontent.com/Friend-LGA/ReadmeFiles/502ec9002f52270f5a9d531952f3a44bd30a796d/LGAlertView/Default_Action_Sheet_Style/3.png" width="214"/>
+<img src="https://raw.githubusercontent.com/Friend-LGA/ReadmeFiles/502ec9002f52270f5a9d531952f3a44bd30a796d/LGAlertView/Default_Action_Sheet_Style/4.png" width="214"/> <img src="https://raw.githubusercontent.com/Friend-LGA/ReadmeFiles/502ec9002f52270f5a9d531952f3a44bd30a796d/LGAlertView/Default_Action_Sheet_Style/5.png" width="214"/> <img src="https://raw.githubusercontent.com/Friend-LGA/ReadmeFiles/502ec9002f52270f5a9d531952f3a44bd30a796d/LGAlertView/Default_Action_Sheet_Style/6.png" width="214"/> <img src="https://raw.githubusercontent.com/Friend-LGA/ReadmeFiles/502ec9002f52270f5a9d531952f3a44bd30a796d/LGAlertView/Default_Action_Sheet_Style/7.png" width="214"/>
+<img src="https://raw.githubusercontent.com/Friend-LGA/ReadmeFiles/502ec9002f52270f5a9d531952f3a44bd30a796d/LGAlertView/Default_Action_Sheet_Style/8.png" width="214"/>
 
 ### Custom Alert View Styles
 
-<img src="https://raw.githubusercontent.com/Friend-LGA/ReadmeFiles/master/LGAlertView/Custom_Alert_View_Styles/1.png" width="214"/> <img src="https://raw.githubusercontent.com/Friend-LGA/ReadmeFiles/master/LGAlertView/Custom_Alert_View_Styles/2.png" width="214"/> <img src="https://raw.githubusercontent.com/Friend-LGA/ReadmeFiles/master/LGAlertView/Custom_Alert_View_Styles/3.png" width="214"/>
+<img src="https://raw.githubusercontent.com/Friend-LGA/ReadmeFiles/502ec9002f52270f5a9d531952f3a44bd30a796d/LGAlertView/Custom_Alert_View_Styles/1.png" width="214"/> <img src="https://raw.githubusercontent.com/Friend-LGA/ReadmeFiles/502ec9002f52270f5a9d531952f3a44bd30a796d/LGAlertView/Custom_Alert_View_Styles/2.png" width="214"/> <img src="https://raw.githubusercontent.com/Friend-LGA/ReadmeFiles/502ec9002f52270f5a9d531952f3a44bd30a796d/LGAlertView/Custom_Alert_View_Styles/3.png" width="214"/>
 
 ### Custom Action Sheet Styles
 
-<img src="https://raw.githubusercontent.com/Friend-LGA/ReadmeFiles/master/LGAlertView/Custom_Action_Sheet_Styles/1.png" width="214"/> <img src="https://raw.githubusercontent.com/Friend-LGA/ReadmeFiles/master/LGAlertView/Custom_Action_Sheet_Styles/2.png" width="214"/> <img src="https://raw.githubusercontent.com/Friend-LGA/ReadmeFiles/master/LGAlertView/Custom_Action_Sheet_Styles/3.png" width="214"/>
+<img src="https://raw.githubusercontent.com/Friend-LGA/ReadmeFiles/502ec9002f52270f5a9d531952f3a44bd30a796d/LGAlertView/Custom_Action_Sheet_Styles/1.png" width="214"/> <img src="https://raw.githubusercontent.com/Friend-LGA/ReadmeFiles/502ec9002f52270f5a9d531952f3a44bd30a796d/LGAlertView/Custom_Action_Sheet_Styles/2.png" width="214"/> <img src="https://raw.githubusercontent.com/Friend-LGA/ReadmeFiles/502ec9002f52270f5a9d531952f3a44bd30a796d/LGAlertView/Custom_Action_Sheet_Styles/3.png" width="214"/>
 
 ## Installation
 
@@ -208,28 +208,32 @@ More init methods you can find in [LGAlertView.h](https://github.com/Friend-LGA/
 
 You can change properties only before you show alert view, after this to change something is impossible.
 
-Instead of change properties for every new alert view, you can use global class properties to set them all only once and
+### Appearance
+
+Instead of change properties for every new alert view, you can use `appearance` to set them all only once and
 new alert views will use it by default:
 
 ##### Objective-C
 
 ```objective-c
-LGAlertView.tintColor = UIColor.greenColor;
-LGAlertView.cancelOnTouch = NO;
-LGAlertView.dismissOnAction = NO;
-LGAlertView...
-LGAlertView...
+[LGAlertView appearance].tintColor = UIColor.greenColor;
+[LGAlertView appearance].cancelOnTouch = NO;
+[LGAlertView appearance].dismissOnAction = NO;
+[LGAlertView appearance]...
+[LGAlertView appearance]...
 ```
 
 ##### Swift
 
 ```swift
-LGAlertView.tintColor = .green
-LGAlertView.cancelOnTouch = false
-LGAlertView.dismissOnAction = false
-LGAlertView...
-LGAlertView...
+LGAlertView.appearance().tintColor = .green
+LGAlertView.appearance().cancelOnTouch = false
+LGAlertView.appearance().dismissOnAction = false
+LGAlertView.appearance()...
+LGAlertView.appearance()...
 ```
+
+### Buttons
 
 If you want to set properties for each button individually, you can use method:
 
@@ -259,7 +263,7 @@ alertView.setButtonPropertiesAt(0) { (properties: LGAlertViewButtonProperties) i
 }
 ```
 
-### Enable / Disable
+#### Enable / Disable
 
 You can enable and disable buttons:
 
