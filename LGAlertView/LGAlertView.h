@@ -46,6 +46,10 @@ extern NSString *_Nonnull const LGAlertViewActionNotification;
 extern NSString *_Nonnull const LGAlertViewCancelNotification;
 extern NSString *_Nonnull const LGAlertViewDestructiveNotification;
 
+extern NSString *_Nonnull const LGAlertViewDidDismissAfterActionNotification;
+extern NSString *_Nonnull const LGAlertViewDidDismissAfterCancelNotification;
+extern NSString *_Nonnull const LGAlertViewDidDismissAfterDestructiveNotification;
+
 #pragma mark - Types
 
 typedef void (^ _Nullable LGAlertViewCompletionHandler)();
@@ -153,6 +157,8 @@ typedef NS_ENUM(NSUInteger, LGAlertViewWindowLevel) {
 @property (assign, nonatomic, getter=isPadShowsActionSheetFromBottom) BOOL padShowsActionSheetFromBottom UI_APPEARANCE_SELECTOR;
 /** Default is NO */
 @property (assign, nonatomic, getter=isOneRowOneButton) BOOL oneRowOneButton UI_APPEARANCE_SELECTOR;
+/** Default is YES */
+@property (assign, nonatomic) BOOL shouldDismissAnimated UI_APPEARANCE_SELECTOR;
 
 #pragma marl - Layer properties
 
@@ -381,6 +387,13 @@ typedef NS_ENUM(NSUInteger, LGAlertViewWindowLevel) {
 /** To avoid retain cycle, do not forget about weak reference to self */
 @property (copy, nonatomic) LGAlertViewHandler destructiveHandler;
 
+/** To avoid retain cycle, do not forget about weak reference to self */
+@property (copy, nonatomic) LGAlertViewActionHandler didDismissAfterActionHandler;
+/** To avoid retain cycle, do not forget about weak reference to self */
+@property (copy, nonatomic) LGAlertViewHandler didDismissAfterCancelHandler;
+/** To avoid retain cycle, do not forget about weak reference to self */
+@property (copy, nonatomic) LGAlertViewHandler didDismissAfterDestructiveHandler;
+
 #pragma mark - Delegate
 
 @property (weak, nonatomic, nullable) id <LGAlertViewDelegate> delegate;
@@ -592,7 +605,6 @@ typedef NS_ENUM(NSUInteger, LGAlertViewWindowLevel) {
                destructiveButtonTitle:(nullable NSString *)destructiveButtonTitle
                              delegate:(nullable id<LGAlertViewDelegate>)delegate;
 
-/** View can not be subclass of UIScrollView */
 - (nonnull instancetype)initWithViewAndTitle:(nullable NSString *)title
                                      message:(nullable NSString *)message
                                        style:(LGAlertViewStyle)style
@@ -637,7 +649,6 @@ typedef NS_ENUM(NSUInteger, LGAlertViewWindowLevel) {
                     destructiveButtonTitle:(nullable NSString *)destructiveButtonTitle
                                   delegate:(nullable id<LGAlertViewDelegate>)delegate;
 
-/** View can not be subclass of UIScrollView */
 + (nonnull instancetype)alertViewWithViewAndTitle:(nullable NSString *)title
                                           message:(nullable NSString *)message
                                             style:(LGAlertViewStyle)style
@@ -700,8 +711,6 @@ typedef NS_ENUM(NSUInteger, LGAlertViewWindowLevel) {
 - (void)forceDestructive;
 - (void)forceActionAtIndex:(NSUInteger)index;
 
-+ (nonnull NSArray *)alertViewsArray;
-
 #pragma mark - Unavailable
 
 - (nonnull instancetype)init __attribute__((unavailable("use \"- initWith...\" instead")));
@@ -721,9 +730,16 @@ typedef NS_ENUM(NSUInteger, LGAlertViewWindowLevel) {
 - (void)alertViewWillDismiss:(nonnull LGAlertView *)alertView;
 - (void)alertViewDidDismiss:(nonnull LGAlertView *)alertView;
 
-- (void)alertView:(nonnull LGAlertView *)alertView buttonPressedWithTitle:(nullable NSString *)title index:(NSUInteger)index;
+- (void)alertView:(nonnull LGAlertView *)alertView clickedButtonAtIndex:(NSUInteger)index title:(nullable NSString *)title;
 - (void)alertViewCancelled:(nonnull LGAlertView *)alertView;
-- (void)alertViewDestructiveButtonPressed:(nonnull LGAlertView *)alertView;
+- (void)alertViewDestructed:(nonnull LGAlertView *)alertView;
+
+- (void)alertView:(nonnull LGAlertView *)alertView didDismissAfterClickedButtonAtIndex:(NSUInteger)index title:(nullable NSString *)title;
+- (void)alertViewDidDismissAfterCancelled:(nonnull LGAlertView *)alertView;
+- (void)alertViewDidDismissAfterDestructed:(nonnull LGAlertView *)alertView;
+
+- (void)alertView:(nonnull LGAlertView *)alertView buttonPressedWithTitle:(nullable NSString *)title index:(NSUInteger)index DEPRECATED_MSG_ATTRIBUTE("use alertView:clickedButtonAtIndex:title instead");
+- (void)alertViewDestructiveButtonPressed:(nonnull LGAlertView *)alertView DEPRECATED_MSG_ATTRIBUTE("use alertViewDidDismissAfterDestructed instead");
 
 @end
 

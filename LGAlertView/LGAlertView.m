@@ -34,6 +34,7 @@
 #import "LGAlertViewTextField.h"
 #import "LGAlertViewButton.h"
 #import "LGAlertViewHelper.h"
+#import "LGAlertViewWindowsObserver.h"
 
 #pragma mark - Constants
 
@@ -47,8 +48,9 @@ NSString *_Nonnull const LGAlertViewActionNotification      = @"LGAlertViewActio
 NSString *_Nonnull const LGAlertViewCancelNotification      = @"LGAlertViewCancelNotification";
 NSString *_Nonnull const LGAlertViewDestructiveNotification = @"LGAlertViewDestructiveNotification";
 
-static NSMutableArray *LGAlertViewWindowsArray;
-static NSMutableArray *LGAlertViewArray;
+NSString *_Nonnull const LGAlertViewDidDismissAfterActionNotification      = @"LGAlertViewDidDismissAfterActionNotification";
+NSString *_Nonnull const LGAlertViewDidDismissAfterCancelNotification      = @"LGAlertViewDidDismissAfterCancelNotification";
+NSString *_Nonnull const LGAlertViewDidDismissAfterDestructiveNotification = @"LGAlertViewDidDismissAfterDestructiveNotification";
 
 #pragma mark - Types
 
@@ -782,6 +784,7 @@ LGAlertViewType;
         _showsVerticalScrollIndicator = NO;
         _padShowsActionSheetFromBottom = NO;
         _oneRowOneButton = NO;
+        _shouldDismissAnimated = YES;
 
         _layerCornerRadius = LGAlertViewHelper.systemVersion < 9.0 ? 6.0 : 12.0;
         _layerBorderColor = nil;
@@ -866,14 +869,6 @@ LGAlertViewType;
 
 #pragma mark - Defaults
 
-+ (void)load {
-    static dispatch_once_t token;
-    dispatch_once(&token, ^{
-        LGAlertViewWindowsArray = [NSMutableArray new];
-        LGAlertViewArray = [NSMutableArray new];
-    });
-}
-
 - (void)setupDefaults {
     self.buttonsEnabledArray = [NSMutableArray new];
 
@@ -920,6 +915,7 @@ LGAlertViewType;
     _showsVerticalScrollIndicator = appearance.showsVerticalScrollIndicator;
     _padShowsActionSheetFromBottom = appearance.padShowsActionSheetFromBottom;
     _oneRowOneButton = appearance.oneRowOneButton;
+    _shouldDismissAnimated = appearance.shouldDismissAnimated;
 
     _layerCornerRadius = appearance.layerCornerRadius;
     _layerBorderColor = appearance.layerBorderColor;
@@ -1051,13 +1047,22 @@ LGAlertViewType;
     self.initialized = YES;
 }
 
+#pragma mark - Class load
+
++ (void)load {
+    static dispatch_once_t token;
+    dispatch_once(&token, ^{
+        [[LGAlertViewWindowsObserver sharedInstance] startObserving];
+    });
+}
+
 #pragma mark - Dealloc
 
 - (void)dealloc {
     [self removeObservers];
 
-#if DEBUG
-    NSLog(@"%s [Line %d]", __PRETTY_FUNCTION__, __LINE__);
+#if DEBUG && LG_ALERT_VIEW_DEBUG
+    NSLog(@"LGAlertView DEALLOCATED");
 #endif
 }
 
@@ -1093,9 +1098,6 @@ LGAlertViewType;
 #pragma mark - Observers
 
 - (void)addObservers {
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(windowVisibleChanged:) name:UIWindowDidBecomeVisibleNotification object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(windowVisibleChanged:) name:UIWindowDidBecomeHiddenNotification object:nil];
-
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardVisibleChanged:) name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardVisibleChanged:) name:UIKeyboardWillHideNotification object:nil];
 
@@ -1103,58 +1105,17 @@ LGAlertViewType;
 }
 
 - (void)removeObservers {
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIWindowDidBecomeVisibleNotification object:nil];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIWindowDidBecomeHiddenNotification object:nil];
-
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
 
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillChangeFrameNotification object:nil];
 }
 
-#pragma mark - Window notifications
-
-- (void)windowVisibleChanged:(NSNotification *)notification {
-    NSUInteger windowIndex = [LGAlertViewWindowsArray indexOfObject:self.window];
-
-    //NSLog(@"windowVisibleChanged: %@", notification);
-
-    UIWindow *notificationWindow = notification.object;
-
-    //NSLog(@"%@", NSStringFromClass([window class]));
-
-    if ([NSStringFromClass([notificationWindow class]) isEqualToString:@"UITextEffectsWindow"] ||
-        [NSStringFromClass([notificationWindow class]) isEqualToString:@"UIRemoteKeyboardWindow"] ||
-        [NSStringFromClass([notificationWindow class]) isEqualToString:@"LGAlertViewWindow"] ||
-        [notificationWindow isEqual:self.window]) {
-        return;
-    }
-
-    if (notification.name == UIWindowDidBecomeVisibleNotification) {
-        if ([notificationWindow isEqual:[LGAlertView previousWindowForIndex:windowIndex]]) {
-            notificationWindow.hidden = YES;
-
-            [self.window makeKeyAndVisible];
-        }
-        else if (![LGAlertView nextWindowForIndex:windowIndex]) {
-            self.window.hidden = YES;
-
-            [LGAlertViewWindowsArray addObject:notificationWindow];
-        }
-    }
-    else if (notification.name == UIWindowDidBecomeHiddenNotification) {
-        if ([notificationWindow isEqual:[LGAlertView nextWindowForIndex:windowIndex]] &&
-            [notificationWindow isEqual:LGAlertViewWindowsArray.lastObject]) {
-            [self.window makeKeyAndVisible];
-
-            [LGAlertViewWindowsArray removeLastObject];
-        }
-    }
-}
-
 #pragma mark - Keyboard notifications
 
-- (void)keyboardVisibleChanged:(NSNotification *)notification{
+- (void)keyboardVisibleChanged:(NSNotification *)notification {
+    if (!self.isShowing || self.window.isHidden || !self.window.isKeyWindow) return;
+
     [LGAlertViewHelper
      keyboardAnimateWithNotificationUserInfo:notification.userInfo
      animations:^(CGFloat keyboardHeight) {
@@ -1170,9 +1131,14 @@ LGAlertViewType;
 }
 
 - (void)keyboardFrameChanged:(NSNotification *)notification {
-    if ([notification.userInfo[UIKeyboardAnimationDurationUserInfoKey] floatValue] == 0.0) {
-        self.keyboardHeight = CGRectGetHeight([notification.userInfo[UIKeyboardFrameEndUserInfoKey] CGRectValue]);
+    if (!self.isShowing ||
+        self.window.isHidden ||
+        !self.window.isKeyWindow ||
+        [notification.userInfo[UIKeyboardAnimationDurationUserInfoKey] floatValue] != 0.0) {
+        return;
     }
+
+    self.keyboardHeight = CGRectGetHeight([notification.userInfo[UIKeyboardFrameEndUserInfoKey] CGRectValue]);
 }
 
 #pragma mark - UITextField Delegate
@@ -1284,48 +1250,10 @@ LGAlertViewType;
 
 #pragma mark -
 
-- (void)setProgress:(float)progress progressLabelText:(nullable NSString *)progressLabelText {
-    if (self.type != LGAlertViewTypeProgressView) return;
-
-    [self.progressView setProgress:progress animated:YES];
-
-    self.progressLabel.text = progressLabelText;
-}
-
 - (float)progress {
     if (self.type != LGAlertViewTypeProgressView) return 0.0;
 
     return self.progressView.progress;
-}
-
-- (void)setButtonEnabled:(BOOL)enabled atIndex:(NSUInteger)index {
-    if (self.buttonTitles.count <= index) return;
-
-    self.buttonsEnabledArray[index] = [NSNumber numberWithBool:enabled];
-
-    if (self.tableView) {
-        if (self.destructiveButtonTitle) {
-            index++;
-        }
-
-        LGAlertViewCell *cell = (LGAlertViewCell *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:index inSection:0]];
-        cell.enabled = enabled;
-    }
-    else if (self.scrollView) {
-        switch (index) {
-            case 0:
-                self.firstButton.enabled = enabled;
-                break;
-            case 1:
-                self.secondButton.enabled = enabled;
-                break;
-            case 2:
-                self.thirdButton.enabled = enabled;
-                break;
-            default:
-                break;
-        }
-    }
 }
 
 - (void)setCancelButtonEnabled:(BOOL)cancelButtonEnabled {
@@ -1356,6 +1284,87 @@ LGAlertViewType;
     }
 }
 
+- (CGFloat)width {
+    CGSize size = LGAlertViewHelper.appWindow.bounds.size;
+
+    if (_width != NSNotFound) {
+        CGFloat result = MIN(size.width, size.height);
+
+        if (_width < result) {
+            result = _width;
+        }
+
+        return result;
+    }
+
+    // If we try to get width of appearance object
+    if (!self.isInitialized) return NSNotFound;
+
+    if (self.style == LGAlertViewStyleAlert || [LGAlertViewHelper isPadAndNotForce:self]) {
+        return 280.0; // 320.0 - (20.0 * 2.0)
+    }
+
+    if (LGAlertViewHelper.isPad) {
+        return 388.0; // 320.0 - (16.0 * 2.0)
+    }
+
+    return MIN(size.width, size.height) - 16.0; // MIN(size.width, size.height) - (8.0 * 2.0)
+}
+
+- (void)setDelegate:(id<LGAlertViewDelegate>)delegate {
+    _delegate = delegate;
+
+    if (!delegate) return;
+
+    if ([delegate respondsToSelector:@selector(alertView:buttonPressedWithTitle:index:)]) {
+        NSLog(@"WARNING: delegate method \"alertView:buttonPressedWithTitle:index:\" is DEPRECATED, use \"alertView:clickedButtonAtIndex:title:\" instead");
+    }
+
+    if ([delegate respondsToSelector:@selector(alertViewDestructiveButtonPressed:)]) {
+        NSLog(@"WARNING: delegate method \"alertViewDestructiveButtonPressed:\" is DEPRECATED, use \"alertViewDestructed:\" instead");
+    }
+}
+
+#pragma mark -
+
+- (void)setProgress:(float)progress progressLabelText:(nullable NSString *)progressLabelText {
+    if (self.type != LGAlertViewTypeProgressView) return;
+
+    [self.progressView setProgress:progress animated:YES];
+
+    self.progressLabel.text = progressLabelText;
+}
+
+- (void)setButtonEnabled:(BOOL)enabled atIndex:(NSUInteger)index {
+    if (self.buttonTitles.count <= index) return;
+
+    self.buttonsEnabledArray[index] = @(enabled);
+
+    if (self.tableView) {
+        if (self.destructiveButtonTitle) {
+            index++;
+        }
+
+        LGAlertViewCell *cell = (LGAlertViewCell *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:index inSection:0]];
+        cell.enabled = enabled;
+    }
+    else if (self.scrollView) {
+        switch (index) {
+            case 0:
+                self.firstButton.enabled = enabled;
+                break;
+            case 1:
+                self.secondButton.enabled = enabled;
+                break;
+            case 2:
+                self.thirdButton.enabled = enabled;
+                break;
+            default:
+                break;
+        }
+    }
+}
+
 - (BOOL)isButtonEnabledAtIndex:(NSUInteger)index {
     return [self.buttonsEnabledArray[index] boolValue];
 }
@@ -1368,7 +1377,7 @@ LGAlertViewType;
         self.buttonsPropertiesDictionary = [NSMutableDictionary new];
     }
 
-    LGAlertViewButtonProperties *properties = self.buttonsPropertiesDictionary[[NSNumber numberWithInteger:index]];
+    LGAlertViewButtonProperties *properties = self.buttonsPropertiesDictionary[@(index)];
 
     if (!properties) {
         properties = [LGAlertViewButtonProperties new];
@@ -1377,10 +1386,10 @@ LGAlertViewType;
     handler(properties);
 
     if (properties.isUserEnabled) {
-        self.buttonsEnabledArray[index] = [NSNumber numberWithBool:properties.enabled];
+        self.buttonsEnabledArray[index] = @(properties.enabled);
     }
 
-    [self.buttonsPropertiesDictionary setObject:properties forKey:[NSNumber numberWithInteger:index]];
+    [self.buttonsPropertiesDictionary setObject:properties forKey:@(index)];
 }
 
 - (void)forceCancel {
@@ -1474,7 +1483,7 @@ LGAlertViewType;
         LGAlertViewButtonProperties *properties = nil;
 
         if (self.buttonsPropertiesDictionary) {
-            properties = self.buttonsPropertiesDictionary[[NSNumber numberWithInteger:buttonIndex]];
+            properties = self.buttonsPropertiesDictionary[@(buttonIndex)];
         }
 
         cell.titleColor                 = (properties.isUserTitleColor ? properties.titleColor : self.buttonsTitleColor);
@@ -1594,39 +1603,19 @@ LGAlertViewType;
 
     self.showing = YES;
 
-    if (![LGAlertViewArray containsObject:self]) {
-        [LGAlertViewArray addObject:self];
+    // -----
+
+    UIWindow *keyWindow = LGAlertViewHelper.keyWindow;
+
+    if (!hidden && keyWindow != LGAlertViewHelper.appWindow) {
+        keyWindow.hidden = YES;
     }
+
+    [self.window makeKeyAndVisible];
 
     // -----
 
     [self addObservers];
-
-    // -----
-
-    UIWindow *windowApp = [UIApplication sharedApplication].delegate.window;
-    NSAssert(windowApp != nil, @"Application needs to have at least one window");
-
-    UIWindow *windowKey = [UIApplication sharedApplication].keyWindow;
-    NSAssert(windowKey != nil, @"Application needs to have at least one keyAndVisible window");
-
-    if (!LGAlertViewWindowsArray.count) {
-        [LGAlertViewWindowsArray addObject:windowApp];
-    }
-
-    if (![windowKey isEqual:windowApp] && ![LGAlertViewWindowsArray containsObject:windowKey]) {
-        [LGAlertViewWindowsArray addObject:windowKey];
-    }
-
-    if (![LGAlertViewWindowsArray containsObject:self.window]) {
-        [LGAlertViewWindowsArray addObject:self.window];
-    }
-
-    if (!hidden && ![windowKey isEqual:windowApp]) {
-        windowKey.hidden = YES;
-    }
-
-    [self.window makeKeyAndVisible];
 
     // -----
 
@@ -1717,11 +1706,14 @@ LGAlertViewType;
 - (void)dismissAnimated:(BOOL)animated completionHandler:(LGAlertViewCompletionHandler)completionHandler {
     if (!self.isShowing) return;
 
+    if (self.window.isHidden) {
+        [self dismissComplete];
+        return;
+    }
+
     self.view.userInteractionEnabled = NO;
 
     self.showing = NO;
-
-    [self removeObservers];
 
     [self.view endEditing:YES];
 
@@ -1787,27 +1779,15 @@ LGAlertViewType;
 }
 
 - (void)dismissComplete {
+    [self removeObservers];
+
     self.window.hidden = YES;
-
-    if ([LGAlertViewWindowsArray.lastObject isEqual:self.window]) {
-        NSUInteger windowIndex = [LGAlertViewWindowsArray indexOfObject:self.window];
-
-        [[LGAlertView previousWindowForIndex:windowIndex] makeKeyAndVisible];
-    }
 
     // -----
 
     [self didDismissCallback];
 
     // -----
-
-    if ([LGAlertViewWindowsArray containsObject:self.window]) {
-        [LGAlertViewWindowsArray removeObject:self.window];
-    }
-
-    if ([LGAlertViewArray containsObject:self]) {
-        [LGAlertViewArray removeObject:self];
-    }
 
     self.view = nil;
     self.viewController = nil;
@@ -1928,30 +1908,8 @@ LGAlertViewType;
 
 #pragma mark -
 
-- (CGFloat)widthForSize:(CGSize)size {
-    if (self.width != NSNotFound) {
-        CGFloat result = MIN(size.width, size.height);
-
-        if (self.width < result) {
-            result = self.width;
-        }
-
-        return result;
-    }
-
-    if (self.style == LGAlertViewStyleAlert || [LGAlertViewHelper isPadAndNotForce:self]) {
-        return 320.0 - (20.0 * 2.0);
-    }
-
-    if (LGAlertViewHelper.isPad) {
-        return 320.0 - (16.0 * 2.0);
-    }
-
-    return MIN(size.width, size.height) - (8.0 * 2.0);
-}
-
 - (void)subviewsValidateWithSize:(CGSize)size {
-    CGFloat width = [self widthForSize:size];
+    CGFloat width = self.width;
 
     // -----
 
@@ -2812,7 +2770,7 @@ LGAlertViewType;
 }
 
 - (void)layoutValidateWithSize:(CGSize)size {
-    CGFloat width = [self widthForSize:size];
+    CGFloat width = self.width;
 
     // -----
 
@@ -3017,7 +2975,17 @@ LGAlertViewType;
     // -----
 
     if (self.dismissOnAction) {
-        [self dismissAnimated:YES completionHandler:nil];
+        [self dismissAnimated:self.shouldDismissAnimated completionHandler:^{
+            if (self.didDismissAfterCancelHandler) {
+                self.didDismissAfterCancelHandler(self);
+            }
+
+            if (self.delegate && [self.delegate respondsToSelector:@selector(alertViewDidDismissAfterCancelled:)]) {
+                [self.delegate alertViewDidDismissAfterCancelled:self];
+            }
+
+            [[NSNotificationCenter defaultCenter] postNotificationName:LGAlertViewDidDismissAfterCancelNotification object:self userInfo:nil];
+        }];
     }
 }
 
@@ -3032,8 +3000,8 @@ LGAlertViewType;
         self.destructiveHandler(self);
     }
 
-    if (self.delegate && [self.delegate respondsToSelector:@selector(alertViewDestructiveButtonPressed:)]) {
-        [self.delegate alertViewDestructiveButtonPressed:self];
+    if (self.delegate && [self.delegate respondsToSelector:@selector(alertViewDestructed:)]) {
+        [self.delegate alertViewDestructed:self];
     }
 
     [[NSNotificationCenter defaultCenter] postNotificationName:LGAlertViewDestructiveNotification object:self userInfo:nil];
@@ -3041,7 +3009,17 @@ LGAlertViewType;
     // -----
 
     if (self.dismissOnAction) {
-        [self dismissAnimated:YES completionHandler:nil];
+        [self dismissAnimated:self.shouldDismissAnimated completionHandler:^{
+            if (self.didDismissAfterDestructiveHandler) {
+                self.didDismissAfterDestructiveHandler(self);
+            }
+
+            if (self.delegate && [self.delegate respondsToSelector:@selector(alertViewDidDismissAfterDestructed:)]) {
+                [self.delegate alertViewDidDismissAfterDestructed:self];
+            }
+
+            [[NSNotificationCenter defaultCenter] postNotificationName:LGAlertViewDidDismissAfterDestructiveNotification object:self userInfo:nil];
+        }];
     }
 }
 
@@ -3050,19 +3028,32 @@ LGAlertViewType;
         self.actionHandler(self, title, index);
     }
 
-    if (self.delegate && [self.delegate respondsToSelector:@selector(alertView:buttonPressedWithTitle:index:)]) {
-        [self.delegate alertView:self buttonPressedWithTitle:title index:index];
+    if (self.delegate && [self.delegate respondsToSelector:@selector(alertView:clickedButtonAtIndex:title:)]) {
+        [self.delegate alertView:self clickedButtonAtIndex:index title:title];
     }
 
     [[NSNotificationCenter defaultCenter] postNotificationName:LGAlertViewActionNotification
                                                         object:self
                                                       userInfo:@{@"title": title,
-                                                                 @"index": [NSNumber numberWithInteger:index]}];
+                                                                 @"index": @(index)}];
 
     // -----
 
     if (self.dismissOnAction) {
-        [self dismissAnimated:YES completionHandler:nil];
+        [self dismissAnimated:self.shouldDismissAnimated completionHandler:^{
+            if (self.didDismissAfterActionHandler) {
+                self.didDismissAfterActionHandler(self, title, index);
+            }
+
+            if (self.delegate && [self.delegate respondsToSelector:@selector(alertView:didDismissAfterClickedButtonAtIndex:title:)]) {
+                [self.delegate alertView:self didDismissAfterClickedButtonAtIndex:index title:title];
+            }
+
+            [[NSNotificationCenter defaultCenter] postNotificationName:LGAlertViewDidDismissAfterActionNotification
+                                                                object:self
+                                                              userInfo:@{@"title": title,
+                                                                         @"index": @(index)}];
+        }];
     }
 }
 
@@ -3164,16 +3155,6 @@ LGAlertViewType;
     [[NSNotificationCenter defaultCenter] postNotificationName:LGAlertViewDidDismissNotification object:self userInfo:nil];
 }
 
-#pragma mark -
-
-+ (nonnull NSArray *)alertViewsArray {
-    if (!LGAlertViewArray) {
-        LGAlertViewArray = [NSMutableArray new];
-    }
-
-    return LGAlertViewArray;
-}
-
 #pragma mark - Helpers
 
 - (BOOL)isAlertViewValid:(LGAlertView *)alertView {
@@ -3192,14 +3173,6 @@ LGAlertViewType;
 
 - (CGFloat)innerMarginHeight {
     return self.style == LGAlertViewStyleAlert ? 16.0 : 12.0;
-}
-
-+ (UIWindow *)previousWindowForIndex:(NSUInteger)index {
-    return index > 0 && index < LGAlertViewWindowsArray.count ? [LGAlertViewWindowsArray objectAtIndex:(index - 1)] : nil;
-}
-
-+ (UIWindow *)nextWindowForIndex:(NSUInteger)index {
-    return LGAlertViewWindowsArray.count > (index + 1) ? [LGAlertViewWindowsArray objectAtIndex:(index + 1)] : nil;
 }
 
 @end

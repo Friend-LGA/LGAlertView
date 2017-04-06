@@ -50,7 +50,7 @@
 
     cell.textLabel.font = [UIFont systemFontOfSize:16.0];
     cell.textLabel.text = self.titlesArray[indexPath.row];
-    cell.userInteractionEnabled = (indexPath.row != 1);
+    cell.userInteractionEnabled = [self.titlesArray[indexPath.row] length] > 0;
 
     return cell;
 }

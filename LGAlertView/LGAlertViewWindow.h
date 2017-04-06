@@ -29,6 +29,8 @@
 
 #import <UIKit/UIKit.h>
 
+@class LGAlertView;
+
 @interface LGAlertViewWindow : UIWindow
 
 @end

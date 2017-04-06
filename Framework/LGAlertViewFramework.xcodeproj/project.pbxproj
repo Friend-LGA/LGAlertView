@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4A6308171E9A6BAB00015C9E /* LGAlertViewWindowContainer.h in Headers */ = {isa = PBXBuildFile; fileRef = 4A6308131E9A6BAB00015C9E /* LGAlertViewWindowContainer.h */; };
+		4A6308181E9A6BAB00015C9E /* LGAlertViewWindowContainer.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A6308141E9A6BAB00015C9E /* LGAlertViewWindowContainer.m */; };
+		4A6308191E9A6BAB00015C9E /* LGAlertViewWindowsObserver.h in Headers */ = {isa = PBXBuildFile; fileRef = 4A6308151E9A6BAB00015C9E /* LGAlertViewWindowsObserver.h */; };
+		4A63081A1E9A6BAB00015C9E /* LGAlertViewWindowsObserver.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A6308161E9A6BAB00015C9E /* LGAlertViewWindowsObserver.m */; };
 		4A95DE0C1E8C01D40079BC49 /* LGAlertViewHelper.h in Headers */ = {isa = PBXBuildFile; fileRef = 4A95DE091E8C01D40079BC49 /* LGAlertViewHelper.h */; };
 		4A95DE0D1E8C01D40079BC49 /* LGAlertViewHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A95DE0A1E8C01D40079BC49 /* LGAlertViewHelper.m */; };
 		4A95DE0E1E8C01D40079BC49 /* LGAlertViewShared.h in Headers */ = {isa = PBXBuildFile; fileRef = 4A95DE0B1E8C01D40079BC49 /* LGAlertViewShared.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -30,6 +34,10 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		4A6308131E9A6BAB00015C9E /* LGAlertViewWindowContainer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGAlertViewWindowContainer.h; sourceTree = "<group>"; };
+		4A6308141E9A6BAB00015C9E /* LGAlertViewWindowContainer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGAlertViewWindowContainer.m; sourceTree = "<group>"; };
+		4A6308151E9A6BAB00015C9E /* LGAlertViewWindowsObserver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGAlertViewWindowsObserver.h; sourceTree = "<group>"; };
+		4A6308161E9A6BAB00015C9E /* LGAlertViewWindowsObserver.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGAlertViewWindowsObserver.m; sourceTree = "<group>"; };
 		4A95DE091E8C01D40079BC49 /* LGAlertViewHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGAlertViewHelper.h; sourceTree = "<group>"; };
 		4A95DE0A1E8C01D40079BC49 /* LGAlertViewHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGAlertViewHelper.m; sourceTree = "<group>"; };
 		4A95DE0B1E8C01D40079BC49 /* LGAlertViewShared.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGAlertViewShared.h; sourceTree = "<group>"; };
@@ -113,6 +121,10 @@
 				4AF139EB1BF385380037B073 /* LGAlertViewTextField.m */,
 				4AF139EC1BF385380037B073 /* LGAlertViewWindow.h */,
 				4AF139ED1BF385380037B073 /* LGAlertViewWindow.m */,
+				4A6308131E9A6BAB00015C9E /* LGAlertViewWindowContainer.h */,
+				4A6308141E9A6BAB00015C9E /* LGAlertViewWindowContainer.m */,
+				4A6308151E9A6BAB00015C9E /* LGAlertViewWindowsObserver.h */,
+				4A6308161E9A6BAB00015C9E /* LGAlertViewWindowsObserver.m */,
 				4AF139EE1BF385380037B073 /* UIWindow+LGAlertView.h */,
 				4AF139EF1BF385380037B073 /* UIWindow+LGAlertView.m */,
 			);
@@ -127,6 +139,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4A6308191E9A6BAB00015C9E /* LGAlertViewWindowsObserver.h in Headers */,
 				4AF139F21BF385380037B073 /* LGAlertViewButtonProperties.h in Headers */,
 				4AF139F01BF385380037B073 /* LGAlertView.h in Headers */,
 				4A95DE0E1E8C01D40079BC49 /* LGAlertViewShared.h in Headers */,
@@ -138,6 +151,7 @@
 				4AF139F91BF385380037B073 /* LGAlertViewTextField.h in Headers */,
 				4AF139FB1BF385380037B073 /* LGAlertViewWindow.h in Headers */,
 				4A95DE0C1E8C01D40079BC49 /* LGAlertViewHelper.h in Headers */,
+				4A6308171E9A6BAB00015C9E /* LGAlertViewWindowContainer.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -217,6 +231,8 @@
 				4AF139FA1BF385380037B073 /* LGAlertViewTextField.m in Sources */,
 				4AF139F31BF385380037B073 /* LGAlertViewButtonProperties.m in Sources */,
 				4AF139F51BF385380037B073 /* LGAlertViewCell.m in Sources */,
+				4A63081A1E9A6BAB00015C9E /* LGAlertViewWindowsObserver.m in Sources */,
+				4A6308181E9A6BAB00015C9E /* LGAlertViewWindowContainer.m in Sources */,
 				4AF139FE1BF385380037B073 /* UIWindow+LGAlertView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -31,6 +31,7 @@
                              @"LGAlertView + A lot of buttons long",
                              @"LGAlertView + A lot of buttons short",
                              @"LGAlertView + UIView",
+                             @"LGAlertView + UIScrollView",
                              @"LGAlertView + XIB",
                              @"LGAlertView + ActivityIndicator",
                              @"LGAlertView + ActivityIndicator cancel",
@@ -69,7 +70,7 @@
 
     cell.textLabel.font = [UIFont systemFontOfSize:16.0];
     cell.textLabel.text = self.titlesArray[indexPath.row];
-    cell.userInteractionEnabled = (indexPath.row != 2 && indexPath.row != 17);
+    cell.userInteractionEnabled = [self.titlesArray[indexPath.row] length] > 0;
 
     return cell;
 }
@@ -315,6 +316,37 @@
             break;
         }
         case 12: {
+            UIScrollView *scrollView = [UIScrollView new];
+
+            UILabel *label = [UILabel new];
+            label.numberOfLines = 0;
+            label.text = @"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce bibendum sagittis magna, at pulvinar leo. Vestibulum eu ex ut ligula mollis tempus in sit amet lacus. Nullam fermentum tortor sit amet arcu ornare, a fringilla arcu vulputate. Pellentesque accumsan imperdiet viverra. Praesent et bibendum turpis. Morbi condimentum risus non neque vehicula, a laoreet neque lacinia. Nullam et lorem non magna pharetra ullamcorper. Duis malesuada sem quis venenatis pulvinar. Pellentesque consectetur dolor non elit pretium laoreet. Praesent condimentum tristique sapien, non lacinia erat ullamcorper eu. Pellentesque turpis nisl, mollis id arcu eget, commodo commodo massa. Duis pretium et libero sed fringilla. Donec a nunc sem. Phasellus eget est eget quam commodo egestas.\n\nNam rhoncus vehicula interdum. Praesent urna lorem, iaculis id sem eu, varius gravida sapien. Sed et purus bibendum ipsum feugiat placerat. Donec iaculis urna nisl, vel condimentum elit auctor quis. Phasellus mollis vehicula facilisis. Vivamus commodo arcu sed justo consectetur interdum. Suspendisse pharetra malesuada sem eleifend bibendum. Suspendisse quis tempus lorem. Cras viverra congue nisi, sed molestie sem. Etiam accumsan tincidunt arcu, quis feugiat mi lacinia quis. Curabitur sit amet tincidunt nisl.\n\nProin sit amet tempor augue. Proin eget arcu quis ipsum semper condimentum nec ac purus. Aliquam vestibulum iaculis mi in fermentum. Nunc venenatis magna in tristique pulvinar. Nulla vitae ipsum libero. Cras ex arcu, rhoncus id finibus vel, feugiat ut dolor. Duis condimentum, nunc volutpat accumsan elementum, nibh nisl dapibus massa, in tristique ligula tellus in nibh. Mauris vel urna suscipit, mollis quam vel, tempus diam. Donec velit felis, laoreet vitae eleifend id, fermentum sit amet justo.\n\nNunc rhoncus arcu quam, vel egestas metus accumsan quis. Phasellus posuere ullamcorper turpis, at luctus quam semper non. Interdum et malesuada fames ac ante ipsum primis in faucibus. Quisque vel porttitor felis, pellentesque blandit turpis. Pellentesque id mauris nisl. Donec imperdiet, quam rhoncus tincidunt bibendum, sapien est maximus sapien, eu suscipit turpis diam eget neque. Integer eu lorem accumsan, faucibus nulla in, varius purus. Morbi in aliquet risus.\n\nDuis pellentesque nunc ac lacinia suscipit. Suspendisse accumsan molestie pulvinar. Sed dolor turpis, tempor a facilisis id, fringilla eget enim. Suspendisse condimentum placerat faucibus. Mauris risus magna, posuere id finibus nec, semper ut nisl. Sed quis lorem dapibus, volutpat magna quis, porta leo. Praesent eu diam maximus quam dapibus pharetra. Pellentesque tincidunt vel magna at ullamcorper. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Proin sit amet lectus at tortor pharetra accumsan.";
+            [scrollView addSubview:label];
+
+            LGAlertView *alertView = [[LGAlertView alloc] initWithViewAndTitle:@"Scroll view with text"
+                                                                       message:nil
+                                                                         style:LGAlertViewStyleActionSheet
+                                                                          view:scrollView
+                                                                  buttonTitles:@[@"Agree"]
+                                                             cancelButtonTitle:@"Cancel"
+                                                        destructiveButtonTitle:nil
+                                                                      delegate:self];
+
+            scrollView.frame = CGRectMake(0.0, 0.0, alertView.width, 160.0);
+
+            label.textColor = alertView.messageTextColor;
+            label.font = alertView.messageFont;
+
+            CGSize labelSize = [label sizeThatFits:CGSizeMake(alertView.width - 16.0, CGFLOAT_MAX)];
+            label.frame = CGRectMake(8.0, 0.0, labelSize.width, labelSize.height);
+
+            scrollView.contentSize = CGSizeMake(alertView.width, labelSize.height);
+
+            [alertView showAnimated:YES completionHandler:nil];
+
+            break;
+        }
+        case 13: {
             [[[LGAlertView alloc] initWithViewAndTitle:@"Autolayouts"
                                                message:@"You need to set width and height constraints"
                                                  style:LGAlertViewStyleActionSheet
@@ -326,7 +358,7 @@
 
             break;
         }
-        case 13: {
+        case 14: {
             LGAlertView *alertView = [[LGAlertView alloc] initWithActivityIndicatorAndTitle:@"Loading"
                                                                                     message:@"Waiting please"
                                                                                       style:LGAlertViewStyleActionSheet
@@ -345,7 +377,7 @@
 
             break;
         }
-        case 14: {
+        case 15: {
             LGAlertView *alertView = [[LGAlertView alloc] initWithActivityIndicatorAndTitle:@"Loading"
                                                                                     message:@"Waiting please"
                                                                                       style:LGAlertViewStyleActionSheet
@@ -364,7 +396,7 @@
 
             break;
         }
-        case 15: {
+        case 16: {
             LGAlertView *alertView = [[LGAlertView alloc] initWithProgressViewAndTitle:@"Loading"
                                                                                message:@"Waiting please"
                                                                                  style:LGAlertViewStyleActionSheet
@@ -380,7 +412,7 @@
 
             break;
         }
-        case 16: {
+        case 17: {
             LGAlertView *alertView = [[LGAlertView alloc] initWithProgressViewAndTitle:@"Loading"
                                                                                message:@"Waiting please"
                                                                                  style:LGAlertViewStyleActionSheet
@@ -396,7 +428,7 @@
 
             break;
         }
-        case 18: {
+        case 19: {
             LGAlertView *alertView1 = [[LGAlertView alloc] initWithActivityIndicatorAndTitle:@"Loading"
                                                                                      message:@"Waiting please"
                                                                                        style:LGAlertViewStyleActionSheet
@@ -423,39 +455,12 @@
 
             break;
         }
-        case 19: {
-            LGAlertView *alertView1 = [[LGAlertView alloc] initWithActivityIndicatorAndTitle:@"Loading"
-                                                                                     message:@"Waiting please"
-                                                                                       style:LGAlertViewStyleActionSheet
-                                                                                buttonTitles:nil
-                                                                           cancelButtonTitle:nil
-                                                                      destructiveButtonTitle:nil
-                                                                                    delegate:self];
-
-            [alertView1 showAnimated:YES completionHandler:nil];
-
-            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^(void) {
-                LGAlertView *alertView2 = [[LGAlertView alloc] initWithTitle:@"Title"
-                                                                     message:@"Message"
-                                                                       style:LGAlertViewStyleActionSheet
-                                                                buttonTitles:@[@"Button 1", @"Button 2"]
-                                                           cancelButtonTitle:nil
-                                                      destructiveButtonTitle:@"Destructive"
-                                                                    delegate:self];
-
-                if (alertView1 && alertView1.isShowing) {
-                    [alertView1 transitionToAlertView:alertView2 completionHandler:nil];
-                }
-            });
-
-            break;
-        }
         case 20: {
             LGAlertView *alertView1 = [[LGAlertView alloc] initWithActivityIndicatorAndTitle:@"Loading"
                                                                                      message:@"Waiting please"
                                                                                        style:LGAlertViewStyleActionSheet
                                                                                 buttonTitles:nil
-                                                                           cancelButtonTitle:@"I'm hurry"
+                                                                           cancelButtonTitle:nil
                                                                       destructiveButtonTitle:nil
                                                                                     delegate:self];
 
@@ -482,6 +487,33 @@
                                                                                      message:@"Waiting please"
                                                                                        style:LGAlertViewStyleActionSheet
                                                                                 buttonTitles:nil
+                                                                           cancelButtonTitle:@"I'm hurry"
+                                                                      destructiveButtonTitle:nil
+                                                                                    delegate:self];
+
+            [alertView1 showAnimated:YES completionHandler:nil];
+
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^(void) {
+                LGAlertView *alertView2 = [[LGAlertView alloc] initWithTitle:@"Title"
+                                                                     message:@"Message"
+                                                                       style:LGAlertViewStyleActionSheet
+                                                                buttonTitles:@[@"Button 1", @"Button 2"]
+                                                           cancelButtonTitle:nil
+                                                      destructiveButtonTitle:@"Destructive"
+                                                                    delegate:self];
+
+                if (alertView1 && alertView1.isShowing) {
+                    [alertView1 transitionToAlertView:alertView2 completionHandler:nil];
+                }
+            });
+
+            break;
+        }
+        case 22: {
+            LGAlertView *alertView1 = [[LGAlertView alloc] initWithActivityIndicatorAndTitle:@"Loading"
+                                                                                     message:@"Waiting please"
+                                                                                       style:LGAlertViewStyleActionSheet
+                                                                                buttonTitles:nil
                                                                            cancelButtonTitle:nil
                                                                       destructiveButtonTitle:nil
                                                                                     delegate:self];
@@ -504,7 +536,7 @@
 
             break;
         }
-        case 22: {
+        case 23: {
             LGAlertView *alertView1 = [[LGAlertView alloc] initWithActivityIndicatorAndTitle:@"Loading"
                                                                                      message:@"Waiting please"
                                                                                        style:LGAlertViewStyleActionSheet
@@ -531,7 +563,7 @@
 
             break;
         }
-        case 23: {
+        case 24: {
             LGAlertView *alertView1 = [[LGAlertView alloc] initWithActivityIndicatorAndTitle:@"Loading"
                                                                                      message:@"Waiting please"
                                                                                        style:LGAlertViewStyleActionSheet
@@ -586,7 +618,7 @@
 
 #pragma mark - LGAlertViewDelegate
 
-- (void)alertView:(LGAlertView *)alertView buttonPressedWithTitle:(NSString *)title index:(NSUInteger)index {
+- (void)alertView:(LGAlertView *)alertView clickedButtonAtIndex:(NSUInteger)index title:(nullable NSString *)title {
     NSLog(@"action {title: %@, index: %lu}", title, (long unsigned)index);
 }
 
@@ -594,7 +626,7 @@
     NSLog(@"cancel");
 }
 
-- (void)alertViewDestructiveButtonPressed:(LGAlertView *)alertView {
+- (void)alertViewDestructed:(LGAlertView *)alertView {
     NSLog(@"destructive");
 }
 

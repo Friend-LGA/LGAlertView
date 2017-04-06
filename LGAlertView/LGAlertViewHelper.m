@@ -123,4 +123,12 @@ CGFloat const LGAlertViewButtonImageOffsetFromTitle = 8.0;
     return [UIDevice currentDevice].systemVersion.floatValue;
 }
 
++ (UIWindow *)appWindow {
+    return [UIApplication sharedApplication].delegate.window;
+}
+
++ (UIWindow *)keyWindow {
+    return [UIApplication sharedApplication].keyWindow;
+}
+
 @end
