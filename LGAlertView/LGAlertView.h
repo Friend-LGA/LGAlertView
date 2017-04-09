@@ -54,7 +54,7 @@ extern NSString *_Nonnull const LGAlertViewDidDismissAfterDestructiveNotificatio
 
 typedef void (^ _Nullable LGAlertViewCompletionHandler)();
 typedef void (^ _Nullable LGAlertViewHandler)(LGAlertView * _Nonnull alertView);
-typedef void (^ _Nullable LGAlertViewActionHandler)(LGAlertView * _Nonnull alertView, NSString * _Nullable title, NSUInteger index);
+typedef void (^ _Nullable LGAlertViewActionHandler)(LGAlertView * _Nonnull alertView, NSUInteger index, NSString * _Nullable title);
 typedef void (^ _Nullable LGAlertViewTextFieldsSetupHandler)(UITextField * _Nonnull textField, NSUInteger index);
 
 typedef NS_ENUM(NSUInteger, LGAlertViewStyle) {
