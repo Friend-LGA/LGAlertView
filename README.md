@@ -374,15 +374,19 @@ To handle actions you can use blocks, delegate or notifications:
 
 @optional
 
-- (void)alertViewWillShow:(LGAlertView *)alertView;
-- (void)alertViewWillDismiss:(LGAlertView *)alertView;
+- (void)alertViewWillShow:(nonnull LGAlertView *)alertView;
+- (void)alertViewDidShow:(nonnull LGAlertView *)alertView;
 
-- (void)alertViewDidShow:(LGAlertView *)alertView;
-- (void)alertViewDidDismiss:(LGAlertView *)alertView;
+- (void)alertViewWillDismiss:(nonnull LGAlertView *)alertView;
+- (void)alertViewDidDismiss:(nonnull LGAlertView *)alertView;
 
-- (void)alertView:(LGAlertView *)alertView buttonPressedWithTitle:(NSString *)title index:(NSUInteger)index;
-- (void)alertViewCancelled:(LGAlertView *)alertView;
-- (void)alertViewDestructiveButtonPressed:(LGAlertView *)alertView;
+- (void)alertView:(nonnull LGAlertView *)alertView clickedButtonAtIndex:(NSUInteger)index title:(nullable NSString *)title;
+- (void)alertViewCancelled:(nonnull LGAlertView *)alertView;
+- (void)alertViewDestructed:(nonnull LGAlertView *)alertView;
+
+- (void)alertView:(nonnull LGAlertView *)alertView didDismissAfterClickedButtonAtIndex:(NSUInteger)index title:(nullable NSString *)title;
+- (void)alertViewDidDismissAfterCancelled:(nonnull LGAlertView *)alertView;
+- (void)alertViewDidDismissAfterDestructed:(nonnull LGAlertView *)alertView;
 ```
 
 ##### Swift
@@ -396,9 +400,13 @@ optional public func alertViewDidShow(_ alertView: LGAlertView)
 optional public func alertViewWillDismiss(_ alertView: LGAlertView)
 optional public func alertViewDidDismiss(_ alertView: LGAlertView)
 
-optional public func alertView(_ alertView: LGAlertView, buttonPressedWithTitle title: String?, index: UInt)
+optional public func alertView(_ alertView: LGAlertView, clickedButtonAtIndex index: UInt, title: String?)
 optional public func alertViewCancelled(_ alertView: LGAlertView)
-optional public func alertViewDestructiveButtonPressed(_ alertView: LGAlertView)
+optional public func alertViewDestructed(_ alertView: LGAlertView)
+
+optional public func alertView(_ alertView: LGAlertView, didDismissAfterClickedButtonAtIndex index: UInt, title: String?)
+optional public func alertViewDidDismissAfterCancelled(_ alertView: LGAlertView)
+optional public func alertViewDidDismissAfterDestructed(_ alertView: LGAlertView)
 ```
 
 #### Blocks
@@ -414,23 +422,31 @@ void(^ _Nullable didShowHandler)(LGAlertView * _Nonnull alertView);
 void(^ _Nullable willDismissHandler)(LGAlertView * _Nonnull alertView);
 void(^ _Nullable didDismissHandler)(LGAlertView * _Nonnull alertView);
 
-void(^ _Nullable actionHandler)(LGAlertView * _Nonnull alertView, NSString * _Nullable title, NSUInteger index);
+void(^ _Nullable actionHandler)(LGAlertView * _Nonnull alertView, NSUInteger index, NSString * _Nullable title);
 void(^ _Nullable cancelHandler)(LGAlertView * _Nonnull alertView);
 void(^ _Nullable destructiveHandler)(LGAlertView * _Nonnull alertView);
+
+void(^ _Nullable didDismissAfterActionHandler)(LGAlertView * _Nonnull alertView, NSUInteger index, NSString * _Nullable title);
+void(^ _Nullable didDismissAfterCancelHandler)(LGAlertView * _Nonnull alertView);
+void(^ _Nullable didDismissAfterDestructiveHandler)(LGAlertView * _Nonnull alertView);
 ```
 
 ##### Swift
 
 ```swift
-open var willShowHandler: ((LGAlertView) -> Swift.Void)?
-open var didShowHandler: ((LGAlertView) -> Swift.Void)?
+open var willShowHandler: ((alertView: LGAlertView) -> Swift.Void)?
+open var didShowHandler: ((alertView: LGAlertView) -> Swift.Void)?
 
-open var willDismissHandler: ((LGAlertView) -> Swift.Void)?
-open var didDismissHandler: ((LGAlertView) -> Swift.Void)?
+open var willDismissHandler: ((alertView: LGAlertView) -> Swift.Void)?
+open var didDismissHandler: ((alertView: LGAlertView) -> Swift.Void)?
 
-open var actionHandler: ((LGAlertView, NSString, NSUInteger) -> Swift.Void)?
-open var cancelHandler: ((LGAlertView) -> Swift.Void)?
-open var destructiveHandler: ((LGAlertView) -> Swift.Void)?
+open var actionHandler: ((alertView: LGAlertView, index: NSUInteger, title: NSString) -> Swift.Void)?
+open var cancelHandler: ((alertView: LGAlertView) -> Swift.Void)?
+open var destructiveHandler: ((alertView: LGAlertView) -> Swift.Void)?
+
+open var didDismissAfterActionHandler: ((alertView: LGAlertView, index: NSUInteger, title: NSString) -> Swift.Void)?
+open var didDismissAfterCancelHandler: ((alertView: LGAlertView) -> Swift.Void)?
+open var didDismissAfterDestructiveHandler: ((alertView: LGAlertView) -> Swift.Void)?
 ```
 
 #### Notifications
@@ -445,6 +461,10 @@ LGAlertViewDidDismissNotification
 LGAlertViewActionNotification
 LGAlertViewCancelNotification
 LGAlertViewDestructiveNotification
+
+LGAlertViewDidDismissAfterActionNotification;
+LGAlertViewDidDismissAfterCancelNotification;
+LGAlertViewDidDismissAfterDestructiveNotification;
 ```
 
 ### More
