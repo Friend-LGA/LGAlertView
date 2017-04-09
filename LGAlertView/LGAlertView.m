@@ -3025,7 +3025,7 @@ LGAlertViewType;
 
 - (void)actionActionAtIndex:(NSUInteger)index title:(NSString *)title {
     if (self.actionHandler) {
-        self.actionHandler(self, title, index);
+        self.actionHandler(self, index, title);
     }
 
     if (self.delegate && [self.delegate respondsToSelector:@selector(alertView:clickedButtonAtIndex:title:)]) {
@@ -3042,7 +3042,7 @@ LGAlertViewType;
     if (self.dismissOnAction) {
         [self dismissAnimated:self.shouldDismissAnimated completionHandler:^{
             if (self.didDismissAfterActionHandler) {
-                self.didDismissAfterActionHandler(self, title, index);
+                self.didDismissAfterActionHandler(self, index, title);
             }
 
             if (self.delegate && [self.delegate respondsToSelector:@selector(alertView:didDismissAfterClickedButtonAtIndex:title:)]) {
