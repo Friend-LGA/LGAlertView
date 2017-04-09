@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
 
     s.name = 'LGAlertView'
-    s.version = '2.2.0'
+    s.version = '2.3.0'
     s.platform = :ios, '8.0'
     s.license = 'MIT'
     s.homepage = 'https://github.com/Friend-LGA/LGAlertView'
