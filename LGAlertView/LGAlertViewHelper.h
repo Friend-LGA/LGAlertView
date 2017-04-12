@@ -66,4 +66,6 @@ extern CGFloat const LGAlertViewButtonImageOffsetFromTitle;
 + (UIWindow *)appWindow;
 + (UIWindow *)keyWindow;
 
++ (BOOL)isViewControllerBasedStatusBarAppearance;
+
 @end

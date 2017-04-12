@@ -124,11 +124,28 @@ CGFloat const LGAlertViewButtonImageOffsetFromTitle = 8.0;
 }
 
 + (UIWindow *)appWindow {
-    return [UIApplication sharedApplication].delegate.window;
+    return [UIApplication sharedApplication].windows[0];
 }
 
 + (UIWindow *)keyWindow {
     return [UIApplication sharedApplication].keyWindow;
+}
+
++ (BOOL)isViewControllerBasedStatusBarAppearance {
+    static BOOL isViewControllerBasedStatusBarAppearance;
+    static dispatch_once_t onceToken;
+
+    dispatch_once(&onceToken, ^{
+        if (UIDevice.currentDevice.systemVersion.floatValue >= 9.0) {
+            isViewControllerBasedStatusBarAppearance = YES;
+        }
+        else {
+            NSNumber *viewControllerBasedStatusBarAppearance = [NSBundle.mainBundle objectForInfoDictionaryKey:@"UIViewControllerBasedStatusBarAppearance"];
+            isViewControllerBasedStatusBarAppearance = (viewControllerBasedStatusBarAppearance == nil ? YES : viewControllerBasedStatusBarAppearance.boolValue);
+        }
+    });
+
+    return isViewControllerBasedStatusBarAppearance;
 }
 
 @end

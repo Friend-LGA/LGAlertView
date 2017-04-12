@@ -1102,6 +1102,8 @@ LGAlertViewType;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardVisibleChanged:) name:UIKeyboardWillHideNotification object:nil];
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardFrameChanged:) name:UIKeyboardWillChangeFrameNotification object:nil];
+
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(windowVisibleChanged:) name:UIWindowDidBecomeVisibleNotification object:nil];
 }
 
 - (void)removeObservers {
@@ -1109,6 +1111,16 @@ LGAlertViewType;
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
 
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillChangeFrameNotification object:nil];
+
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIWindowDidBecomeVisibleNotification object:nil];
+}
+
+#pragma mark - Window notifications
+
+- (void)windowVisibleChanged:(NSNotification *)notification {
+    if (notification.object == self.window) {
+        [self.viewController.view setNeedsLayout];
+    }
 }
 
 #pragma mark - Keyboard notifications
@@ -1606,6 +1618,8 @@ LGAlertViewType;
     // -----
 
     UIWindow *keyWindow = LGAlertViewHelper.keyWindow;
+
+    [keyWindow endEditing:YES];
 
     if (!hidden && keyWindow != LGAlertViewHelper.appWindow) {
         keyWindow.hidden = YES;
@@ -2813,7 +2827,7 @@ LGAlertViewType;
             scrollViewFrame.origin.y += LGAlertViewHelper.statusBarHeight / 2.0;
         }
 
-        if (!self.isVisible) {
+        if (!self.isShowing) {
             scrollViewTransform = CGAffineTransformMakeScale(1.2, 1.2);
 
             scrollViewAlpha = 0.0;
@@ -2859,7 +2873,7 @@ LGAlertViewType;
         self.cancelButtonCenterHidden = CGPointMake(CGRectGetMinX(cancelButtonFrame) + (CGRectGetWidth(cancelButtonFrame) / 2.0),
                                                     CGRectGetMinY(cancelButtonFrame) + (CGRectGetHeight(cancelButtonFrame) / 2.0) + commonHeight);
 
-        if (!self.isVisible) {
+        if (!self.isShowing) {
             scrollViewFrame.origin.y += commonHeight;
 
             if ([LGAlertViewHelper isCancelButtonSeparate:self] && self.cancelButton) {
@@ -3165,10 +3179,6 @@ LGAlertViewType;
 
 - (BOOL)isValid {
     return [self isAlertViewValid:self];
-}
-
-- (BOOL)isVisible {
-    return self.isShowing && self.window.isKeyWindow && !self.window.isHidden;
 }
 
 - (CGFloat)innerMarginHeight {

@@ -30,6 +30,7 @@
 #import "LGAlertViewController.h"
 #import "LGAlertView.h"
 #import "UIWindow+LGAlertView.h"
+#import "LGAlertViewHelper.h"
 
 @interface LGAlertViewController ()
 
@@ -50,34 +51,73 @@
     return self;
 }
 
-- (BOOL)shouldAutorotate {
-    UIWindow *window = [UIApplication sharedApplication].delegate.window;
-
-    return window.currentViewController.shouldAutorotate;
-}
-
-- (UIInterfaceOrientationMask)supportedInterfaceOrientations {
-    UIWindow *window = [UIApplication sharedApplication].delegate.window;
-
-    return window.currentViewController.supportedInterfaceOrientations;
-}
-
 - (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator {
     [super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
 
-    [coordinator
-     animateAlongsideTransition:^(id<UIViewControllerTransitionCoordinatorContext> context) {
-         [self.alertView layoutValidateWithSize:size];
-     }
-     completion:nil];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [UIView animateWithDuration:coordinator.transitionDuration animations:^{
+            [self setNeedsStatusBarAppearanceUpdate];
+            [self.alertView layoutValidateWithSize:size];
+        }];
+    });
+}
+
+#pragma mark -
+
+- (BOOL)shouldAutorotate {
+    UIViewController *viewController = LGAlertViewHelper.appWindow.currentViewController;
+
+    if (viewController) {
+        return viewController.shouldAutorotate;
+    }
+
+    return super.shouldAutorotate;
+}
+
+- (UIInterfaceOrientationMask)supportedInterfaceOrientations {
+    UIViewController *viewController = LGAlertViewHelper.appWindow.currentViewController;
+
+    if (viewController) {
+        return viewController.supportedInterfaceOrientations;
+    }
+
+    return super.supportedInterfaceOrientations;
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle {
-    return [UIApplication sharedApplication].statusBarStyle;
+    if (LGAlertViewHelper.isViewControllerBasedStatusBarAppearance) {
+        UIViewController *viewController = LGAlertViewHelper.appWindow.currentViewController;
+
+        if (viewController) {
+            return viewController.preferredStatusBarStyle;
+        }
+    }
+
+    return super.preferredStatusBarStyle;
 }
 
 - (BOOL)prefersStatusBarHidden {
-    return [UIApplication sharedApplication].statusBarHidden;
+    if (LGAlertViewHelper.isViewControllerBasedStatusBarAppearance) {
+        UIViewController *viewController = LGAlertViewHelper.appWindow.currentViewController;
+
+        if (viewController) {
+            return viewController.prefersStatusBarHidden;
+        }
+    }
+
+    return super.prefersStatusBarHidden;
+}
+
+- (UIStatusBarAnimation)preferredStatusBarUpdateAnimation {
+    if (LGAlertViewHelper.isViewControllerBasedStatusBarAppearance) {
+        UIViewController *viewController = LGAlertViewHelper.appWindow.currentViewController;
+
+        if (viewController) {
+            return viewController.preferredStatusBarUpdateAnimation;
+        }
+    }
+
+    return super.preferredStatusBarUpdateAnimation;
 }
 
 @end
