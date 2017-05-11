@@ -10,26 +10,40 @@ You can customize every detail. Make AlertView of your dream! :)
 
 ## Preview
 
-### Default Alert View Style
+### Default Alert View
 
-<img src="https://raw.githubusercontent.com/Friend-LGA/ReadmeFiles/502ec9002f52270f5a9d531952f3a44bd30a796d/LGAlertView/Default_Alert_View_Style/Preview.gif" width="214"/> <img src="https://raw.githubusercontent.com/Friend-LGA/ReadmeFiles/502ec9002f52270f5a9d531952f3a44bd30a796d/LGAlertView/Default_Alert_View_Style/1.png" width="214"/> <img src="https://raw.githubusercontent.com/Friend-LGA/ReadmeFiles/502ec9002f52270f5a9d531952f3a44bd30a796d/LGAlertView/Default_Alert_View_Style/2.png" width="214"/> <img src="https://raw.githubusercontent.com/Friend-LGA/ReadmeFiles/502ec9002f52270f5a9d531952f3a44bd30a796d/LGAlertView/Default_Alert_View_Style/3.png" width="214"/>
-<img src="https://raw.githubusercontent.com/Friend-LGA/ReadmeFiles/502ec9002f52270f5a9d531952f3a44bd30a796d/LGAlertView/Default_Alert_View_Style/4.png" width="214"/> <img src="https://raw.githubusercontent.com/Friend-LGA/ReadmeFiles/502ec9002f52270f5a9d531952f3a44bd30a796d/LGAlertView/Default_Alert_View_Style/5.png" width="214"/> <img src="https://raw.githubusercontent.com/Friend-LGA/ReadmeFiles/502ec9002f52270f5a9d531952f3a44bd30a796d/LGAlertView/Default_Alert_View_Style/6.png" width="214"/> <img src="https://raw.githubusercontent.com/Friend-LGA/ReadmeFiles/502ec9002f52270f5a9d531952f3a44bd30a796d/LGAlertView/Default_Alert_View_Style/7.png" width="214"/>
-<img src="https://raw.githubusercontent.com/Friend-LGA/ReadmeFiles/502ec9002f52270f5a9d531952f3a44bd30a796d/LGAlertView/Default_Alert_View_Style/8.png" width="214"/> <img src="https://raw.githubusercontent.com/Friend-LGA/ReadmeFiles/502ec9002f52270f5a9d531952f3a44bd30a796d/LGAlertView/Default_Alert_View_Style/9.png" width="214"/> <img src="https://raw.githubusercontent.com/Friend-LGA/ReadmeFiles/502ec9002f52270f5a9d531952f3a44bd30a796d/LGAlertView/Default_Alert_View_Style/10.png" width="214"/> <img src="https://raw.githubusercontent.com/Friend-LGA/ReadmeFiles/502ec9002f52270f5a9d531952f3a44bd30a796d/LGAlertView/Default_Alert_View_Style/11.png" width="214"/>
-<img src="https://raw.githubusercontent.com/Friend-LGA/ReadmeFiles/502ec9002f52270f5a9d531952f3a44bd30a796d/LGAlertView/Default_Alert_View_Style/12.png" width="214"/> <img src="https://raw.githubusercontent.com/Friend-LGA/ReadmeFiles/502ec9002f52270f5a9d531952f3a44bd30a796d/LGAlertView/Default_Alert_View_Style/13.png" width="214"/>
+<img src="https://raw.githubusercontent.com/Friend-LGA/ReadmeFiles/e86caa0a37236d03642747a379f4a92f5384c317/LGAlertView/Default_Alert_View/Preview.gif" width="214"/> <img src="https://raw.githubusercontent.com/Friend-LGA/ReadmeFiles/e86caa0a37236d03642747a379f4a92f5384c317/LGAlertView/Default_Alert_View/1.png" width="214"/> <img src="https://raw.githubusercontent.com/Friend-LGA/ReadmeFiles/e86caa0a37236d03642747a379f4a92f5384c317/LGAlertView/Default_Alert_View/2.png" width="214"/> <img src="https://raw.githubusercontent.com/Friend-LGA/ReadmeFiles/e86caa0a37236d03642747a379f4a92f5384c317/LGAlertView/Default_Alert_View/3.png" width="214"/>
+<img src="https://raw.githubusercontent.com/Friend-LGA/ReadmeFiles/e86caa0a37236d03642747a379f4a92f5384c317/LGAlertView/Default_Alert_View/4.png" width="214"/> <img src="https://raw.githubusercontent.com/Friend-LGA/ReadmeFiles/e86caa0a37236d03642747a379f4a92f5384c317/LGAlertView/Default_Alert_View/5.png" width="214"/> <img src="https://raw.githubusercontent.com/Friend-LGA/ReadmeFiles/e86caa0a37236d03642747a379f4a92f5384c317/LGAlertView/Default_Alert_View/6.png" width="214"/> <img src="https://raw.githubusercontent.com/Friend-LGA/ReadmeFiles/e86caa0a37236d03642747a379f4a92f5384c317/LGAlertView/Default_Alert_View/7.png" width="214"/>
+<img src="https://raw.githubusercontent.com/Friend-LGA/ReadmeFiles/e86caa0a37236d03642747a379f4a92f5384c317/LGAlertView/Default_Alert_View/8.png" width="214"/> <img src="https://raw.githubusercontent.com/Friend-LGA/ReadmeFiles/e86caa0a37236d03642747a379f4a92f5384c317/LGAlertView/Default_Alert_View/9.png" width="214"/> <img src="https://raw.githubusercontent.com/Friend-LGA/ReadmeFiles/e86caa0a37236d03642747a379f4a92f5384c317/LGAlertView/Default_Alert_View/10.png" width="214"/> <img src="https://raw.githubusercontent.com/Friend-LGA/ReadmeFiles/e86caa0a37236d03642747a379f4a92f5384c317/LGAlertView/Default_Alert_View/11.png" width="214"/>
+<img src="https://raw.githubusercontent.com/Friend-LGA/ReadmeFiles/e86caa0a37236d03642747a379f4a92f5384c317/LGAlertView/Default_Alert_View/12.png" width="214"/> <img src="https://raw.githubusercontent.com/Friend-LGA/ReadmeFiles/e86caa0a37236d03642747a379f4a92f5384c317/LGAlertView/Default_Alert_View/13.png" width="214"/>
 
-### Default Action Sheet Style
+### Default Action Sheet
 
-<img src="https://raw.githubusercontent.com/Friend-LGA/ReadmeFiles/502ec9002f52270f5a9d531952f3a44bd30a796d/LGAlertView/Default_Action_Sheet_Style/Preview.gif" width="214"/> <img src="https://raw.githubusercontent.com/Friend-LGA/ReadmeFiles/502ec9002f52270f5a9d531952f3a44bd30a796d/LGAlertView/Default_Action_Sheet_Style/1.png" width="214"/> <img src="https://raw.githubusercontent.com/Friend-LGA/ReadmeFiles/502ec9002f52270f5a9d531952f3a44bd30a796d/LGAlertView/Default_Action_Sheet_Style/2.png" width="214"/> <img src="https://raw.githubusercontent.com/Friend-LGA/ReadmeFiles/502ec9002f52270f5a9d531952f3a44bd30a796d/LGAlertView/Default_Action_Sheet_Style/3.png" width="214"/>
-<img src="https://raw.githubusercontent.com/Friend-LGA/ReadmeFiles/502ec9002f52270f5a9d531952f3a44bd30a796d/LGAlertView/Default_Action_Sheet_Style/4.png" width="214"/> <img src="https://raw.githubusercontent.com/Friend-LGA/ReadmeFiles/502ec9002f52270f5a9d531952f3a44bd30a796d/LGAlertView/Default_Action_Sheet_Style/5.png" width="214"/> <img src="https://raw.githubusercontent.com/Friend-LGA/ReadmeFiles/502ec9002f52270f5a9d531952f3a44bd30a796d/LGAlertView/Default_Action_Sheet_Style/6.png" width="214"/> <img src="https://raw.githubusercontent.com/Friend-LGA/ReadmeFiles/502ec9002f52270f5a9d531952f3a44bd30a796d/LGAlertView/Default_Action_Sheet_Style/7.png" width="214"/>
-<img src="https://raw.githubusercontent.com/Friend-LGA/ReadmeFiles/502ec9002f52270f5a9d531952f3a44bd30a796d/LGAlertView/Default_Action_Sheet_Style/8.png" width="214"/>
+<img src="https://raw.githubusercontent.com/Friend-LGA/ReadmeFiles/e86caa0a37236d03642747a379f4a92f5384c317/LGAlertView/Default_Action_Sheet/Preview.gif" width="214"/> <img src="https://raw.githubusercontent.com/Friend-LGA/ReadmeFiles/e86caa0a37236d03642747a379f4a92f5384c317/LGAlertView/Default_Action_Sheet/1.png" width="214"/> <img src="https://raw.githubusercontent.com/Friend-LGA/ReadmeFiles/e86caa0a37236d03642747a379f4a92f5384c317/LGAlertView/Default_Action_Sheet/2.png" width="214"/> <img src="https://raw.githubusercontent.com/Friend-LGA/ReadmeFiles/e86caa0a37236d03642747a379f4a92f5384c317/LGAlertView/Default_Action_Sheet/3.png" width="214"/>
+<img src="https://raw.githubusercontent.com/Friend-LGA/ReadmeFiles/e86caa0a37236d03642747a379f4a92f5384c317/LGAlertView/Default_Action_Sheet/4.png" width="214"/> <img src="https://raw.githubusercontent.com/Friend-LGA/ReadmeFiles/e86caa0a37236d03642747a379f4a92f5384c317/LGAlertView/Default_Action_Sheet/5.png" width="214"/> <img src="https://raw.githubusercontent.com/Friend-LGA/ReadmeFiles/e86caa0a37236d03642747a379f4a92f5384c317/LGAlertView/Default_Action_Sheet/6.png" width="214"/> <img src="https://raw.githubusercontent.com/Friend-LGA/ReadmeFiles/e86caa0a37236d03642747a379f4a92f5384c317/LGAlertView/Default_Action_Sheet/7.png" width="214"/>
+<img src="https://raw.githubusercontent.com/Friend-LGA/ReadmeFiles/e86caa0a37236d03642747a379f4a92f5384c317/LGAlertView/Default_Action_Sheet/8.png" width="214"/>
 
-### Custom Alert View Styles
+### Blurred Alert View
 
-<img src="https://raw.githubusercontent.com/Friend-LGA/ReadmeFiles/502ec9002f52270f5a9d531952f3a44bd30a796d/LGAlertView/Custom_Alert_View_Styles/1.png" width="214"/> <img src="https://raw.githubusercontent.com/Friend-LGA/ReadmeFiles/502ec9002f52270f5a9d531952f3a44bd30a796d/LGAlertView/Custom_Alert_View_Styles/2.png" width="214"/> <img src="https://raw.githubusercontent.com/Friend-LGA/ReadmeFiles/502ec9002f52270f5a9d531952f3a44bd30a796d/LGAlertView/Custom_Alert_View_Styles/3.png" width="214"/>
+<img src="https://raw.githubusercontent.com/Friend-LGA/ReadmeFiles/e86caa0a37236d03642747a379f4a92f5384c317/LGAlertView/Blurred_Alert_View/1.png" width="214"/> <img src="https://raw.githubusercontent.com/Friend-LGA/ReadmeFiles/e86caa0a37236d03642747a379f4a92f5384c317/LGAlertView/Blurred_Alert_View/2.png" width="214"/> <img src="https://raw.githubusercontent.com/Friend-LGA/ReadmeFiles/e86caa0a37236d03642747a379f4a92f5384c317/LGAlertView/Blurred_Alert_View/3.png" width="214"/>
 
-### Custom Action Sheet Styles
+<img src="https://raw.githubusercontent.com/Friend-LGA/ReadmeFiles/e86caa0a37236d03642747a379f4a92f5384c317/LGAlertView/Blurred_Alert_View/4.png" width="214"/> <img src="https://raw.githubusercontent.com/Friend-LGA/ReadmeFiles/e86caa0a37236d03642747a379f4a92f5384c317/LGAlertView/Blurred_Alert_View/5.png" width="214"/>
 
-<img src="https://raw.githubusercontent.com/Friend-LGA/ReadmeFiles/502ec9002f52270f5a9d531952f3a44bd30a796d/LGAlertView/Custom_Action_Sheet_Styles/1.png" width="214"/> <img src="https://raw.githubusercontent.com/Friend-LGA/ReadmeFiles/502ec9002f52270f5a9d531952f3a44bd30a796d/LGAlertView/Custom_Action_Sheet_Styles/2.png" width="214"/> <img src="https://raw.githubusercontent.com/Friend-LGA/ReadmeFiles/502ec9002f52270f5a9d531952f3a44bd30a796d/LGAlertView/Custom_Action_Sheet_Styles/3.png" width="214"/>
+### Blurred Action Sheet
+
+<img src="https://raw.githubusercontent.com/Friend-LGA/ReadmeFiles/e86caa0a37236d03642747a379f4a92f5384c317/LGAlertView/Blurred_Action_Sheet/1.png" width="214"/> <img src="https://raw.githubusercontent.com/Friend-LGA/ReadmeFiles/e86caa0a37236d03642747a379f4a92f5384c317/LGAlertView/Blurred_Action_Sheet/2.png" width="214"/> <img src="https://raw.githubusercontent.com/Friend-LGA/ReadmeFiles/e86caa0a37236d03642747a379f4a92f5384c317/LGAlertView/Blurred_Action_Sheet/3.png" width="214"/>
+
+<img src="https://raw.githubusercontent.com/Friend-LGA/ReadmeFiles/e86caa0a37236d03642747a379f4a92f5384c317/LGAlertView/Blurred_Action_Sheet/4.png" width="214"/> <img src="https://raw.githubusercontent.com/Friend-LGA/ReadmeFiles/e86caa0a37236d03642747a379f4a92f5384c317/LGAlertView/Blurred_Action_Sheet/5.png" width="214"/>
+
+### Custom Alert View
+
+<img src="https://raw.githubusercontent.com/Friend-LGA/ReadmeFiles/e86caa0a37236d03642747a379f4a92f5384c317/LGAlertView/Custom_Alert_View/1.png" width="214"/> <img src="https://raw.githubusercontent.com/Friend-LGA/ReadmeFiles/e86caa0a37236d03642747a379f4a92f5384c317/LGAlertView/Custom_Alert_View/2.png" width="214"/> <img src="https://raw.githubusercontent.com/Friend-LGA/ReadmeFiles/e86caa0a37236d03642747a379f4a92f5384c317/LGAlertView/Custom_Alert_View/3.png" width="214"/>
+
+### Custom Action Sheet
+
+<img src="https://raw.githubusercontent.com/Friend-LGA/ReadmeFiles/e86caa0a37236d03642747a379f4a92f5384c317/LGAlertView/Custom_Action_Sheet/1.png" width="214"/> <img src="https://raw.githubusercontent.com/Friend-LGA/ReadmeFiles/e86caa0a37236d03642747a379f4a92f5384c317/LGAlertView/Custom_Action_Sheet/2.png" width="214"/> <img src="https://raw.githubusercontent.com/Friend-LGA/ReadmeFiles/e86caa0a37236d03642747a379f4a92f5384c317/LGAlertView/Custom_Action_Sheet/3.png" width="214"/>
+
+> Screenshots above are just few examples that you can achieve, you are free to create any other style
 
 ## Installation
 
@@ -387,6 +401,9 @@ To handle actions you can use blocks, delegate or notifications:
 - (void)alertView:(nonnull LGAlertView *)alertView didDismissAfterClickedButtonAtIndex:(NSUInteger)index title:(nullable NSString *)title;
 - (void)alertViewDidDismissAfterCancelled:(nonnull LGAlertView *)alertView;
 - (void)alertViewDidDismissAfterDestructed:(nonnull LGAlertView *)alertView;
+
+- (void)showAnimationsForAlertView:(nonnull LGAlertView *)alertView duration:(NSTimeInterval)duration;
+- (void)dismissAnimationsForAlertView:(nonnull LGAlertView *)alertView duration:(NSTimeInterval)duration;
 ```
 
 ##### Swift
@@ -407,6 +424,9 @@ optional public func alertViewDestructed(_ alertView: LGAlertView)
 optional public func alertView(_ alertView: LGAlertView, didDismissAfterClickedButtonAtIndex index: UInt, title: String?)
 optional public func alertViewDidDismissAfterCancelled(_ alertView: LGAlertView)
 optional public func alertViewDidDismissAfterDestructed(_ alertView: LGAlertView)
+
+optional public func showAnimationsForAlertView(_ alertView: LGAlertView, duration: NSTimeInterval)
+optional public func dismissAnimationsForAlertView(_ alertView: LGAlertView, duration: NSTimeInterval)
 ```
 
 #### Blocks
@@ -429,6 +449,9 @@ void(^ _Nullable destructiveHandler)(LGAlertView * _Nonnull alertView);
 void(^ _Nullable didDismissAfterActionHandler)(LGAlertView * _Nonnull alertView, NSUInteger index, NSString * _Nullable title);
 void(^ _Nullable didDismissAfterCancelHandler)(LGAlertView * _Nonnull alertView);
 void(^ _Nullable didDismissAfterDestructiveHandler)(LGAlertView * _Nonnull alertView);
+
+void(^ _Nullable showAnimationsBlock)(LGAlertView * _Nonnull alertView, NSTimeInterval duration);
+void(^ _Nullable dismissAnimationsBlock)(LGAlertView * _Nonnull alertView, NSTimeInterval duration);
 ```
 
 ##### Swift
@@ -447,6 +470,9 @@ open var destructiveHandler: ((alertView: LGAlertView) -> Swift.Void)?
 open var didDismissAfterActionHandler: ((alertView: LGAlertView, index: NSUInteger, title: NSString) -> Swift.Void)?
 open var didDismissAfterCancelHandler: ((alertView: LGAlertView) -> Swift.Void)?
 open var didDismissAfterDestructiveHandler: ((alertView: LGAlertView) -> Swift.Void)?
+
+open var showAnimationsBlock: ((alertView: LGAlertView, duration: NSTimeInterval) -> Swift.Void)?
+open var dismissAnimationsBlock: ((alertView: LGAlertView, duration: NSTimeInterval) -> Swift.Void)?
 ```
 
 #### Notifications
@@ -465,6 +491,9 @@ LGAlertViewDestructiveNotification
 LGAlertViewDidDismissAfterActionNotification;
 LGAlertViewDidDismissAfterCancelNotification;
 LGAlertViewDidDismissAfterDestructiveNotification;
+
+LGAlertViewShowAnimationsNotification;
+LGAlertViewDismissAnimationsNotification;
 ```
 
 ### More
