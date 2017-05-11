@@ -46,9 +46,6 @@
                              @"LGAlertView + Transition 6"];
 
         [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"cell"];
-        UIEdgeInsets contentInset = self.tableView.contentInset;
-        contentInset.bottom = 88.0;
-        self.tableView.contentInset = contentInset;
     }
     return self;
 }
@@ -324,7 +321,7 @@
             [scrollView addSubview:label];
 
             LGAlertView *alertView = [[LGAlertView alloc] initWithViewAndTitle:@"Scroll view with text"
-                                                                       message:nil
+                                                                       message:@"Please, read it:"
                                                                          style:LGAlertViewStyleActionSheet
                                                                           view:scrollView
                                                                   buttonTitles:@[@"Agree"]

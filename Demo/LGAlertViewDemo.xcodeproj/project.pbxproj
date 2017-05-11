@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4A08308A1EAA67C600D14E87 /* LGAlertViewShadowView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A0830891EAA67C600D14E87 /* LGAlertViewShadowView.m */; };
 		4A3B78661AD2A28200DB8642 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A3B78651AD2A28200DB8642 /* main.m */; };
 		4A3B78691AD2A28200DB8642 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A3B78681AD2A28200DB8642 /* AppDelegate.m */; };
 		4A3B78711AD2A28300DB8642 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4A3B78701AD2A28300DB8642 /* Images.xcassets */; };
@@ -14,12 +15,14 @@
 		4A3B788E1AD2B29F00DB8642 /* NavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A3B788D1AD2B29F00DB8642 /* NavigationController.m */; };
 		4A587A591E9948A90010277C /* LGAlertViewWindowsObserver.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A587A581E9948A90010277C /* LGAlertViewWindowsObserver.m */; };
 		4A587A5C1E9952B80010277C /* LGAlertViewWindowContainer.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A587A5B1E9952B80010277C /* LGAlertViewWindowContainer.m */; };
+		4A7F959A1EA1525B0059090C /* TableViewControllerBlurredAlert.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A7F95991EA1525B0059090C /* TableViewControllerBlurredAlert.m */; };
 		4AA4DFDD1E1144C100CBB6AC /* LGAlertViewButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 4AA4DFDC1E11448900CBB6AC /* LGAlertViewButton.m */; };
 		4ABF191C1BDA895200A12B6E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4ABF191B1BDA895200A12B6E /* LaunchScreen.storyboard */; };
 		4ACB3DB41E0D65B600F041E2 /* CustomView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4ACB3DB31E0D65B600F041E2 /* CustomView.xib */; };
 		4ACDE4C11BE10A4000CC8926 /* TableViewControllerAlert.m in Sources */ = {isa = PBXBuildFile; fileRef = 4ACDE4BE1BE10A4000CC8926 /* TableViewControllerAlert.m */; };
 		4ACDE4C21BE10A4000CC8926 /* TableViewControllerActionSheet.m in Sources */ = {isa = PBXBuildFile; fileRef = 4ACDE4C01BE10A4000CC8926 /* TableViewControllerActionSheet.m */; };
 		4ACDE4C51BE10F7100CC8926 /* TableViewControllerCustomAlert.m in Sources */ = {isa = PBXBuildFile; fileRef = 4ACDE4C41BE10F7100CC8926 /* TableViewControllerCustomAlert.m */; };
+		4AD9CB841EC4D0400038328C /* TableViewControllerBlurredActionSheet.m in Sources */ = {isa = PBXBuildFile; fileRef = 4AD9CB831EC4D0400038328C /* TableViewControllerBlurredActionSheet.m */; };
 		4AE5C0031E8A8A8600FA4A35 /* LGAlertViewHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 4AE5C0021E8A8A8600FA4A35 /* LGAlertViewHelper.m */; };
 		4AEEC7541BE5381300ED5D90 /* TableViewControllerCustomActionSheet.m in Sources */ = {isa = PBXBuildFile; fileRef = 4AEEC7531BE5381300ED5D90 /* TableViewControllerCustomActionSheet.m */; };
 		4AF138DD1BF381200037B073 /* LGAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4AF138CF1BF381200037B073 /* LGAlertView.m */; };
@@ -32,6 +35,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		4A0830881EAA67C600D14E87 /* LGAlertViewShadowView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGAlertViewShadowView.h; sourceTree = "<group>"; };
+		4A0830891EAA67C600D14E87 /* LGAlertViewShadowView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGAlertViewShadowView.m; sourceTree = "<group>"; };
 		4A3B78601AD2A28200DB8642 /* LGAlertViewDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LGAlertViewDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4A3B78641AD2A28200DB8642 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4A3B78651AD2A28200DB8642 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = main.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
@@ -46,6 +51,8 @@
 		4A587A581E9948A90010277C /* LGAlertViewWindowsObserver.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGAlertViewWindowsObserver.m; sourceTree = "<group>"; };
 		4A587A5A1E9952B80010277C /* LGAlertViewWindowContainer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGAlertViewWindowContainer.h; sourceTree = "<group>"; };
 		4A587A5B1E9952B80010277C /* LGAlertViewWindowContainer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGAlertViewWindowContainer.m; sourceTree = "<group>"; };
+		4A7F95981EA1525B0059090C /* TableViewControllerBlurredAlert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TableViewControllerBlurredAlert.h; sourceTree = "<group>"; };
+		4A7F95991EA1525B0059090C /* TableViewControllerBlurredAlert.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TableViewControllerBlurredAlert.m; sourceTree = "<group>"; };
 		4AA4DFDB1E11448900CBB6AC /* LGAlertViewButton.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LGAlertViewButton.h; sourceTree = "<group>"; };
 		4AA4DFDC1E11448900CBB6AC /* LGAlertViewButton.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LGAlertViewButton.m; sourceTree = "<group>"; };
 		4ABF191B1BDA895200A12B6E /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -56,6 +63,8 @@
 		4ACDE4C01BE10A4000CC8926 /* TableViewControllerActionSheet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TableViewControllerActionSheet.m; sourceTree = "<group>"; };
 		4ACDE4C31BE10F7100CC8926 /* TableViewControllerCustomAlert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TableViewControllerCustomAlert.h; sourceTree = "<group>"; };
 		4ACDE4C41BE10F7100CC8926 /* TableViewControllerCustomAlert.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TableViewControllerCustomAlert.m; sourceTree = "<group>"; };
+		4AD9CB821EC4D0400038328C /* TableViewControllerBlurredActionSheet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TableViewControllerBlurredActionSheet.h; sourceTree = "<group>"; };
+		4AD9CB831EC4D0400038328C /* TableViewControllerBlurredActionSheet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TableViewControllerBlurredActionSheet.m; sourceTree = "<group>"; };
 		4AE5C0011E8A8A8600FA4A35 /* LGAlertViewHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGAlertViewHelper.h; sourceTree = "<group>"; };
 		4AE5C0021E8A8A8600FA4A35 /* LGAlertViewHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGAlertViewHelper.m; sourceTree = "<group>"; };
 		4AEEC7521BE5381300ED5D90 /* TableViewControllerCustomActionSheet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TableViewControllerCustomActionSheet.h; sourceTree = "<group>"; };
@@ -119,6 +128,10 @@
 				4ACDE4BE1BE10A4000CC8926 /* TableViewControllerAlert.m */,
 				4ACDE4BF1BE10A4000CC8926 /* TableViewControllerActionSheet.h */,
 				4ACDE4C01BE10A4000CC8926 /* TableViewControllerActionSheet.m */,
+				4A7F95981EA1525B0059090C /* TableViewControllerBlurredAlert.h */,
+				4A7F95991EA1525B0059090C /* TableViewControllerBlurredAlert.m */,
+				4AD9CB821EC4D0400038328C /* TableViewControllerBlurredActionSheet.h */,
+				4AD9CB831EC4D0400038328C /* TableViewControllerBlurredActionSheet.m */,
 				4ACDE4C31BE10F7100CC8926 /* TableViewControllerCustomAlert.h */,
 				4ACDE4C41BE10F7100CC8926 /* TableViewControllerCustomAlert.m */,
 				4AEEC7521BE5381300ED5D90 /* TableViewControllerCustomActionSheet.h */,
@@ -145,16 +158,18 @@
 			children = (
 				4AF138CE1BF381200037B073 /* LGAlertView.h */,
 				4AF138CF1BF381200037B073 /* LGAlertView.m */,
+				4AA4DFDB1E11448900CBB6AC /* LGAlertViewButton.h */,
+				4AA4DFDC1E11448900CBB6AC /* LGAlertViewButton.m */,
 				4AF138D01BF381200037B073 /* LGAlertViewButtonProperties.h */,
 				4AF138D11BF381200037B073 /* LGAlertViewButtonProperties.m */,
 				4AF138D21BF381200037B073 /* LGAlertViewCell.h */,
 				4AF138D31BF381200037B073 /* LGAlertViewCell.m */,
-				4AA4DFDB1E11448900CBB6AC /* LGAlertViewButton.h */,
-				4AA4DFDC1E11448900CBB6AC /* LGAlertViewButton.m */,
 				4AF138D41BF381200037B073 /* LGAlertViewController.h */,
 				4AF138D51BF381200037B073 /* LGAlertViewController.m */,
 				4AE5C0011E8A8A8600FA4A35 /* LGAlertViewHelper.h */,
 				4AE5C0021E8A8A8600FA4A35 /* LGAlertViewHelper.m */,
+				4A0830881EAA67C600D14E87 /* LGAlertViewShadowView.h */,
+				4A0830891EAA67C600D14E87 /* LGAlertViewShadowView.m */,
 				4AF319DF1E104AC40035FE21 /* LGAlertViewShared.h */,
 				4AF138D71BF381200037B073 /* LGAlertViewTextField.h */,
 				4AF138D81BF381200037B073 /* LGAlertViewTextField.m */,
@@ -250,6 +265,7 @@
 			files = (
 				4AF138E11BF381200037B073 /* LGAlertViewTextField.m in Sources */,
 				4AF138E31BF381200037B073 /* UIWindow+LGAlertView.m in Sources */,
+				4A7F959A1EA1525B0059090C /* TableViewControllerBlurredAlert.m in Sources */,
 				4AF138E01BF381200037B073 /* LGAlertViewController.m in Sources */,
 				4AA4DFDD1E1144C100CBB6AC /* LGAlertViewButton.m in Sources */,
 				4A587A591E9948A90010277C /* LGAlertViewWindowsObserver.m in Sources */,
@@ -259,12 +275,14 @@
 				4A587A5C1E9952B80010277C /* LGAlertViewWindowContainer.m in Sources */,
 				4ACDE4C51BE10F7100CC8926 /* TableViewControllerCustomAlert.m in Sources */,
 				4AEEC7541BE5381300ED5D90 /* TableViewControllerCustomActionSheet.m in Sources */,
+				4AD9CB841EC4D0400038328C /* TableViewControllerBlurredActionSheet.m in Sources */,
 				4A3B78691AD2A28200DB8642 /* AppDelegate.m in Sources */,
 				4A3B788E1AD2B29F00DB8642 /* NavigationController.m in Sources */,
 				4ACDE4C11BE10A4000CC8926 /* TableViewControllerAlert.m in Sources */,
 				4A3B78661AD2A28200DB8642 /* main.m in Sources */,
 				4AF138DD1BF381200037B073 /* LGAlertView.m in Sources */,
 				4AF138DF1BF381200037B073 /* LGAlertViewCell.m in Sources */,
+				4A08308A1EAA67C600D14E87 /* LGAlertViewShadowView.m in Sources */,
 				4AF138E21BF381200037B073 /* LGAlertViewWindow.m in Sources */,
 				4A3B788B1AD2A93D00DB8642 /* TableViewController.m in Sources */,
 			);
@@ -362,8 +380,6 @@
 		4A3B78841AD2A28300DB8642 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = LGAlertViewDemo/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
@@ -377,8 +393,6 @@
 		4A3B78851AD2A28300DB8642 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = LGAlertViewDemo/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;

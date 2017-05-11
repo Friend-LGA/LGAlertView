@@ -21,12 +21,13 @@
 
         self.titlesArray = @[@"Default Style",
                              @"",
-                             @"Custom Style 1",
-                             @"Custom Style 2",
-                             @"Custom Style 3",
-                             @"Custom Style 4",
-                             @"Custom Style 5",
-                             @"Custom Style 6"];
+                             @"Example 1",
+                             @"Example 2",
+                             @"Example 3",
+                             @"Example 4",
+                             @"Example 5",
+                             @"Example 6",
+                             @"Example 7"];
 
         [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"cell"];
     }
@@ -92,7 +93,7 @@
             alertView.coverAlpha = 0.85;
             alertView.layerShadowColor = [UIColor colorWithWhite:0.0 alpha:0.3];
             alertView.layerShadowRadius = 4.0;
-            alertView.layerShadowOpacity = 1.0;
+            alertView.backgroundColor = [UIColor colorWithWhite:0.95 alpha:1.0];
             alertView.buttonsHeight = 44.0;
             alertView.titleFont = [UIFont boldSystemFontOfSize:18.0];
             alertView.titleTextColor = [UIColor blackColor];
@@ -117,8 +118,6 @@
             alertView.coverAlpha = 0.85;
             alertView.layerShadowColor = [UIColor colorWithWhite:0.0 alpha:0.3];
             alertView.layerShadowRadius = 4.0;
-            alertView.layerShadowOpacity = 1.0;
-            alertView.layerCornerRadius = 0.0;
             alertView.layerBorderWidth = 2.0;
             alertView.layerBorderColor = [UIColor colorWithRed:0.0 green:0.5 blue:1.0 alpha:1.0];
             alertView.backgroundColor = [UIColor colorWithWhite:0.95 alpha:1.0];
@@ -146,7 +145,6 @@
             alertView.coverAlpha = 0.85;
             alertView.layerShadowColor = [UIColor colorWithWhite:0.0 alpha:0.3];
             alertView.layerShadowRadius = 4.0;
-            alertView.layerShadowOpacity = 1.0;
             alertView.layerCornerRadius = 0.0;
             alertView.layerBorderWidth = 2.0;
             alertView.layerBorderColor = [UIColor colorWithRed:0.0 green:0.5 blue:1.0 alpha:1.0];
@@ -155,9 +153,6 @@
             alertView.titleFont = [UIFont boldSystemFontOfSize:18.0];
             alertView.titleTextColor = [UIColor blackColor];
             alertView.messageTextColor = [UIColor blackColor];
-            alertView.width = MIN(self.view.bounds.size.width, self.view.bounds.size.height);
-            alertView.offsetVertical = 0.0;
-            alertView.cancelButtonOffsetY = 0.0;
             [alertView showAnimated:YES completionHandler:nil];
 
             break;
@@ -178,7 +173,6 @@
             alertView.coverAlpha = 0.85;
             alertView.layerShadowColor = [UIColor colorWithWhite:0.0 alpha:0.3];
             alertView.layerShadowRadius = 4.0;
-            alertView.layerShadowOpacity = 1.0;
             alertView.layerCornerRadius = 0.0;
             alertView.layerBorderWidth = 2.0;
             alertView.layerBorderColor = [UIColor colorWithRed:0.0 green:0.5 blue:1.0 alpha:1.0];
@@ -190,11 +184,6 @@
             alertView.width = MIN(self.view.bounds.size.width, self.view.bounds.size.height);
             alertView.offsetVertical = 0.0;
             alertView.cancelButtonOffsetY = 0.0;
-            alertView.titleTextAlignment = NSTextAlignmentLeft;
-            alertView.messageTextAlignment = NSTextAlignmentLeft;
-            alertView.buttonsTextAlignment = NSTextAlignmentRight;
-            alertView.cancelButtonTextAlignment = NSTextAlignmentRight;
-            alertView.destructiveButtonTextAlignment = NSTextAlignmentRight;
             [alertView showAnimated:YES completionHandler:nil];
 
             break;
@@ -215,7 +204,42 @@
             alertView.coverAlpha = 0.85;
             alertView.layerShadowColor = [UIColor colorWithWhite:0.0 alpha:0.3];
             alertView.layerShadowRadius = 4.0;
-            alertView.layerShadowOpacity = 1.0;
+            alertView.layerCornerRadius = 0.0;
+            alertView.layerBorderWidth = 2.0;
+            alertView.layerBorderColor = [UIColor colorWithRed:0.0 green:0.5 blue:1.0 alpha:1.0];
+            alertView.backgroundColor = [UIColor colorWithWhite:0.95 alpha:1.0];
+            alertView.buttonsHeight = 44.0;
+            alertView.titleFont = [UIFont boldSystemFontOfSize:18.0];
+            alertView.titleTextColor = [UIColor blackColor];
+            alertView.messageTextColor = [UIColor blackColor];
+            alertView.width = MIN(self.view.bounds.size.width, self.view.bounds.size.height);
+            alertView.offsetVertical = 0.0;
+            alertView.cancelButtonOffsetY = 0.0;
+            alertView.titleTextAlignment = NSTextAlignmentLeft;
+            alertView.messageTextAlignment = NSTextAlignmentLeft;
+            alertView.buttonsTextAlignment = NSTextAlignmentRight;
+            alertView.cancelButtonTextAlignment = NSTextAlignmentRight;
+            alertView.destructiveButtonTextAlignment = NSTextAlignmentRight;
+            [alertView showAnimated:YES completionHandler:nil];
+
+            break;
+        }
+        case 7: {
+            LGAlertView *alertView = [[LGAlertView alloc] initWithTitle:@"Title"
+                                                                message:@"Message"
+                                                                  style:LGAlertViewStyleActionSheet
+                                                           buttonTitles:@[@"Button"]
+                                                      cancelButtonTitle:@"Cancel"
+                                                 destructiveButtonTitle:@"Destructive"
+                                                          actionHandler:nil
+                                                          cancelHandler:nil
+                                                     destructiveHandler:nil];
+
+            alertView.coverColor = [UIColor colorWithWhite:1.0 alpha:0.25];
+            alertView.coverBlurEffect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleExtraLight];
+            alertView.coverAlpha = 0.85;
+            alertView.layerShadowColor = [UIColor colorWithWhite:0.0 alpha:0.3];
+            alertView.layerShadowRadius = 4.0;
             alertView.layerCornerRadius = 0.0;
             alertView.layerBorderWidth = 2.0;
             alertView.layerBorderColor = [UIColor colorWithRed:0.0 green:0.5 blue:1.0 alpha:1.0];
@@ -237,7 +261,7 @@
 
             break;
         }
-        case 7: {
+        case 8: {
             LGAlertView *alertView = [[LGAlertView alloc] initWithTitle:@"Title"
                                                                 message:@"Message"
                                                                   style:LGAlertViewStyleActionSheet
@@ -253,7 +277,6 @@
             alertView.coverAlpha = 0.85;
             alertView.layerShadowColor = [UIColor colorWithWhite:0.0 alpha:0.3];
             alertView.layerShadowRadius = 4.0;
-            alertView.layerShadowOpacity = 1.0;
             alertView.layerCornerRadius = 0.0;
             alertView.layerBorderWidth = 2.0;
             alertView.layerBorderColor = [UIColor colorWithRed:0.0 green:0.5 blue:1.0 alpha:1.0];

@@ -6,6 +6,8 @@
 #import "TableViewController.h"
 #import "TableViewControllerAlert.h"
 #import "TableViewControllerActionSheet.h"
+#import "TableViewControllerBlurredAlert.h"
+#import "TableViewControllerBlurredActionSheet.h"
 #import "TableViewControllerCustomAlert.h"
 #import "TableViewControllerCustomActionSheet.h"
 #import "LGAlertView.h"
@@ -23,13 +25,14 @@
     if (self) {
         self.title = @"LGAlertView";
 
-        self.titlesArray = @[@"AlertView Style",
-                             @"ActionSheet Style",
-                             @"Custom AlertView Styles",
-                             @"Custom ActionSheet Styles",
-                             @"",
-                             @"Alerts cycle",
-                             @"Mix of alerts"];
+        self.titlesArray = @[@"Default AlertView",
+                             @"Default ActionSheet",
+                             @"Blurred AlertView",
+                             @"Blurred ActionSheet",
+                             @"Custom AlertView",
+                             @"Custom ActionSheet",
+                             @"Alerts Cycle",
+                             @"Mix of Alerts"];
 
         [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"cell"];
 
@@ -55,9 +58,8 @@
 
     cell.textLabel.font = [UIFont systemFontOfSize:16.0];
     cell.textLabel.text = self.titlesArray[indexPath.row];
-    cell.userInteractionEnabled = [self.titlesArray[indexPath.row] length] > 0;
 
-    if (indexPath.row < 4) {
+    if (indexPath.row < 5) {
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     }
 
@@ -81,15 +83,21 @@
             nextViewController = [TableViewControllerActionSheet new];
             break;
         case 2:
-            nextViewController = [TableViewControllerCustomAlert new];
+            nextViewController = [TableViewControllerBlurredAlert new];
             break;
         case 3:
-            nextViewController = [TableViewControllerCustomActionSheet new];
+            nextViewController = [TableViewControllerBlurredActionSheet new];
+            break;
+        case 4:
+            nextViewController = [TableViewControllerCustomAlert new];
             break;
         case 5:
-            [self showRandomAlertWithNumber:NSNotFound];
+            nextViewController = [TableViewControllerCustomActionSheet new];
             break;
         case 6:
+            [self showRandomAlertWithNumber:NSNotFound];
+            break;
+        case 7:
             for (NSUInteger i=0; i<10; i++) {
                 [self showRandomAlertWithNumber:(i + 1) delay:(i * 1.0)];
             }
@@ -130,7 +138,7 @@
 - (void)showLGAlertViewWithNumber:(NSUInteger)number {
     NSMutableString *title = @"LGAlertView".mutableCopy;
     if (number != NSNotFound) {
-        [title appendFormat:@" %lu", number];
+        [title appendFormat:@" %lu", (unsigned long)number];
     }
 
     LGAlertView *alertView = [LGAlertView alertViewWithTitle:title
@@ -147,7 +155,7 @@
 - (void)showLGActionSheetWithNumber:(NSUInteger)number {
     NSMutableString *title = @"LGActionSheet".mutableCopy;
     if (number != NSNotFound) {
-        [title appendFormat:@" %lu", number];
+        [title appendFormat:@" %lu", (unsigned long)number];
     }
 
     LGAlertView *actionSheet = [LGAlertView alertViewWithTitle:title
@@ -164,7 +172,7 @@
 - (void)showUIAlertViewWithNumber:(NSUInteger)number {
     NSMutableString *title = @"UIAlertView".mutableCopy;
     if (number != NSNotFound) {
-        [title appendFormat:@" %lu", number];
+        [title appendFormat:@" %lu", (unsigned long)number];
     }
 
     UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:title
@@ -179,7 +187,7 @@
 - (void)showUIActionSheetWithNumber:(NSUInteger)number {
     NSMutableString *title = @"UIActionSheet".mutableCopy;
     if (number != NSNotFound) {
-        [title appendFormat:@" %lu", number];
+        [title appendFormat:@" %lu", (unsigned long)number];
     }
 
     UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:title
