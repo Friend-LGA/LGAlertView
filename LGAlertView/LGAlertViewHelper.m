@@ -40,8 +40,10 @@ CGFloat const LGAlertViewButtonImageOffsetFromTitle = 8.0;
 
 @implementation LGAlertViewHelper
 
-+ (void)animateWithAnimations:(void(^)())animations completion:(void(^)(BOOL finished))completion {
-    [UIView animateWithDuration:0.5
++ (void)animateWithDuration:(NSTimeInterval)duration
+                 animations:(void(^)())animations
+                 completion:(void(^)(BOOL finished))completion {
+    [UIView animateWithDuration:duration
                           delay:0.0
          usingSpringWithDamping:1.0
           initialSpringVelocity:0.5
@@ -50,7 +52,8 @@ CGFloat const LGAlertViewButtonImageOffsetFromTitle = 8.0;
                      completion:completion];
 }
 
-+ (void)keyboardAnimateWithNotificationUserInfo:(NSDictionary *)notificationUserInfo animations:(void(^)(CGFloat keyboardHeight))animations {
++ (void)keyboardAnimateWithNotificationUserInfo:(NSDictionary *)notificationUserInfo
+                                     animations:(void(^)(CGFloat keyboardHeight))animations {
     CGFloat keyboardHeight = (notificationUserInfo[UIKeyboardFrameEndUserInfoKey] ? CGRectGetHeight([notificationUserInfo[UIKeyboardFrameEndUserInfoKey] CGRectValue]) : 0.0);
 
     if (!keyboardHeight) return;

@@ -1,5 +1,5 @@
 //
-//  LGAlertViewHelper.h
+//  LGAlertViewShadowView.h
 //  LGAlertView
 //
 //
@@ -29,44 +29,13 @@
 
 #import <UIKit/UIKit.h>
 
-@class LGAlertView;
+@interface LGAlertViewShadowView : UIView
 
-#pragma mark - Constants
-
-extern CGFloat const LGAlertViewPaddingWidth;
-extern CGFloat const LGAlertViewPaddingHeight;
-extern CGFloat const LGAlertViewButtonImageOffsetFromTitle;
-
-#pragma mark - Interface
-
-@interface LGAlertViewHelper : NSObject
-
-+ (void)animateWithDuration:(NSTimeInterval)duration
-                 animations:(void(^)())animations
-                 completion:(void(^)(BOOL finished))completion;
-
-+ (void)keyboardAnimateWithNotificationUserInfo:(NSDictionary *)notificationUserInfo
-                                     animations:(void(^)(CGFloat keyboardHeight))animations;
-
-+ (UIImage *)image1x1WithColor:(UIColor *)color;
-
-+ (BOOL)isNotRetina;
-
-+ (BOOL)isPad;
-
-+ (CGFloat)statusBarHeight;
-
-+ (CGFloat)separatorHeight;
-
-+ (BOOL)isPadAndNotForce:(LGAlertView *)alertView;
-
-+ (BOOL)isCancelButtonSeparate:(LGAlertView *)alertView;
-
-+ (CGFloat)systemVersion;
-
-+ (UIWindow *)appWindow;
-+ (UIWindow *)keyWindow;
-
-+ (BOOL)isViewControllerBasedStatusBarAppearance;
+@property (assign, nonatomic) CGFloat cornerRadius;
+@property (strong, nonatomic, nullable) UIColor *strokeColor;
+@property (assign, nonatomic) CGFloat strokeWidth;
+@property (strong, nonatomic, nullable) UIColor *shadowColor;
+@property (assign, nonatomic) CGFloat shadowBlur;
+@property (assign, nonatomic) CGPoint shadowOffset;
 
 @end

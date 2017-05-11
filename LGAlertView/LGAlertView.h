@@ -36,19 +36,26 @@
 
 #pragma mark - Constants
 
-extern NSString *_Nonnull const LGAlertViewWillShowNotification;
-extern NSString *_Nonnull const LGAlertViewDidShowNotification;
+extern NSString * _Nonnull const LGAlertViewWillShowNotification;
+extern NSString * _Nonnull const LGAlertViewDidShowNotification;
 
-extern NSString *_Nonnull const LGAlertViewWillDismissNotification;
-extern NSString *_Nonnull const LGAlertViewDidDismissNotification;
+extern NSString * _Nonnull const LGAlertViewWillDismissNotification;
+extern NSString * _Nonnull const LGAlertViewDidDismissNotification;
 
-extern NSString *_Nonnull const LGAlertViewActionNotification;
-extern NSString *_Nonnull const LGAlertViewCancelNotification;
-extern NSString *_Nonnull const LGAlertViewDestructiveNotification;
+extern NSString * _Nonnull const LGAlertViewActionNotification;
+extern NSString * _Nonnull const LGAlertViewCancelNotification;
+extern NSString * _Nonnull const LGAlertViewDestructiveNotification;
 
-extern NSString *_Nonnull const LGAlertViewDidDismissAfterActionNotification;
-extern NSString *_Nonnull const LGAlertViewDidDismissAfterCancelNotification;
-extern NSString *_Nonnull const LGAlertViewDidDismissAfterDestructiveNotification;
+extern NSString * _Nonnull const LGAlertViewDidDismissAfterActionNotification;
+extern NSString * _Nonnull const LGAlertViewDidDismissAfterCancelNotification;
+extern NSString * _Nonnull const LGAlertViewDidDismissAfterDestructiveNotification;
+
+/** You can use this notification to add some custom animations */
+extern NSString * _Nonnull const LGAlertViewShowAnimationsNotification;
+/** You can use this notification to add some custom animations */
+extern NSString * _Nonnull const LGAlertViewDismissAnimationsNotification;
+
+extern NSString * _Nonnull const kLGAlertViewAnimationDuration;
 
 #pragma mark - Types
 
@@ -56,6 +63,7 @@ typedef void (^ _Nullable LGAlertViewCompletionHandler)();
 typedef void (^ _Nullable LGAlertViewHandler)(LGAlertView * _Nonnull alertView);
 typedef void (^ _Nullable LGAlertViewActionHandler)(LGAlertView * _Nonnull alertView, NSUInteger index, NSString * _Nullable title);
 typedef void (^ _Nullable LGAlertViewTextFieldsSetupHandler)(UITextField * _Nonnull textField, NSUInteger index);
+typedef void (^ _Nullable LGAlertViewAnimationsBlock)(LGAlertView * _Nonnull alertView, NSTimeInterval duration);
 
 typedef NS_ENUM(NSUInteger, LGAlertViewStyle) {
     LGAlertViewStyleAlert       = 0,
@@ -99,7 +107,7 @@ typedef NS_ENUM(NSUInteger, LGAlertViewWindowLevel) {
 /** View that you associate to alert view while initialization */
 @property (strong, nonatomic, readonly, nullable) UIView *innerView;
 
-// Default is 0
+/** Default is 0 */
 @property (assign, nonatomic) NSInteger tag;
 
 #pragma mark - Style properties
@@ -111,7 +119,7 @@ typedef NS_ENUM(NSUInteger, LGAlertViewWindowLevel) {
 @property (strong, nonatomic, nullable) UIColor *tintColor UI_APPEARANCE_SELECTOR;
 /**
  Color hides main view when alert view is showing
- Default is [UIColor colorWithWhite:0.0 alpha:0.4]
+ Default is [UIColor colorWithWhite:0.0 alpha:0.35]
  */
 @property (strong, nonatomic, nullable) UIColor *coverColor UI_APPEARANCE_SELECTOR;
 /** Default is nil */
@@ -120,6 +128,8 @@ typedef NS_ENUM(NSUInteger, LGAlertViewWindowLevel) {
 @property (assign, nonatomic) CGFloat coverAlpha UI_APPEARANCE_SELECTOR;
 /** Default is UIColor.whiteColor */
 @property (strong, nonatomic, nullable) UIColor *backgroundColor UI_APPEARANCE_SELECTOR;
+/** Default is nil */
+@property (strong, nonatomic, nullable) UIBlurEffect *backgroundBlurEffect UI_APPEARANCE_SELECTOR;
 /**
  Default:
  if (style == LGAlertViewStyleAlert || iOS < 9.0) then 44.0
@@ -176,10 +186,25 @@ typedef NS_ENUM(NSUInteger, LGAlertViewWindowLevel) {
 @property (strong, nonatomic, nullable) UIColor *layerShadowColor UI_APPEARANCE_SELECTOR;
 /** Default is 0.0 */
 @property (assign, nonatomic) CGFloat layerShadowRadius UI_APPEARANCE_SELECTOR;
-/** Default is 0.0 */
-@property (assign, nonatomic) CGFloat layerShadowOpacity UI_APPEARANCE_SELECTOR;
-/** Default is CGSizeZero */
-@property (assign, nonatomic) CGSize  layerShadowOffset UI_APPEARANCE_SELECTOR;
+/** Default is CGPointZero */
+@property (assign, nonatomic) CGPoint layerShadowOffset UI_APPEARANCE_SELECTOR;
+
+#pragma mark - Animation properties
+
+/** Default is 0.5 */
+@property (assign, nonatomic) NSTimeInterval animationDuration UI_APPEARANCE_SELECTOR;
+
+/**
+ Only if (style == LGAlertViewStyleAlert)
+ Default is 1.2
+ */
+@property (assign, nonatomic) CGFloat initialScale UI_APPEARANCE_SELECTOR;
+
+/**
+ Only if (style == LGAlertViewStyleAlert)
+ Default is 0.95
+ */
+@property (assign, nonatomic) CGFloat finalScale UI_APPEARANCE_SELECTOR;
 
 #pragma mark - Title properties
 
@@ -234,11 +259,11 @@ typedef NS_ENUM(NSUInteger, LGAlertViewWindowLevel) {
 @property (assign, nonatomic) NSTextAlignment buttonsTextAlignment UI_APPEARANCE_SELECTOR;
 /** Default is [UIFont systemFontOfSize:18.0] */
 @property (strong, nonatomic, nullable) UIFont *buttonsFont UI_APPEARANCE_SELECTOR;
-/** Default is nil */
+/** Default is UIColor.clearColor */
 @property (strong, nonatomic, nullable) UIColor *buttonsBackgroundColor UI_APPEARANCE_SELECTOR;
 /** Default is tintColor */
 @property (strong, nonatomic, nullable) UIColor *buttonsBackgroundColorHighlighted UI_APPEARANCE_SELECTOR;
-/** Default is nil */
+/** Default is UIColor.clearColor */
 @property (strong, nonatomic, nullable) UIColor *buttonsBackgroundColorDisabled UI_APPEARANCE_SELECTOR;
 /** Default is 1 */
 @property (assign, nonatomic) NSUInteger buttonsNumberOfLines UI_APPEARANCE_SELECTOR;
@@ -270,11 +295,11 @@ typedef NS_ENUM(NSUInteger, LGAlertViewWindowLevel) {
 @property (assign, nonatomic) NSTextAlignment cancelButtonTextAlignment UI_APPEARANCE_SELECTOR;
 /** Default is [UIFont boldSystemFontOfSize:18.0] */
 @property (strong, nonatomic, nullable) UIFont *cancelButtonFont UI_APPEARANCE_SELECTOR;
-/** Default is nil */
+/** Default is UIColor.clearColor */
 @property (strong, nonatomic, nullable) UIColor *cancelButtonBackgroundColor UI_APPEARANCE_SELECTOR;
 /** Default is tintColor */
 @property (strong, nonatomic, nullable) UIColor *cancelButtonBackgroundColorHighlighted UI_APPEARANCE_SELECTOR;
-/** Default is nil */
+/** Default is UIColor.clearColor */
 @property (strong, nonatomic, nullable) UIColor *cancelButtonBackgroundColorDisabled UI_APPEARANCE_SELECTOR;
 /** Default is 1 */
 @property (assign, nonatomic) NSUInteger cancelButtonNumberOfLines UI_APPEARANCE_SELECTOR;
@@ -306,11 +331,11 @@ typedef NS_ENUM(NSUInteger, LGAlertViewWindowLevel) {
 @property (assign, nonatomic) NSTextAlignment destructiveButtonTextAlignment UI_APPEARANCE_SELECTOR;
 /** Default is [UIFont systemFontOfSize:18.0] */
 @property (strong, nonatomic, nullable) UIFont *destructiveButtonFont UI_APPEARANCE_SELECTOR;
-/** Default is nil */
+/** Default is UIColor.clearColor */
 @property (strong, nonatomic, nullable) UIColor *destructiveButtonBackgroundColor UI_APPEARANCE_SELECTOR;
 /** Default is UIColor.redColor */
 @property (strong, nonatomic, nullable) UIColor *destructiveButtonBackgroundColorHighlighted UI_APPEARANCE_SELECTOR;
-/** Default is nil */
+/** Default is UIColor.clearColor */
 @property (strong, nonatomic, nullable) UIColor *destructiveButtonBackgroundColorDisabled UI_APPEARANCE_SELECTOR;
 /** Default is 1 */
 @property (assign, nonatomic) NSUInteger destructiveButtonNumberOfLines UI_APPEARANCE_SELECTOR;
@@ -393,6 +418,17 @@ typedef NS_ENUM(NSUInteger, LGAlertViewWindowLevel) {
 @property (copy, nonatomic) LGAlertViewHandler didDismissAfterCancelHandler;
 /** To avoid retain cycle, do not forget about weak reference to self */
 @property (copy, nonatomic) LGAlertViewHandler didDismissAfterDestructiveHandler;
+
+/**
+ You can use this block to add some custom animations
+ To avoid retain cycle, do not forget about weak reference to self
+ */
+@property (copy, nonatomic, nullable) LGAlertViewAnimationsBlock showAnimationsBlock;
+/**
+ You can use this block to add some custom animations
+ To avoid retain cycle, do not forget about weak reference to self
+ */
+@property (copy, nonatomic, nullable) LGAlertViewAnimationsBlock dismissAnimationsBlock;
 
 #pragma mark - Delegate
 
@@ -738,8 +774,17 @@ typedef NS_ENUM(NSUInteger, LGAlertViewWindowLevel) {
 - (void)alertViewDidDismissAfterCancelled:(nonnull LGAlertView *)alertView;
 - (void)alertViewDidDismissAfterDestructed:(nonnull LGAlertView *)alertView;
 
-- (void)alertView:(nonnull LGAlertView *)alertView buttonPressedWithTitle:(nullable NSString *)title index:(NSUInteger)index DEPRECATED_MSG_ATTRIBUTE("use alertView:clickedButtonAtIndex:title instead");
-- (void)alertViewDestructiveButtonPressed:(nonnull LGAlertView *)alertView DEPRECATED_MSG_ATTRIBUTE("use alertViewDidDismissAfterDestructed instead");
+/** You can use this method to add some custom animations */
+- (void)showAnimationsForAlertView:(nonnull LGAlertView *)alertView duration:(NSTimeInterval)duration;
+/** You can use this method to add some custom animations */
+- (void)dismissAnimationsForAlertView:(nonnull LGAlertView *)alertView duration:(NSTimeInterval)duration;
+
+// DEPRECATED
+
+- (void)alertView:(nonnull LGAlertView *)alertView buttonPressedWithTitle:(nullable NSString *)title index:(NSUInteger)index
+DEPRECATED_MSG_ATTRIBUTE("use alertView:clickedButtonAtIndex:title: instead");
+- (void)alertViewDestructiveButtonPressed:(nonnull LGAlertView *)alertView
+DEPRECATED_MSG_ATTRIBUTE("use alertViewDidDismissAfterDestructed: instead");
 
 @end
 
@@ -747,6 +792,10 @@ typedef NS_ENUM(NSUInteger, LGAlertViewWindowLevel) {
 
 @interface LGAlertView (Deprecated)
 
-- (void)setButtonAtIndex:(NSUInteger)index enabled:(BOOL)enabled DEPRECATED_MSG_ATTRIBUTE("use setButtonEnabled:atIndex instead");
+@property (assign, nonatomic) CGFloat layerShadowOpacity
+DEPRECATED_MSG_ATTRIBUTE("use layerShadowColor alpha component instead");
+
+- (void)setButtonAtIndex:(NSUInteger)index enabled:(BOOL)enabled
+DEPRECATED_MSG_ATTRIBUTE("use setButtonEnabled:atIndex: instead");
 
 @end

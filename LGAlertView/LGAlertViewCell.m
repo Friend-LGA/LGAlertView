@@ -43,8 +43,7 @@
     if (self) {
         self.selectionStyle = UITableViewCellSelectionStyleNone;
 
-        self.textLabel.backgroundColor = UIColor.clearColor;
-        self.imageView.backgroundColor = UIColor.clearColor;
+        [self clearBackgrounds];
 
         self.separatorView = [UIView new];
         [self addSubview:self.separatorView];
@@ -170,6 +169,8 @@
     else {
         [self setEnabled:self.enabled];
     }
+
+    [self clearBackgrounds];
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
@@ -183,6 +184,8 @@
     else {
         [self setEnabled:self.enabled];
     }
+
+    [self clearBackgrounds];
 }
 
 - (void)setEnabled:(BOOL)enabled {
@@ -231,6 +234,11 @@
     resultSize.height += LGAlertViewPaddingHeight * 2.0;
 
     return resultSize;
+}
+
+- (void)clearBackgrounds {
+    self.textLabel.backgroundColor = UIColor.clearColor;
+    self.imageView.backgroundColor = UIColor.clearColor;
 }
 
 @end

@@ -16,6 +16,8 @@
 		4A95DE0E1E8C01D40079BC49 /* LGAlertViewShared.h in Headers */ = {isa = PBXBuildFile; fileRef = 4A95DE0B1E8C01D40079BC49 /* LGAlertViewShared.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4AA4DFE01E11623100CBB6AC /* LGAlertViewButton.h in Headers */ = {isa = PBXBuildFile; fileRef = 4AA4DFDE1E11623100CBB6AC /* LGAlertViewButton.h */; };
 		4AA4DFE11E11623100CBB6AC /* LGAlertViewButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 4AA4DFDF1E11623100CBB6AC /* LGAlertViewButton.m */; };
+		4ADC76281EC3A73E00F26FBB /* LGAlertViewShadowView.h in Headers */ = {isa = PBXBuildFile; fileRef = 4ADC76261EC3A73E00F26FBB /* LGAlertViewShadowView.h */; };
+		4ADC76291EC3A73E00F26FBB /* LGAlertViewShadowView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4ADC76271EC3A73E00F26FBB /* LGAlertViewShadowView.m */; };
 		4AF138F21BF383540037B073 /* LGAlertViewFramework.h in Headers */ = {isa = PBXBuildFile; fileRef = 4AF138F11BF383540037B073 /* LGAlertViewFramework.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4AF139F01BF385380037B073 /* LGAlertView.h in Headers */ = {isa = PBXBuildFile; fileRef = 4AF139E11BF385380037B073 /* LGAlertView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4AF139F11BF385380037B073 /* LGAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4AF139E21BF385380037B073 /* LGAlertView.m */; };
@@ -43,6 +45,8 @@
 		4A95DE0B1E8C01D40079BC49 /* LGAlertViewShared.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGAlertViewShared.h; sourceTree = "<group>"; };
 		4AA4DFDE1E11623100CBB6AC /* LGAlertViewButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGAlertViewButton.h; sourceTree = "<group>"; };
 		4AA4DFDF1E11623100CBB6AC /* LGAlertViewButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGAlertViewButton.m; sourceTree = "<group>"; };
+		4ADC76261EC3A73E00F26FBB /* LGAlertViewShadowView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGAlertViewShadowView.h; sourceTree = "<group>"; };
+		4ADC76271EC3A73E00F26FBB /* LGAlertViewShadowView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGAlertViewShadowView.m; sourceTree = "<group>"; };
 		4AF138EE1BF383540037B073 /* LGAlertView.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = LGAlertView.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		4AF138F11BF383540037B073 /* LGAlertViewFramework.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LGAlertViewFramework.h; sourceTree = "<group>"; };
 		4AF138F31BF383540037B073 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -116,6 +120,8 @@
 				4AF139E81BF385380037B073 /* LGAlertViewController.m */,
 				4A95DE091E8C01D40079BC49 /* LGAlertViewHelper.h */,
 				4A95DE0A1E8C01D40079BC49 /* LGAlertViewHelper.m */,
+				4ADC76261EC3A73E00F26FBB /* LGAlertViewShadowView.h */,
+				4ADC76271EC3A73E00F26FBB /* LGAlertViewShadowView.m */,
 				4A95DE0B1E8C01D40079BC49 /* LGAlertViewShared.h */,
 				4AF139EA1BF385380037B073 /* LGAlertViewTextField.h */,
 				4AF139EB1BF385380037B073 /* LGAlertViewTextField.m */,
@@ -149,6 +155,7 @@
 				4AF139F41BF385380037B073 /* LGAlertViewCell.h in Headers */,
 				4AF139F61BF385380037B073 /* LGAlertViewController.h in Headers */,
 				4AF139F91BF385380037B073 /* LGAlertViewTextField.h in Headers */,
+				4ADC76281EC3A73E00F26FBB /* LGAlertViewShadowView.h in Headers */,
 				4AF139FB1BF385380037B073 /* LGAlertViewWindow.h in Headers */,
 				4A95DE0C1E8C01D40079BC49 /* LGAlertViewHelper.h in Headers */,
 				4A6308171E9A6BAB00015C9E /* LGAlertViewWindowContainer.h in Headers */,
@@ -232,6 +239,7 @@
 				4AF139F31BF385380037B073 /* LGAlertViewButtonProperties.m in Sources */,
 				4AF139F51BF385380037B073 /* LGAlertViewCell.m in Sources */,
 				4A63081A1E9A6BAB00015C9E /* LGAlertViewWindowsObserver.m in Sources */,
+				4ADC76291EC3A73E00F26FBB /* LGAlertViewShadowView.m in Sources */,
 				4A6308181E9A6BAB00015C9E /* LGAlertViewWindowContainer.m in Sources */,
 				4AF139FE1BF385380037B073 /* UIWindow+LGAlertView.m in Sources */,
 			);

@@ -35,22 +35,28 @@
 #import "LGAlertViewButton.h"
 #import "LGAlertViewHelper.h"
 #import "LGAlertViewWindowsObserver.h"
+#import "LGAlertViewShadowView.h"
 
 #pragma mark - Constants
 
-NSString *_Nonnull const LGAlertViewWillShowNotification = @"LGAlertViewWillShowNotification";
-NSString *_Nonnull const LGAlertViewDidShowNotification  = @"LGAlertViewDidShowNotification";
+NSString * _Nonnull const LGAlertViewWillShowNotification = @"LGAlertViewWillShowNotification";
+NSString * _Nonnull const LGAlertViewDidShowNotification  = @"LGAlertViewDidShowNotification";
 
-NSString *_Nonnull const LGAlertViewWillDismissNotification = @"LGAlertViewWillDismissNotification";
-NSString *_Nonnull const LGAlertViewDidDismissNotification  = @"LGAlertViewDidDismissNotification";
+NSString * _Nonnull const LGAlertViewWillDismissNotification = @"LGAlertViewWillDismissNotification";
+NSString * _Nonnull const LGAlertViewDidDismissNotification  = @"LGAlertViewDidDismissNotification";
 
-NSString *_Nonnull const LGAlertViewActionNotification      = @"LGAlertViewActionNotification";
-NSString *_Nonnull const LGAlertViewCancelNotification      = @"LGAlertViewCancelNotification";
-NSString *_Nonnull const LGAlertViewDestructiveNotification = @"LGAlertViewDestructiveNotification";
+NSString * _Nonnull const LGAlertViewActionNotification      = @"LGAlertViewActionNotification";
+NSString * _Nonnull const LGAlertViewCancelNotification      = @"LGAlertViewCancelNotification";
+NSString * _Nonnull const LGAlertViewDestructiveNotification = @"LGAlertViewDestructiveNotification";
 
-NSString *_Nonnull const LGAlertViewDidDismissAfterActionNotification      = @"LGAlertViewDidDismissAfterActionNotification";
-NSString *_Nonnull const LGAlertViewDidDismissAfterCancelNotification      = @"LGAlertViewDidDismissAfterCancelNotification";
-NSString *_Nonnull const LGAlertViewDidDismissAfterDestructiveNotification = @"LGAlertViewDidDismissAfterDestructiveNotification";
+NSString * _Nonnull const LGAlertViewDidDismissAfterActionNotification      = @"LGAlertViewDidDismissAfterActionNotification";
+NSString * _Nonnull const LGAlertViewDidDismissAfterCancelNotification      = @"LGAlertViewDidDismissAfterCancelNotification";
+NSString * _Nonnull const LGAlertViewDidDismissAfterDestructiveNotification = @"LGAlertViewDidDismissAfterDestructiveNotification";
+
+NSString * _Nonnull const LGAlertViewShowAnimationsNotification    = @"LGAlertViewShowAnimationsNotification";
+NSString * _Nonnull const LGAlertViewDismissAnimationsNotification = @"LGAlertViewDismissAnimationsNotification";
+
+NSString * _Nonnull const kLGAlertViewAnimationDuration = @"duration";
 
 #pragma mark - Types
 
@@ -86,8 +92,11 @@ LGAlertViewType;
 
 @property (strong, nonatomic) UIVisualEffectView *backgroundView;
 
-@property (strong, nonatomic) UIView *styleView;
-@property (strong, nonatomic) UIView *styleCancelView;
+@property (strong, nonatomic) LGAlertViewShadowView *shadowView;
+@property (strong, nonatomic) LGAlertViewShadowView *shadowCancelView;
+
+@property (strong, nonatomic) UIVisualEffectView *blurView;
+@property (strong, nonatomic) UIVisualEffectView *blurCancelView;
 
 @property (strong, nonatomic) UIScrollView *scrollView;
 @property (strong, nonatomic) UITableView  *tableView;
@@ -770,10 +779,11 @@ LGAlertViewType;
         _dismissOnAction = YES;
 
         _tintColor = [UIColor colorWithRed:0.0 green:0.5 blue:1.0 alpha:1.0];
-        _coverColor = [UIColor colorWithWhite:0.0 alpha:0.4];
+        _coverColor = [UIColor colorWithWhite:0.0 alpha:0.35];
         _coverBlurEffect = nil;
         _coverAlpha = 1.0;
         _backgroundColor = UIColor.whiteColor;
+        _backgroundBlurEffect = nil;
         _textFieldsHeight = 44.0;
         _offsetVertical = 8.0;
         _cancelButtonOffsetY = 8.0;
@@ -791,8 +801,11 @@ LGAlertViewType;
         _layerBorderWidth = 0.0;
         _layerShadowColor = nil;
         _layerShadowRadius = 0.0;
-        _layerShadowOpacity = 0.0;
-        _layerShadowOffset = CGSizeZero;
+        _layerShadowOffset = CGPointZero;
+
+        _animationDuration = 0.5;
+        _initialScale = 1.2;
+        _finalScale = 0.95;
 
         _titleTextAlignment = NSTextAlignmentCenter;
 
@@ -804,7 +817,7 @@ LGAlertViewType;
         _buttonsTitleColorDisabled = UIColor.grayColor;
         _buttonsTextAlignment = NSTextAlignmentCenter;
         _buttonsFont = [UIFont systemFontOfSize:18.0];
-        _buttonsBackgroundColor = nil;
+        _buttonsBackgroundColor = UIColor.clearColor;
         _buttonsBackgroundColorHighlighted = self.tintColor;
         _buttonsBackgroundColorDisabled = nil;
         _buttonsNumberOfLines = 1;
@@ -819,7 +832,7 @@ LGAlertViewType;
         _cancelButtonTitleColorDisabled = UIColor.grayColor;
         _cancelButtonTextAlignment = NSTextAlignmentCenter;
         _cancelButtonFont = [UIFont boldSystemFontOfSize:18.0];
-        _cancelButtonBackgroundColor = nil;
+        _cancelButtonBackgroundColor = UIColor.clearColor;
         _cancelButtonBackgroundColorHighlighted = self.tintColor;
         _cancelButtonBackgroundColorDisabled = nil;
         _cancelButtonNumberOfLines = 1;
@@ -834,7 +847,7 @@ LGAlertViewType;
         _destructiveButtonTitleColorDisabled = UIColor.grayColor;
         _destructiveButtonTextAlignment = NSTextAlignmentCenter;
         _destructiveButtonFont = [UIFont systemFontOfSize:18.0];
-        _destructiveButtonBackgroundColor = nil;
+        _destructiveButtonBackgroundColor = UIColor.clearColor;
         _destructiveButtonBackgroundColorHighlighted = UIColor.redColor;
         _destructiveButtonBackgroundColorDisabled = nil;
         _destructiveButtonNumberOfLines = 1;
@@ -899,6 +912,7 @@ LGAlertViewType;
     _coverBlurEffect = appearance.coverBlurEffect;
     _coverAlpha = appearance.coverAlpha;
     _backgroundColor = appearance.backgroundColor;
+    _backgroundBlurEffect = appearance.backgroundBlurEffect;
     if (appearance.isUserButtonsHeight) {
         _buttonsHeight = appearance.buttonsHeight;
     }
@@ -922,8 +936,11 @@ LGAlertViewType;
     _layerBorderWidth = appearance.layerBorderWidth;
     _layerShadowColor = appearance.layerShadowColor;
     _layerShadowRadius = appearance.layerShadowRadius;
-    _layerShadowOpacity = appearance.layerShadowOpacity;
     _layerShadowOffset = appearance.layerShadowOffset;
+
+    _animationDuration = appearance.animationDuration;
+    _initialScale = appearance.initialScale;
+    _finalScale = appearance.finalScale;
 
     if (appearance.isUserTitleTextColor) {
         _titleTextColor = appearance.titleTextColor;
@@ -1638,13 +1655,15 @@ LGAlertViewType;
     // -----
 
     if (hidden) {
-        self.backgroundView.hidden = YES;
         self.scrollView.hidden = YES;
-        self.styleView.hidden = YES;
+        self.backgroundView.hidden = YES;
+        self.shadowView.hidden = YES;
+        self.blurView.hidden = YES;
 
         if ([LGAlertViewHelper isCancelButtonSeparate:self]) {
             self.cancelButton.hidden = YES;
-            self.styleCancelView.hidden = YES;
+            self.shadowCancelView.hidden = YES;
+            self.blurCancelView.hidden = YES;
         }
     }
 
@@ -1652,8 +1671,23 @@ LGAlertViewType;
 
     if (animated) {
         [LGAlertViewHelper
-         animateWithAnimations:^(void) {
+         animateWithDuration:self.animationDuration
+         animations:^(void) {
              [self showAnimations];
+
+             // -----
+
+             [[NSNotificationCenter defaultCenter] postNotificationName:LGAlertViewShowAnimationsNotification
+                                                                 object:self
+                                                               userInfo:@{kLGAlertViewAnimationDuration: @(self.animationDuration)}];
+
+             if (self.showAnimationsBlock) {
+                 self.showAnimationsBlock(self, self.animationDuration);
+             }
+
+             if (self.delegate && [self.delegate respondsToSelector:@selector(showAnimationsForAlertView:duration:)]) {
+                 [self.delegate showAnimationsForAlertView:self duration:self.animationDuration];
+             }
          }
          completion:^(BOOL finished) {
              if (!hidden) {
@@ -1685,19 +1719,26 @@ LGAlertViewType;
         self.scrollView.transform = CGAffineTransformIdentity;
         self.scrollView.alpha = 1.0;
 
-        self.styleView.transform = CGAffineTransformIdentity;
-        self.styleView.alpha = 1.0;
+        self.shadowView.transform = CGAffineTransformIdentity;
+        self.shadowView.alpha = 1.0;
+
+        self.blurView.transform = CGAffineTransformIdentity;
+        self.blurView.alpha = 1.0;
     }
     else {
         self.scrollView.center = self.scrollViewCenterShowed;
 
-        self.styleView.center = self.scrollViewCenterShowed;
+        self.shadowView.center = self.scrollViewCenterShowed;
+
+        self.blurView.center = self.scrollViewCenterShowed;
     }
 
     if ([LGAlertViewHelper isCancelButtonSeparate:self] && self.cancelButton) {
         self.cancelButton.center = self.cancelButtonCenterShowed;
 
-        self.styleCancelView.center = self.cancelButtonCenterShowed;
+        self.shadowCancelView.center = self.cancelButtonCenterShowed;
+
+        self.blurCancelView.center = self.cancelButtonCenterShowed;
     }
 }
 
@@ -1739,8 +1780,23 @@ LGAlertViewType;
 
     if (animated) {
         [LGAlertViewHelper
-         animateWithAnimations:^(void) {
+         animateWithDuration:self.animationDuration
+         animations:^(void) {
              [self dismissAnimations];
+
+             // -----
+
+             [[NSNotificationCenter defaultCenter] postNotificationName:LGAlertViewDismissAnimationsNotification
+                                                                 object:self
+                                                               userInfo:@{kLGAlertViewAnimationDuration: @(self.animationDuration)}];
+
+             if (self.dismissAnimationsBlock) {
+                 self.dismissAnimationsBlock(self, self.animationDuration);
+             }
+
+             if (self.delegate && [self.delegate respondsToSelector:@selector(dismissAnimationsForAlertView:duration:)]) {
+                 [self.delegate dismissAnimationsForAlertView:self duration:self.animationDuration];
+             }
          }
          completion:^(BOOL finished) {
              [self dismissComplete];
@@ -1773,22 +1829,32 @@ LGAlertViewType;
     self.backgroundView.alpha = 0.0;
 
     if (self.style == LGAlertViewStyleAlert || [LGAlertViewHelper isPadAndNotForce:self]) {
-        self.scrollView.transform = CGAffineTransformMakeScale(0.95, 0.95);
-        self.scrollView.alpha = 0.0;
+        CGAffineTransform transform = CGAffineTransformMakeScale(self.finalScale, self.finalScale);
+        CGFloat alpha = 0.0;
 
-        self.styleView.transform = CGAffineTransformMakeScale(0.95, 0.95);
-        self.styleView.alpha = 0.0;
+        self.scrollView.transform = transform;
+        self.scrollView.alpha = alpha;
+
+        self.shadowView.transform = transform;
+        self.shadowView.alpha = alpha;
+
+        self.blurView.transform = transform;
+        self.blurView.alpha = alpha;
     }
     else {
         self.scrollView.center = self.scrollViewCenterHidden;
 
-        self.styleView.center = self.scrollViewCenterHidden;
+        self.shadowView.center = self.scrollViewCenterHidden;
+
+        self.blurView.center = self.scrollViewCenterHidden;
     }
 
     if ([LGAlertViewHelper isCancelButtonSeparate:self] && self.cancelButton) {
         self.cancelButton.center = self.cancelButtonCenterHidden;
 
-        self.styleCancelView.center = self.cancelButtonCenterHidden;
+        self.shadowCancelView.center = self.cancelButtonCenterHidden;
+
+        self.blurCancelView.center = self.cancelButtonCenterHidden;
     }
 }
 
@@ -1834,7 +1900,8 @@ LGAlertViewType;
                                        self.cancelButton.alpha = 0.0;
 
                                        if (!cancelButtonNext) {
-                                           self.styleCancelView.alpha = 0.0;
+                                           self.shadowCancelView.alpha = 0.0;
+                                           self.blurCancelView.alpha = 0.0;
                                        }
                                    }
                                }
@@ -1850,34 +1917,47 @@ LGAlertViewType;
 
                                    // -----
 
-                                   CGRect styleViewFrame = alertView.styleView.frame;
+                                   CGRect shadowViewFrame = alertView.shadowView.frame;
 
-                                   alertView.styleView.frame = self.styleView.frame;
+                                   alertView.shadowView.frame = self.shadowView.frame;
 
-                                   alertView.styleView.hidden = NO;
-                                   self.styleView.hidden = YES;
+                                   alertView.shadowView.hidden = NO;
+                                   self.shadowView.hidden = YES;
+
+                                   // -----
+
+                                   CGRect blurViewFrame = alertView.blurView.frame;
+
+                                   alertView.blurView.frame = self.blurView.frame;
+
+                                   alertView.blurView.hidden = NO;
+                                   self.blurView.hidden = YES;
 
                                    // -----
 
                                    if (cancelButtonNext) {
-                                       alertView.styleCancelView.hidden = NO;
+                                       alertView.shadowCancelView.hidden = NO;
+                                       alertView.blurCancelView.hidden = NO;
 
                                        if (!cancelButtonSelf) {
-                                           alertView.styleCancelView.alpha = 0.0;
+                                           alertView.shadowCancelView.alpha = 0.0;
+                                           alertView.blurCancelView.alpha = 0.0;
                                        }
                                    }
 
                                    // -----
 
                                    if (cancelButtonSelf && cancelButtonNext) {
-                                       self.styleCancelView.hidden = YES;
+                                       self.shadowCancelView.hidden = YES;
+                                       self.blurCancelView.hidden = YES;
                                    }
 
                                    // -----
 
                                    [UIView animateWithDuration:duration
                                                     animations:^(void) {
-                                                        alertView.styleView.frame = styleViewFrame;
+                                                        alertView.shadowView.frame = shadowViewFrame;
+                                                        alertView.blurView.frame = blurViewFrame;
                                                     }
                                                     completion:^(BOOL finished) {
                                                         alertView.scrollView.alpha = 0.0;
@@ -1897,7 +1977,8 @@ LGAlertViewType;
                                                                                  alertView.cancelButton.alpha = 1.0;
 
                                                                                  if (!cancelButtonSelf) {
-                                                                                     alertView.styleCancelView.alpha = 1.0;
+                                                                                     alertView.shadowCancelView.alpha = 1.0;
+                                                                                     alertView.blurCancelView.alpha = 1.0;
                                                                                  }
                                                                              }
                                                                          }
@@ -1933,25 +2014,33 @@ LGAlertViewType;
         self.backgroundView.backgroundColor = self.coverColor;
         self.backgroundView.effect = self.coverBlurEffect;
 
-        self.styleView = [UIView new];
-        self.styleView.backgroundColor = self.backgroundColor;
-        self.styleView.layer.masksToBounds = NO;
-        self.styleView.layer.cornerRadius = self.layerCornerRadius + (self.layerCornerRadius == 0.0 ? 0.0 : self.layerBorderWidth + 1.0);
-        self.styleView.layer.borderColor = self.layerBorderColor.CGColor;
-        self.styleView.layer.borderWidth = self.layerBorderWidth;
-        self.styleView.layer.shadowColor = self.layerShadowColor.CGColor;
-        self.styleView.layer.shadowRadius = self.layerShadowRadius;
-        self.styleView.layer.shadowOpacity = self.layerShadowOpacity;
-        self.styleView.layer.shadowOffset = self.layerShadowOffset;
-        [self.view addSubview:self.styleView];
+        self.shadowView = [LGAlertViewShadowView new];
+        self.shadowView.clipsToBounds = YES;
+        self.shadowView.userInteractionEnabled = NO;
+        self.shadowView.cornerRadius = self.layerCornerRadius;
+        self.shadowView.strokeColor = self.layerBorderColor;
+        self.shadowView.strokeWidth = self.layerBorderWidth;
+        self.shadowView.shadowColor = self.layerShadowColor;
+        self.shadowView.shadowBlur = self.layerShadowRadius;
+        self.shadowView.shadowOffset = self.layerShadowOffset;
+        [self.view addSubview:self.shadowView];
+
+        self.blurView = [[UIVisualEffectView alloc] initWithEffect:self.backgroundBlurEffect];
+        self.blurView.contentView.backgroundColor = self.backgroundColor;
+        self.blurView.clipsToBounds = YES;
+        self.blurView.layer.cornerRadius = self.layerCornerRadius;
+        self.blurView.layer.borderWidth = self.layerBorderWidth;
+        self.blurView.layer.borderColor = self.layerBorderColor.CGColor;
+        self.blurView.userInteractionEnabled = NO;
+        [self.view addSubview:self.blurView];
 
         self.scrollView = [UIScrollView new];
         self.scrollView.backgroundColor = UIColor.clearColor;
         self.scrollView.indicatorStyle = self.indicatorStyle;
         self.scrollView.showsVerticalScrollIndicator = self.showsVerticalScrollIndicator;
         self.scrollView.alwaysBounceVertical = NO;
-        self.scrollView.layer.masksToBounds = YES;
-        self.scrollView.layer.cornerRadius = self.layerCornerRadius;
+        self.scrollView.clipsToBounds = YES;
+        self.scrollView.layer.cornerRadius = self.layerCornerRadius - self.layerBorderWidth - (self.layerBorderWidth ? 1.0 : 0.0);
         [self.view addSubview:self.scrollView];
 
         CGFloat offsetY = 0.0;
@@ -2174,24 +2263,30 @@ LGAlertViewType;
         // -----
 
         if ([LGAlertViewHelper isCancelButtonSeparate:self] && self.cancelButtonTitle) {
-            CGFloat cornerRadius = self.layerCornerRadius + (self.layerCornerRadius == 0.0 ? 0.0 : self.layerBorderWidth + 1.0);
+            self.shadowCancelView = [LGAlertViewShadowView new];
+            self.shadowCancelView.clipsToBounds = YES;
+            self.shadowCancelView.userInteractionEnabled = NO;
+            self.shadowCancelView.cornerRadius = self.layerCornerRadius;
+            self.shadowCancelView.strokeColor = self.layerBorderColor;
+            self.shadowCancelView.strokeWidth = self.layerBorderWidth;
+            self.shadowCancelView.shadowColor = self.layerShadowColor;
+            self.shadowCancelView.shadowBlur = self.layerShadowRadius;
+            self.shadowCancelView.shadowOffset = self.layerShadowOffset;
+            [self.view insertSubview:self.shadowCancelView belowSubview:self.scrollView];
 
-            self.styleCancelView = [UIView new];
-            self.styleCancelView.backgroundColor = self.backgroundColor;
-            self.styleCancelView.layer.masksToBounds = NO;
-            self.styleCancelView.layer.cornerRadius = cornerRadius;
-            self.styleCancelView.layer.borderColor = self.layerBorderColor.CGColor;
-            self.styleCancelView.layer.borderWidth = self.layerBorderWidth;
-            self.styleCancelView.layer.shadowColor = self.layerShadowColor.CGColor;
-            self.styleCancelView.layer.shadowRadius = self.layerShadowRadius;
-            self.styleCancelView.layer.shadowOpacity = self.layerShadowOpacity;
-            self.styleCancelView.layer.shadowOffset = self.layerShadowOffset;
-            [self.view insertSubview:self.styleCancelView belowSubview:self.scrollView];
+            self.blurCancelView = [[UIVisualEffectView alloc] initWithEffect:self.backgroundBlurEffect];
+            self.blurCancelView.contentView.backgroundColor = self.backgroundColor;
+            self.blurCancelView.clipsToBounds = YES;
+            self.blurCancelView.layer.cornerRadius = self.layerCornerRadius;
+            self.blurCancelView.layer.borderWidth = self.layerBorderWidth;
+            self.blurCancelView.layer.borderColor = self.layerBorderColor.CGColor;
+            self.blurCancelView.userInteractionEnabled = NO;
+            [self.view insertSubview:self.blurCancelView aboveSubview:self.shadowCancelView];
 
             [self cancelButtonInit];
             self.cancelButton.layer.masksToBounds = YES;
-            self.cancelButton.layer.cornerRadius = self.layerCornerRadius;
-            [self.view insertSubview:self.cancelButton aboveSubview:self.styleCancelView];
+            self.cancelButton.layer.cornerRadius = self.layerCornerRadius - self.layerBorderWidth - (self.layerBorderWidth ? 1.0 : 0.0);
+            [self.view insertSubview:self.cancelButton aboveSubview:self.blurCancelView];
         }
 
         // -----
@@ -2828,7 +2923,7 @@ LGAlertViewType;
         }
 
         if (!self.isShowing) {
-            scrollViewTransform = CGAffineTransformMakeScale(1.2, 1.2);
+            scrollViewTransform = CGAffineTransformMakeScale(self.initialScale, self.initialScale);
 
             scrollViewAlpha = 0.0;
         }
@@ -2890,11 +2985,11 @@ LGAlertViewType;
 
             self.cancelButton.frame = cancelButtonFrame;
 
-            CGFloat borderWidth = self.layerBorderWidth;
-            self.styleCancelView.frame = CGRectMake(CGRectGetMinX(cancelButtonFrame) - borderWidth,
-                                                    CGRectGetMinY(cancelButtonFrame) - borderWidth,
-                                                    CGRectGetWidth(cancelButtonFrame) + (borderWidth * 2.0),
-                                                    CGRectGetHeight(cancelButtonFrame) + (borderWidth * 2.0));
+            CGFloat offset = self.layerBorderWidth + self.layerShadowRadius;
+            self.shadowCancelView.frame = CGRectInset(cancelButtonFrame, -offset, -offset);
+            [self.shadowCancelView setNeedsDisplay];
+
+            self.blurCancelView.frame = CGRectInset(cancelButtonFrame, -self.layerBorderWidth, -self.layerBorderWidth);
         }
     }
 
@@ -2914,13 +3009,19 @@ LGAlertViewType;
     self.scrollView.transform = scrollViewTransform;
     self.scrollView.alpha = scrollViewAlpha;
 
-    CGFloat borderWidth = self.layerBorderWidth;
-    self.styleView.frame = CGRectMake(CGRectGetMinX(scrollViewFrame) - borderWidth,
-                                      CGRectGetMinY(scrollViewFrame) - borderWidth,
-                                      CGRectGetWidth(scrollViewFrame) + (borderWidth * 2.0),
-                                      CGRectGetHeight(scrollViewFrame) + (borderWidth * 2.0));
-    self.styleView.transform = scrollViewTransform;
-    self.styleView.alpha = scrollViewAlpha;
+    // -----
+
+    CGFloat offset = self.layerBorderWidth + self.layerShadowRadius;
+    self.shadowView.frame = CGRectInset(scrollViewFrame, -offset, -offset);
+    self.shadowView.transform = scrollViewTransform;
+    self.shadowView.alpha = scrollViewAlpha;
+    [self.shadowView setNeedsDisplay];
+
+    // -----
+
+    self.blurView.frame = CGRectInset(scrollViewFrame, -self.layerBorderWidth, -self.layerBorderWidth);
+    self.blurView.transform = scrollViewTransform;
+    self.blurView.alpha = scrollViewAlpha;
 }
 
 - (void)cancelButtonInit {
@@ -3190,6 +3291,22 @@ LGAlertViewType;
 #pragma mark - Deprecated
 
 @implementation LGAlertView (Deprecated)
+
+- (void)setLayerShadowOpacity:(CGFloat)layerShadowOpacity {
+    if (!self.layerShadowColor) return;
+
+    self.layerShadowColor = [self.layerShadowColor colorWithAlphaComponent:layerShadowOpacity];
+}
+
+- (CGFloat)layerShadowOpacity {
+    CGFloat alpha = 0.0;
+
+    if (!self.layerShadowColor) return alpha;
+
+    [self.layerShadowColor getWhite:nil alpha:&alpha];
+
+    return alpha;
+}
 
 - (void)setButtonAtIndex:(NSUInteger)index enabled:(BOOL)enabled {
     [self setButtonEnabled:enabled atIndex:index];
