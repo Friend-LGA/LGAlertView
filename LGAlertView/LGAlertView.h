@@ -240,6 +240,10 @@ typedef NS_ENUM(NSUInteger, LGAlertViewWindowLevel) {
 /** Default is [UIFont systemFontOfSize:14.0] */
 @property (strong, nonatomic, nullable) UIFont *messageFont UI_APPEARANCE_SELECTOR;
 
+/** Default is NSLineBreakByWordWrapping */
+@property (assign, nonatomic) NSLineBreakMode messageLineBreakMode UI_APPEARANCE_SELECTOR;
+
+
 #pragma mark - Buttons properties
 
 @property (copy, nonatomic, readonly, nullable) NSArray *buttonTitles;
@@ -733,6 +737,8 @@ typedef NS_ENUM(NSUInteger, LGAlertViewWindowLevel) {
 
 - (void)transitionToAlertView:(nonnull LGAlertView *)alertView completionHandler:(LGAlertViewCompletionHandler)completionHandler;
 - (void)transitionToAlertView:(nonnull LGAlertView *)alertView;
+
+- (void)setMessage:(nullable NSString *)message;
 
 - (void)setProgress:(float)progress progressLabelText:(nullable NSString *)progressLabelText;
 
