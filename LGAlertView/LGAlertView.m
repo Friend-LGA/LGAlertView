@@ -834,6 +834,7 @@ LGAlertViewType;
         _messageTextColor = nil;
         _messageTextAlignment = NSTextAlignmentCenter;
         _messageFont = [UIFont systemFontOfSize:14.0];
+        _messageLineBreakMode = NSLineBreakByWordWrapping;
 
         _buttonsTitleColor = self.tintColor;
         _buttonsTitleColorHighlighted = UIColor.whiteColor;
@@ -990,6 +991,7 @@ LGAlertViewType;
     }
     _messageTextAlignment = appearance.messageTextAlignment;
     _messageFont = appearance.messageFont;
+    _messageLineBreakMode = appearance.messageLineBreakMode;
 
     _buttonsTitleColor = appearance.buttonsTitleColor;
     _buttonsTitleColorHighlighted = appearance.buttonsTitleColorHighlighted;
@@ -1392,6 +1394,12 @@ LGAlertViewType;
 }
 
 #pragma mark -
+
+- (void)setMessage:(nullable NSString *)message
+{
+    _message = message;
+    self.messageLabel.text = _message;
+}
 
 - (void)setProgress:(float)progress progressLabelText:(nullable NSString *)progressLabelText {
     if (self.type != LGAlertViewTypeProgressView) return;
@@ -2114,7 +2122,7 @@ LGAlertViewType;
             self.messageLabel.textColor = self.messageTextColor;
             self.messageLabel.textAlignment = self.messageTextAlignment;
             self.messageLabel.numberOfLines = 0;
-            self.messageLabel.lineBreakMode = NSLineBreakByWordWrapping;
+            self.messageLabel.lineBreakMode = self.messageLineBreakMode;
             self.messageLabel.backgroundColor = UIColor.clearColor;
             self.messageLabel.font = self.messageFont;
 
