@@ -426,13 +426,13 @@
             [scrollView addSubview:label];
 
             LGAlertView *alertView = [[LGAlertView alloc] initWithViewAndTitle:@"Scroll view with text"
-                                                                        message:@"Please, read it:"
-                                                                          style:LGAlertViewStyleAlert
-                                                                           view:scrollView
-                                                                   buttonTitles:@[@"Agree"]
-                                                              cancelButtonTitle:@"Cancel"
-                                                         destructiveButtonTitle:nil
-                                                                       delegate:self];
+                                                                       message:@"Please, read it:"
+                                                                         style:LGAlertViewStyleAlert
+                                                                          view:scrollView
+                                                                  buttonTitles:@[@"Agree"]
+                                                             cancelButtonTitle:@"Cancel"
+                                                        destructiveButtonTitle:nil
+                                                                      delegate:self];
 
             scrollView.frame = CGRectMake(0.0, 0.0, alertView.width, 160.0);
 
@@ -464,6 +464,7 @@
             LGAlertView *alertView = [[LGAlertView alloc] initWithActivityIndicatorAndTitle:@"Loading"
                                                                                     message:@"Waiting please"
                                                                                       style:LGAlertViewStyleAlert
+                                                                          progressLabelText:@"Connecting to server..."
                                                                                buttonTitles:nil
                                                                           cancelButtonTitle:nil
                                                                      destructiveButtonTitle:nil
@@ -471,9 +472,23 @@
 
             [alertView showAnimated:YES completionHandler:nil];
 
-            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(5.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^(void) {
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^(void) {
                 if (alertView && alertView.isShowing) {
-                    [alertView dismissAnimated:YES completionHandler:nil];
+                    alertView.progressLabelText = @"Done, will be closed after 3...";
+
+                    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^(void) {
+                        alertView.progressLabelText = @"Done, will be closed after 2...";
+
+                        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^(void) {
+                            alertView.progressLabelText = @"Done, will be closed after 1...";
+
+                            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^(void) {
+                                if (alertView && alertView.isShowing) {
+                                    [alertView dismissAnimated:YES completionHandler:nil];
+                                }
+                            });
+                        });
+                    });
                 }
             });
 
@@ -483,6 +498,7 @@
             LGAlertView *alertView = [[LGAlertView alloc] initWithActivityIndicatorAndTitle:@"Loading"
                                                                                     message:@"Waiting please"
                                                                                       style:LGAlertViewStyleAlert
+                                                                          progressLabelText:@"Connecting to server..."
                                                                                buttonTitles:nil
                                                                           cancelButtonTitle:@"I'm hurry"
                                                                      destructiveButtonTitle:nil
@@ -490,9 +506,23 @@
 
             [alertView showAnimated:YES completionHandler:nil];
 
-            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(5.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^(void) {
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^(void) {
                 if (alertView && alertView.isShowing) {
-                    [alertView dismissAnimated:YES completionHandler:nil];
+                    alertView.progressLabelText = @"Done, will be closed after 3...";
+
+                    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^(void) {
+                        alertView.progressLabelText = @"Done, will be closed after 2...";
+
+                        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^(void) {
+                            alertView.progressLabelText = @"Done, will be closed after 1...";
+
+                            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^(void) {
+                                if (alertView && alertView.isShowing) {
+                                    [alertView dismissAnimated:YES completionHandler:nil];
+                                }
+                            });
+                        });
+                    });
                 }
             });
 
@@ -502,7 +532,8 @@
             LGAlertView *alertView = [[LGAlertView alloc] initWithProgressViewAndTitle:@"Loading"
                                                                                message:@"Waiting please"
                                                                                  style:LGAlertViewStyleAlert
-                                                                     progressLabelText:@"0 %"
+                                                                              progress:0.0
+                                                                     progressLabelText:@"Connecting to server..."
                                                                           buttonTitles:nil
                                                                      cancelButtonTitle:nil
                                                                 destructiveButtonTitle:nil
@@ -518,7 +549,8 @@
             LGAlertView *alertView = [[LGAlertView alloc] initWithProgressViewAndTitle:@"Loading"
                                                                                message:@"Waiting please"
                                                                                  style:LGAlertViewStyleAlert
-                                                                     progressLabelText:@"0 %"
+                                                                              progress:0.0
+                                                                     progressLabelText:@"Connecting to server..."
                                                                           buttonTitles:nil
                                                                      cancelButtonTitle:@"I'm hurry"
                                                                 destructiveButtonTitle:nil
@@ -534,6 +566,7 @@
             LGAlertView *alertView1 = [[LGAlertView alloc] initWithActivityIndicatorAndTitle:@"Loading"
                                                                                      message:@"Waiting please"
                                                                                        style:LGAlertViewStyleAlert
+                                                                           progressLabelText:nil
                                                                                 buttonTitles:nil
                                                                            cancelButtonTitle:@"I'm hurry"
                                                                       destructiveButtonTitle:nil
@@ -561,6 +594,7 @@
             LGAlertView *alertView1 = [[LGAlertView alloc] initWithActivityIndicatorAndTitle:@"Loading"
                                                                                      message:@"Waiting please"
                                                                                        style:LGAlertViewStyleAlert
+                                                                           progressLabelText:nil
                                                                                 buttonTitles:nil
                                                                            cancelButtonTitle:@"I'm hurry"
                                                                       destructiveButtonTitle:nil
@@ -588,6 +622,7 @@
             LGAlertView *alertView1 = [[LGAlertView alloc] initWithActivityIndicatorAndTitle:@"Loading"
                                                                                      message:@"Waiting please"
                                                                                        style:LGAlertViewStyleAlert
+                                                                           progressLabelText:nil
                                                                                 buttonTitles:nil
                                                                            cancelButtonTitle:@"I'm hurry"
                                                                       destructiveButtonTitle:nil
@@ -654,13 +689,16 @@
             [alertView dismissAnimated:YES completionHandler:nil];
         }
         else {
-            float progress = alertView.progress+0.0025;
+            float progress = alertView.progress + 0.0025;
 
             if (progress > 1.0) {
                 progress = 1.0;
             }
 
-            [alertView setProgress:progress progressLabelText:[NSString stringWithFormat:@"%.0f %%", progress*100]];
+            float percentage = progress * 100.0;
+
+            alertView.progress = progress;
+            alertView.progressLabelText = [NSString stringWithFormat:@"%.0f %%", percentage];
 
             [self updateProgressWithAlertView:alertView];
         }
