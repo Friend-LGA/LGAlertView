@@ -125,8 +125,6 @@ LGAlertViewType;
 @property (strong, nonatomic) UIProgressView *progressView;
 @property (strong, nonatomic) UILabel        *progressLabel;
 
-@property (strong, nonatomic) NSString *progressLabelText;
-
 @property (assign, nonatomic) LGAlertViewType type;
 
 @property (assign, nonatomic) CGFloat keyboardHeight;
@@ -205,19 +203,20 @@ LGAlertViewType;
 - (nonnull instancetype)initWithActivityIndicatorAndTitle:(nullable NSString *)title
                                                   message:(nullable NSString *)message
                                                     style:(LGAlertViewStyle)style
+                                        progressLabelText:(nullable NSString *)progressLabelText
                                              buttonTitles:(nullable NSArray<NSString *> *)buttonTitles
                                         cancelButtonTitle:(nullable NSString *)cancelButtonTitle
                                    destructiveButtonTitle:(nullable NSString *)destructiveButtonTitle {
     self = [super init];
     if (self) {
         self.style = style;
+        self.type = LGAlertViewTypeActivityIndicator;
         self.title = title;
         self.message = message;
         self.buttonTitles = buttonTitles.mutableCopy;
         self.cancelButtonTitle = cancelButtonTitle;
         self.destructiveButtonTitle = destructiveButtonTitle;
-
-        self.type = LGAlertViewTypeActivityIndicator;
+        self.progressLabelText = progressLabelText;
 
         [self setupDefaults];
     }
@@ -227,6 +226,7 @@ LGAlertViewType;
 - (nonnull instancetype)initWithProgressViewAndTitle:(nullable NSString *)title
                                              message:(nullable NSString *)message
                                                style:(LGAlertViewStyle)style
+                                            progress:(float)progress
                                    progressLabelText:(NSString *)progressLabelText
                                         buttonTitles:(nullable NSArray<NSString *> *)buttonTitles
                                    cancelButtonTitle:(nullable NSString *)cancelButtonTitle
@@ -234,14 +234,14 @@ LGAlertViewType;
     self = [super init];
     if (self) {
         self.style = style;
+        self.type = LGAlertViewTypeProgressView;
         self.title = title;
         self.message = message;
         self.buttonTitles = buttonTitles.mutableCopy;
         self.cancelButtonTitle = cancelButtonTitle;
         self.destructiveButtonTitle = destructiveButtonTitle;
+        self.progress = progress;
         self.progressLabelText = progressLabelText;
-
-        self.type = LGAlertViewTypeProgressView;
 
         [self setupDefaults];
     }
@@ -257,6 +257,8 @@ LGAlertViewType;
                             destructiveButtonTitle:(nullable NSString *)destructiveButtonTitle {
     self = [super init];
     if (self) {
+        self.style = LGAlertViewStyleAlert;
+        self.type = LGAlertViewTypeTextFields;
         self.title = title;
         self.message = message;
         self.numberOfTextFields = numberOfTextFields;
@@ -264,8 +266,6 @@ LGAlertViewType;
         self.buttonTitles = buttonTitles.mutableCopy;
         self.cancelButtonTitle = cancelButtonTitle;
         self.destructiveButtonTitle = destructiveButtonTitle;
-
-        self.type = LGAlertViewTypeTextFields;
 
         [self setupDefaults];
     }
@@ -305,12 +305,14 @@ LGAlertViewType;
 + (nonnull instancetype)alertViewWithActivityIndicatorAndTitle:(nullable NSString *)title
                                                        message:(nullable NSString *)message
                                                          style:(LGAlertViewStyle)style
+                                             progressLabelText:(nullable NSString *)progressLabelText
                                                   buttonTitles:(nullable NSArray<NSString *> *)buttonTitles
                                              cancelButtonTitle:(nullable NSString *)cancelButtonTitle
                                         destructiveButtonTitle:(nullable NSString *)destructiveButtonTitle {
     return [[self alloc] initWithActivityIndicatorAndTitle:title
                                                    message:message
                                                      style:style
+                                         progressLabelText:progressLabelText
                                               buttonTitles:buttonTitles
                                          cancelButtonTitle:cancelButtonTitle
                                     destructiveButtonTitle:destructiveButtonTitle];
@@ -319,6 +321,7 @@ LGAlertViewType;
 + (nonnull instancetype)alertViewWithProgressViewAndTitle:(nullable NSString *)title
                                                   message:(nullable NSString *)message
                                                     style:(LGAlertViewStyle)style
+                                                 progress:(float)progress
                                         progressLabelText:(NSString *)progressLabelText
                                              buttonTitles:(nullable NSArray<NSString *> *)buttonTitles
                                         cancelButtonTitle:(nullable NSString *)cancelButtonTitle
@@ -326,6 +329,7 @@ LGAlertViewType;
     return [[self alloc] initWithProgressViewAndTitle:title
                                               message:message
                                                 style:style
+                                             progress:progress
                                     progressLabelText:progressLabelText
                                          buttonTitles:buttonTitles
                                     cancelButtonTitle:cancelButtonTitle
@@ -401,6 +405,7 @@ LGAlertViewType;
 - (nonnull instancetype)initWithActivityIndicatorAndTitle:(nullable NSString *)title
                                                   message:(nullable NSString *)message
                                                     style:(LGAlertViewStyle)style
+                                        progressLabelText:(nullable NSString *)progressLabelText
                                              buttonTitles:(nullable NSArray<NSString *> *)buttonTitles
                                         cancelButtonTitle:(nullable NSString *)cancelButtonTitle
                                    destructiveButtonTitle:(nullable NSString *)destructiveButtonTitle
@@ -410,6 +415,7 @@ LGAlertViewType;
     self = [self initWithActivityIndicatorAndTitle:title
                                            message:message
                                              style:style
+                                 progressLabelText:progressLabelText
                                       buttonTitles:buttonTitles
                                  cancelButtonTitle:cancelButtonTitle
                             destructiveButtonTitle:destructiveButtonTitle];
@@ -424,6 +430,7 @@ LGAlertViewType;
 - (nonnull instancetype)initWithProgressViewAndTitle:(nullable NSString *)title
                                              message:(nullable NSString *)message
                                                style:(LGAlertViewStyle)style
+                                            progress:(float)progress
                                    progressLabelText:(NSString *)progressLabelText
                                         buttonTitles:(nullable NSArray<NSString *> *)buttonTitles
                                    cancelButtonTitle:(nullable NSString *)cancelButtonTitle
@@ -434,6 +441,7 @@ LGAlertViewType;
     self = [self initWithProgressViewAndTitle:title
                                       message:message
                                         style:style
+                                     progress:progress
                             progressLabelText:progressLabelText
                                  buttonTitles:buttonTitles
                             cancelButtonTitle:cancelButtonTitle
@@ -516,6 +524,7 @@ LGAlertViewType;
 + (nonnull instancetype)alertViewWithActivityIndicatorAndTitle:(nullable NSString *)title
                                                        message:(nullable NSString *)message
                                                          style:(LGAlertViewStyle)style
+                                             progressLabelText:(nullable NSString *)progressLabelText
                                                   buttonTitles:(nullable NSArray<NSString *> *)buttonTitles
                                              cancelButtonTitle:(nullable NSString *)cancelButtonTitle
                                         destructiveButtonTitle:(nullable NSString *)destructiveButtonTitle
@@ -525,6 +534,7 @@ LGAlertViewType;
     return [[self alloc] initWithActivityIndicatorAndTitle:title
                                                    message:message
                                                      style:style
+                                         progressLabelText:progressLabelText
                                               buttonTitles:buttonTitles
                                          cancelButtonTitle:cancelButtonTitle
                                     destructiveButtonTitle:destructiveButtonTitle
@@ -536,6 +546,7 @@ LGAlertViewType;
 + (nonnull instancetype)alertViewWithProgressViewAndTitle:(nullable NSString *)title
                                                   message:(nullable NSString *)message
                                                     style:(LGAlertViewStyle)style
+                                                 progress:(float)progress
                                         progressLabelText:(NSString *)progressLabelText
                                              buttonTitles:(nullable NSArray<NSString *> *)buttonTitles
                                         cancelButtonTitle:(nullable NSString *)cancelButtonTitle
@@ -546,6 +557,7 @@ LGAlertViewType;
     return [[self alloc] initWithProgressViewAndTitle:title
                                               message:message
                                                 style:style
+                                             progress:progress
                                     progressLabelText:progressLabelText
                                          buttonTitles:buttonTitles
                                     cancelButtonTitle:cancelButtonTitle
@@ -622,6 +634,7 @@ LGAlertViewType;
 - (nonnull instancetype)initWithActivityIndicatorAndTitle:(nullable NSString *)title
                                                   message:(nullable NSString *)message
                                                     style:(LGAlertViewStyle)style
+                                        progressLabelText:(nullable NSString *)progressLabelText
                                              buttonTitles:(nullable NSArray<NSString *> *)buttonTitles
                                         cancelButtonTitle:(nullable NSString *)cancelButtonTitle
                                    destructiveButtonTitle:(nullable NSString *)destructiveButtonTitle
@@ -629,6 +642,7 @@ LGAlertViewType;
     self = [self initWithActivityIndicatorAndTitle:title
                                            message:message
                                              style:style
+                                 progressLabelText:progressLabelText
                                       buttonTitles:buttonTitles
                                  cancelButtonTitle:cancelButtonTitle
                             destructiveButtonTitle:destructiveButtonTitle];
@@ -641,6 +655,7 @@ LGAlertViewType;
 - (nonnull instancetype)initWithProgressViewAndTitle:(nullable NSString *)title
                                              message:(nullable NSString *)message
                                                style:(LGAlertViewStyle)style
+                                            progress:(float)progress
                                    progressLabelText:(NSString *)progressLabelText
                                         buttonTitles:(nullable NSArray<NSString *> *)buttonTitles
                                    cancelButtonTitle:(nullable NSString *)cancelButtonTitle
@@ -649,6 +664,7 @@ LGAlertViewType;
     self = [self initWithProgressViewAndTitle:title
                                       message:message
                                         style:style
+                                     progress:progress
                             progressLabelText:progressLabelText
                                  buttonTitles:buttonTitles
                             cancelButtonTitle:cancelButtonTitle
@@ -717,6 +733,7 @@ LGAlertViewType;
 + (nonnull instancetype)alertViewWithActivityIndicatorAndTitle:(nullable NSString *)title
                                                        message:(nullable NSString *)message
                                                          style:(LGAlertViewStyle)style
+                                             progressLabelText:(nullable NSString *)progressLabelText
                                                   buttonTitles:(nullable NSArray<NSString *> *)buttonTitles
                                              cancelButtonTitle:(nullable NSString *)cancelButtonTitle
                                         destructiveButtonTitle:(nullable NSString *)destructiveButtonTitle
@@ -724,6 +741,7 @@ LGAlertViewType;
     return [[self alloc] initWithActivityIndicatorAndTitle:title
                                                    message:message
                                                      style:style
+                                         progressLabelText:progressLabelText
                                               buttonTitles:buttonTitles
                                          cancelButtonTitle:cancelButtonTitle
                                     destructiveButtonTitle:destructiveButtonTitle
@@ -733,6 +751,7 @@ LGAlertViewType;
 + (nonnull instancetype)alertViewWithProgressViewAndTitle:(nullable NSString *)title
                                                   message:(nullable NSString *)message
                                                     style:(LGAlertViewStyle)style
+                                                 progress:(float)progress
                                         progressLabelText:(NSString *)progressLabelText
                                              buttonTitles:(nullable NSArray<NSString *> *)buttonTitles
                                         cancelButtonTitle:(nullable NSString *)cancelButtonTitle
@@ -741,6 +760,7 @@ LGAlertViewType;
     return [[self alloc] initWithProgressViewAndTitle:title
                                               message:message
                                                 style:style
+                                             progress:progress
                                     progressLabelText:progressLabelText
                                          buttonTitles:buttonTitles
                                     cancelButtonTitle:cancelButtonTitle
@@ -807,8 +827,11 @@ LGAlertViewType;
         _initialScale = 1.2;
         _finalScale = 0.95;
 
+        _titleTextColor = nil;
         _titleTextAlignment = NSTextAlignmentCenter;
+        _titleFont = nil;
 
+        _messageTextColor = nil;
         _messageTextAlignment = NSTextAlignmentCenter;
         _messageFont = [UIFont systemFontOfSize:14.0];
 
@@ -864,9 +887,12 @@ LGAlertViewType;
         _progressViewTrackTintColor = [UIColor colorWithWhite:0.8 alpha:1.0];
         _progressViewProgressImage = nil;
         _progressViewTrackImage = nil;
+
         _progressLabelTextColor = UIColor.blackColor;
         _progressLabelTextAlignment = NSTextAlignmentCenter;
         _progressLabelFont = [UIFont systemFontOfSize:14.0];
+        _progressLabelNumberOfLines = 1;
+        _progressLabelLineBreakMode = NSLineBreakByTruncatingTail;
 
         _textFieldsBackgroundColor = [UIColor colorWithWhite:0.97 alpha:1.0];
         _textFieldsTextColor = UIColor.blackColor;
@@ -1017,9 +1043,12 @@ LGAlertViewType;
     _progressViewTrackTintColor = appearance.progressViewTrackTintColor;
     _progressViewProgressImage = appearance.progressViewProgressImage;
     _progressViewTrackImage = appearance.progressViewTrackImage;
+
     _progressLabelTextColor = appearance.progressLabelTextColor;
     _progressLabelTextAlignment = appearance.progressLabelTextAlignment;
     _progressLabelFont = appearance.progressLabelFont;
+    _progressLabelNumberOfLines = appearance.progressLabelNumberOfLines;
+    _progressLabelLineBreakMode = appearance.progressLabelLineBreakMode;
 
     _textFieldsBackgroundColor = appearance.textFieldsBackgroundColor;
     _textFieldsTextColor = appearance.textFieldsTextColor;
@@ -1279,10 +1308,18 @@ LGAlertViewType;
 
 #pragma mark -
 
-- (float)progress {
-    if (self.type != LGAlertViewTypeProgressView) return 0.0;
+- (void)setProgress:(float)progress {
+    if (self.type != LGAlertViewTypeProgressView) return;
 
-    return self.progressView.progress;
+    _progress = progress;
+    [self.progressView setProgress:_progress animated:YES];
+}
+
+- (void)setProgressLabelText:(nullable NSString *)progressLabelText {
+    if (self.type != LGAlertViewTypeProgressView && self.type != LGAlertViewTypeActivityIndicator) return;
+
+    _progressLabelText = progressLabelText;
+    self.progressLabel.text = _progressLabelText;
 }
 
 - (void)setCancelButtonEnabled:(BOOL)cancelButtonEnabled {
@@ -1359,9 +1396,8 @@ LGAlertViewType;
 - (void)setProgress:(float)progress progressLabelText:(nullable NSString *)progressLabelText {
     if (self.type != LGAlertViewTypeProgressView) return;
 
-    [self.progressView setProgress:progress animated:YES];
-
-    self.progressLabel.text = progressLabelText;
+    self.progress = progress;
+    self.progressLabelText = progressLabelText;
 }
 
 - (void)setButtonEnabled:(BOOL)enabled atIndex:(NSUInteger)index {
@@ -1625,10 +1661,8 @@ LGAlertViewType;
     self.window.windowLevel = UIWindowLevelStatusBar + (self.windowLevel == LGAlertViewWindowLevelAboveStatusBar ? 1 : -1);
     self.view.userInteractionEnabled = NO;
 
-    CGSize size = self.viewController.view.bounds.size;
-
-    [self subviewsValidateWithSize:size];
-    [self layoutValidateWithSize:size];
+    [self subviewsValidateWithSize:CGSizeZero];
+    [self layoutValidateWithSize:CGSizeZero];
 
     self.showing = YES;
 
@@ -2004,6 +2038,12 @@ LGAlertViewType;
 #pragma mark -
 
 - (void)subviewsValidateWithSize:(CGSize)size {
+    if (CGSizeEqualToSize(size, CGSizeZero)) {
+        size = self.viewController.view.bounds.size;
+    }
+
+    // -----
+
     CGFloat width = self.width;
 
     // -----
@@ -2125,76 +2165,81 @@ LGAlertViewType;
 
             offsetY = CGRectGetMinY(self.innerContainerView.frame) + CGRectGetHeight(self.innerContainerView.frame);
         }
-        else if (self.type == LGAlertViewTypeActivityIndicator) {
-            self.activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:self.activityIndicatorViewStyle];
-            self.activityIndicator.color = self.activityIndicatorViewColor;
-            self.activityIndicator.backgroundColor = UIColor.clearColor;
-            [self.activityIndicator startAnimating];
+        else if (self.type == LGAlertViewTypeActivityIndicator || self.type == LGAlertViewTypeProgressView) {
+            if (self.type == LGAlertViewTypeActivityIndicator) {
+                self.activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:self.activityIndicatorViewStyle];
+                self.activityIndicator.color = self.activityIndicatorViewColor;
+                self.activityIndicator.backgroundColor = UIColor.clearColor;
+                [self.activityIndicator startAnimating];
 
-            CGRect activityIndicatorFrame = CGRectMake(width / 2.0 - CGRectGetWidth(self.activityIndicator.bounds) / 2.0,
-                                                       offsetY + self.innerMarginHeight,
-                                                       CGRectGetWidth(self.activityIndicator.bounds),
-                                                       CGRectGetHeight(self.activityIndicator.bounds));
+                CGRect activityIndicatorFrame = CGRectMake(width / 2.0 - CGRectGetWidth(self.activityIndicator.bounds) / 2.0,
+                                                           offsetY + self.innerMarginHeight,
+                                                           CGRectGetWidth(self.activityIndicator.bounds),
+                                                           CGRectGetHeight(self.activityIndicator.bounds));
 
-            if (LGAlertViewHelper.isNotRetina) {
-                activityIndicatorFrame = CGRectIntegral(activityIndicatorFrame);
+                if (LGAlertViewHelper.isNotRetina) {
+                    activityIndicatorFrame = CGRectIntegral(activityIndicatorFrame);
+                }
+
+                self.activityIndicator.frame = activityIndicatorFrame;
+                [self.scrollView addSubview:self.activityIndicator];
+
+                offsetY = CGRectGetMinY(self.activityIndicator.frame) + CGRectGetHeight(self.activityIndicator.frame);
+            }
+            else if (self.type == LGAlertViewTypeProgressView) {
+                self.progressView = [[UIProgressView alloc] initWithProgressViewStyle:UIProgressViewStyleDefault];
+                self.progressView.progress = self.progress;
+                self.progressView.backgroundColor = UIColor.clearColor;
+                self.progressView.progressTintColor = self.progressViewProgressTintColor;
+                self.progressView.trackTintColor = self.progressViewTrackTintColor;
+
+                if (self.progressViewProgressImage) {
+                    self.progressView.progressImage = self.progressViewProgressImage;
+                }
+
+                if (self.progressViewTrackImage) {
+                    self.progressView.trackImage = self.progressViewTrackImage;
+                }
+
+                CGRect progressViewFrame = CGRectMake(LGAlertViewPaddingWidth,
+                                                      offsetY + self.innerMarginHeight,
+                                                      width - (LGAlertViewPaddingWidth * 2.0),
+                                                      CGRectGetHeight(self.progressView.bounds));
+
+                if (LGAlertViewHelper.isNotRetina) {
+                    progressViewFrame = CGRectIntegral(progressViewFrame);
+                }
+
+                self.progressView.frame = progressViewFrame;
+                [self.scrollView addSubview:self.progressView];
+
+                offsetY = CGRectGetMinY(self.progressView.frame) + CGRectGetHeight(self.progressView.frame);
             }
 
-            self.activityIndicator.frame = activityIndicatorFrame;
-            [self.scrollView addSubview:self.activityIndicator];
+            if (self.progressLabelText) {
+                self.progressLabel = [UILabel new];
+                self.progressLabel.text = self.progressLabelText;
+                self.progressLabel.textColor = self.progressLabelTextColor;
+                self.progressLabel.textAlignment = self.progressLabelTextAlignment;
+                self.progressLabel.numberOfLines = self.progressLabelNumberOfLines;
+                self.progressLabel.backgroundColor = UIColor.clearColor;
+                self.progressLabel.font = self.progressLabelFont;
+                self.progressLabel.lineBreakMode = self.progressLabelLineBreakMode;
 
-            offsetY = CGRectGetMinY(self.activityIndicator.frame) + CGRectGetHeight(self.activityIndicator.frame);
-        }
-        else if (self.type == LGAlertViewTypeProgressView) {
-            self.progressView = [[UIProgressView alloc] initWithProgressViewStyle:UIProgressViewStyleDefault];
-            self.progressView.backgroundColor = UIColor.clearColor;
-            self.progressView.progressTintColor = self.progressViewProgressTintColor;
-            self.progressView.trackTintColor = self.progressViewTrackTintColor;
+                CGRect progressLabelFrame = CGRectMake(LGAlertViewPaddingWidth,
+                                                       offsetY + (self.innerMarginHeight / 2.0),
+                                                       width - (LGAlertViewPaddingWidth * 2.0),
+                                                       self.progressLabelNumberOfLines * self.progressLabelFont.lineHeight);
 
-            if (self.progressViewProgressImage) {
-                self.progressView.progressImage = self.progressViewProgressImage;
+                if (LGAlertViewHelper.isNotRetina) {
+                    progressLabelFrame = CGRectIntegral(progressLabelFrame);
+                }
+
+                self.progressLabel.frame = progressLabelFrame;
+                [self.scrollView addSubview:self.progressLabel];
+
+                offsetY = CGRectGetMinY(self.progressLabel.frame) + CGRectGetHeight(self.progressLabel.frame);
             }
-
-            if (self.progressViewTrackImage) {
-                self.progressView.trackImage = self.progressViewTrackImage;
-            }
-
-            CGRect progressViewFrame = CGRectMake(LGAlertViewPaddingWidth,
-                                                  offsetY + self.innerMarginHeight,
-                                                  width - (LGAlertViewPaddingWidth * 2.0),
-                                                  CGRectGetHeight(self.progressView.bounds));
-
-            if (LGAlertViewHelper.isNotRetina) {
-                progressViewFrame = CGRectIntegral(progressViewFrame);
-            }
-
-            self.progressView.frame = progressViewFrame;
-            [self.scrollView addSubview:self.progressView];
-
-            offsetY = CGRectGetMinY(self.progressView.frame) + CGRectGetHeight(self.progressView.frame);
-
-            self.progressLabel = [UILabel new];
-            self.progressLabel.text = self.progressLabelText;
-            self.progressLabel.textColor = self.progressLabelTextColor;
-            self.progressLabel.textAlignment = self.progressLabelTextAlignment;
-            self.progressLabel.numberOfLines = 1;
-            self.progressLabel.backgroundColor = UIColor.clearColor;
-            self.progressLabel.font = self.progressLabelFont;
-
-            CGSize progressLabelSize = [self.progressLabel sizeThatFits:CGSizeMake(width - LGAlertViewPaddingWidth * 2.0, CGFLOAT_MAX)];
-            CGRect progressLabelFrame = CGRectMake(LGAlertViewPaddingWidth,
-                                                   offsetY + (self.innerMarginHeight / 2.0),
-                                                   width - (LGAlertViewPaddingWidth * 2.0),
-                                                   progressLabelSize.height);
-
-            if (LGAlertViewHelper.isNotRetina) {
-                progressLabelFrame = CGRectIntegral(progressLabelFrame);
-            }
-
-            self.progressLabel.frame = progressLabelFrame;
-            [self.scrollView addSubview:self.progressLabel];
-
-            offsetY = CGRectGetMinY(self.progressLabel.frame) + CGRectGetHeight(self.progressLabel.frame);
         }
         else if (self.type == LGAlertViewTypeTextFields) {
             NSMutableArray *textFieldsArray = [NSMutableArray new];
@@ -2879,6 +2924,12 @@ LGAlertViewType;
 }
 
 - (void)layoutValidateWithSize:(CGSize)size {
+    if (CGSizeEqualToSize(size, CGSizeZero)) {
+        size = self.viewController.view.bounds.size;
+    }
+
+    // -----
+
     CGFloat width = self.width;
 
     // -----
