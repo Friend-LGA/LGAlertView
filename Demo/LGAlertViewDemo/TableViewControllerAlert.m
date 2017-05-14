@@ -697,6 +697,8 @@
 
             float percentage = progress * 100.0;
 
+            alertView.title = [NSString stringWithFormat:@"Loading (%.0f %%)", percentage];
+            alertView.message = [NSString stringWithFormat:@"Downloaded: %.0f %%", percentage];
             alertView.progress = progress;
             alertView.progressLabelText = [NSString stringWithFormat:@"%.0f %%", percentage];
 
