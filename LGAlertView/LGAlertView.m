@@ -74,8 +74,6 @@ LGAlertViewType;
 
 @property (readwrite) BOOL             showing;
 @property (readwrite) LGAlertViewStyle style;
-@property (readwrite) NSString         *title;
-@property (readwrite) NSString         *message;
 @property (readwrite) UIView           *innerView;
 @property (readwrite) NSArray          *buttonTitles;
 @property (readwrite) NSString         *cancelButtonTitle;
@@ -830,6 +828,7 @@ LGAlertViewType;
         _titleTextColor = nil;
         _titleTextAlignment = NSTextAlignmentCenter;
         _titleFont = nil;
+        _titleLineBreakMode = NSLineBreakByWordWrapping;
 
         _messageTextColor = nil;
         _messageTextAlignment = NSTextAlignmentCenter;
@@ -982,6 +981,7 @@ LGAlertViewType;
     else {
         _titleFont = [UIFont boldSystemFontOfSize:self.style == LGAlertViewStyleAlert ? 18.0 : 14.0];
     }
+    _titleLineBreakMode = appearance.titleLineBreakMode;
 
     if (appearance.isUserMessageTextColor) {
         _messageTextColor = appearance.messageTextColor;
@@ -992,6 +992,7 @@ LGAlertViewType;
     _messageTextAlignment = appearance.messageTextAlignment;
     _messageFont = appearance.messageFont;
     _messageLineBreakMode = appearance.messageLineBreakMode;
+    _messageLineBreakMode = appearance.titleLineBreakMode;
 
     _buttonsTitleColor = appearance.buttonsTitleColor;
     _buttonsTitleColorHighlighted = appearance.buttonsTitleColorHighlighted;
@@ -1263,6 +1264,11 @@ LGAlertViewType;
     self.userButtonsHeight = YES;
 }
 
+- (void)setTitle:(nullable NSString *)title {
+    _title = title;
+    self.titleLabel.text = _title;
+}
+
 - (void)setTitleTextColor:(UIColor *)titleTextColor {
     _titleTextColor = titleTextColor;
     self.userTitleTextColor = YES;
@@ -1271,6 +1277,11 @@ LGAlertViewType;
 - (void)setTitleFont:(UIFont *)titleFont {
     _titleFont = titleFont;
     self.userTitleFont = YES;
+}
+
+- (void)setMessage:(nullable NSString *)message {
+    _message = message;
+    self.messageLabel.text = _message;
 }
 
 - (void)setMessageTextColor:(UIColor *)messageTextColor {
@@ -1394,12 +1405,6 @@ LGAlertViewType;
 }
 
 #pragma mark -
-
-- (void)setMessage:(nullable NSString *)message
-{
-    _message = message;
-    self.messageLabel.text = _message;
-}
 
 - (void)setProgress:(float)progress progressLabelText:(nullable NSString *)progressLabelText {
     if (self.type != LGAlertViewTypeProgressView) return;

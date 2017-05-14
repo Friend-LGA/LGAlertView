@@ -208,7 +208,7 @@ typedef NS_ENUM(NSUInteger, LGAlertViewWindowLevel) {
 
 #pragma mark - Title properties
 
-@property (copy, nonatomic, readonly, nullable) NSString *title;
+@property (copy, nonatomic, nullable) NSString *title;
 
 /**
  Default:
@@ -224,10 +224,12 @@ typedef NS_ENUM(NSUInteger, LGAlertViewWindowLevel) {
  else [UIFont boldSystemFontOfSize:14.0]
  */
 @property (strong, nonatomic, nullable) UIFont *titleFont UI_APPEARANCE_SELECTOR;
+/** Default is NSLineBreakByWordWrapping */
+@property (assign, nonatomic) NSLineBreakMode titleLineBreakMode UI_APPEARANCE_SELECTOR;
 
 #pragma mark - Message properties
 
-@property (copy, nonatomic, readonly, nullable) NSString *message;
+@property (copy, nonatomic, nullable) NSString *message;
 
 /**
  Default:
@@ -239,10 +241,8 @@ typedef NS_ENUM(NSUInteger, LGAlertViewWindowLevel) {
 @property (assign, nonatomic) NSTextAlignment messageTextAlignment UI_APPEARANCE_SELECTOR;
 /** Default is [UIFont systemFontOfSize:14.0] */
 @property (strong, nonatomic, nullable) UIFont *messageFont UI_APPEARANCE_SELECTOR;
-
 /** Default is NSLineBreakByWordWrapping */
 @property (assign, nonatomic) NSLineBreakMode messageLineBreakMode UI_APPEARANCE_SELECTOR;
-
 
 #pragma mark - Buttons properties
 
@@ -758,8 +758,6 @@ typedef NS_ENUM(NSUInteger, LGAlertViewWindowLevel) {
 
 - (void)transitionToAlertView:(nonnull LGAlertView *)alertView completionHandler:(LGAlertViewCompletionHandler)completionHandler;
 - (void)transitionToAlertView:(nonnull LGAlertView *)alertView;
-
-- (void)setMessage:(nullable NSString *)message;
 
 - (void)setProgress:(float)progress progressLabelText:(nullable NSString *)progressLabelText;
 
