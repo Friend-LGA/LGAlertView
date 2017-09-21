@@ -106,8 +106,12 @@ CGFloat const LGAlertViewButtonImageOffsetFromTitle = 8.0;
 }
 
 + (CGFloat)statusBarHeight {
+#if TARGET_OS_IOS
     UIApplication *sharedApplication = [UIApplication sharedApplication];
     return sharedApplication.isStatusBarHidden ? 0.0 : CGRectGetHeight(sharedApplication.statusBarFrame);
+#else
+    return 0;
+#endif
 }
 
 + (CGFloat)separatorHeight {
@@ -126,6 +130,7 @@ CGFloat const LGAlertViewButtonImageOffsetFromTitle = 8.0;
     return [UIDevice currentDevice].systemVersion.floatValue;
 }
 
+#if TARGET_OS_IOS
 + (UIWindow *)appWindow {
     return [UIApplication sharedApplication].windows[0];
 }
@@ -133,6 +138,7 @@ CGFloat const LGAlertViewButtonImageOffsetFromTitle = 8.0;
 + (UIWindow *)keyWindow {
     return [UIApplication sharedApplication].keyWindow;
 }
+#endif
 
 + (BOOL)isViewControllerBasedStatusBarAppearance {
     static BOOL isViewControllerBasedStatusBarAppearance;
