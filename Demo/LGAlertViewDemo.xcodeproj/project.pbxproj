@@ -32,6 +32,7 @@
 		4AF138E11BF381200037B073 /* LGAlertViewTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 4AF138D81BF381200037B073 /* LGAlertViewTextField.m */; };
 		4AF138E21BF381200037B073 /* LGAlertViewWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = 4AF138DA1BF381200037B073 /* LGAlertViewWindow.m */; };
 		4AF138E31BF381200037B073 /* UIWindow+LGAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4AF138DC1BF381200037B073 /* UIWindow+LGAlertView.m */; };
+		EB25646522382130007F8309 /* LGAlertViewAutoSizingTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = EB25646422382130007F8309 /* LGAlertViewAutoSizingTableView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -84,6 +85,8 @@
 		4AF138DB1BF381200037B073 /* UIWindow+LGAlertView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = "UIWindow+LGAlertView.h"; sourceTree = "<group>"; };
 		4AF138DC1BF381200037B073 /* UIWindow+LGAlertView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = "UIWindow+LGAlertView.m"; sourceTree = "<group>"; };
 		4AF319DF1E104AC40035FE21 /* LGAlertViewShared.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LGAlertViewShared.h; sourceTree = "<group>"; };
+		EB25646322382130007F8309 /* LGAlertViewAutoSizingTableView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LGAlertViewAutoSizingTableView.h; sourceTree = "<group>"; };
+		EB25646422382130007F8309 /* LGAlertViewAutoSizingTableView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LGAlertViewAutoSizingTableView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -158,6 +161,8 @@
 			children = (
 				4AF138CE1BF381200037B073 /* LGAlertView.h */,
 				4AF138CF1BF381200037B073 /* LGAlertView.m */,
+				EB25646322382130007F8309 /* LGAlertViewAutoSizingTableView.h */,
+				EB25646422382130007F8309 /* LGAlertViewAutoSizingTableView.m */,
 				4AA4DFDB1E11448900CBB6AC /* LGAlertViewButton.h */,
 				4AA4DFDC1E11448900CBB6AC /* LGAlertViewButton.m */,
 				4AF138D01BF381200037B073 /* LGAlertViewButtonProperties.h */,
@@ -266,6 +271,7 @@
 				4AF138E11BF381200037B073 /* LGAlertViewTextField.m in Sources */,
 				4AF138E31BF381200037B073 /* UIWindow+LGAlertView.m in Sources */,
 				4A7F959A1EA1525B0059090C /* TableViewControllerBlurredAlert.m in Sources */,
+				EB25646522382130007F8309 /* LGAlertViewAutoSizingTableView.m in Sources */,
 				4AF138E01BF381200037B073 /* LGAlertViewController.m in Sources */,
 				4AA4DFDD1E1144C100CBB6AC /* LGAlertViewButton.m in Sources */,
 				4A587A591E9948A90010277C /* LGAlertViewWindowsObserver.m in Sources */,
