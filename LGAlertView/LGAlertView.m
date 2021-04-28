@@ -776,14 +776,14 @@ LGAlertViewType;
                                       cancelButtonTitle:(nullable NSString *)cancelButtonTitle
                                  destructiveButtonTitle:(nullable NSString *)destructiveButtonTitle
                                                delegate:(nullable id<LGAlertViewDelegate>)delegate {
-    return [[self alloc] alertViewWithTextFieldsAndTitle:title
-                                                 message:message
-                                      numberOfTextFields:numberOfTextFields
-                                  textFieldsSetupHandler:textFieldsSetupHandler
-                                            buttonTitles:buttonTitles
-                                       cancelButtonTitle:cancelButtonTitle
-                                  destructiveButtonTitle:destructiveButtonTitle
-                                                delegate:delegate];
+    return [[self alloc] initWithTextFieldsAndTitle:title
+                                            message:message
+                                 numberOfTextFields:numberOfTextFields
+                             textFieldsSetupHandler:textFieldsSetupHandler
+                                       buttonTitles:buttonTitles
+                                  cancelButtonTitle:cancelButtonTitle
+                             destructiveButtonTitle:destructiveButtonTitle
+                                           delegate:delegate];
 }
 
 #pragma mark -
