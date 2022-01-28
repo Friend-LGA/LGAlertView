@@ -3125,6 +3125,10 @@ LGAlertViewType;
 - (void)cancelAction:(id)sender {
     if (sender && [sender isKindOfClass:[UIButton class]]) {
         [(UIButton *)sender setSelected:YES];
+
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            [(UIButton *)sender setSelected:NO];
+        });
     }
 
     // -----
@@ -3159,6 +3163,10 @@ LGAlertViewType;
 - (void)destructiveAction:(id)sender {
     if (sender && [sender isKindOfClass:[UIButton class]]) {
         [(UIButton *)sender setSelected:YES];
+        
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            [(UIButton *)sender setSelected:NO];
+        });
     }
 
     // -----
@@ -3227,6 +3235,10 @@ LGAlertViewType;
 - (void)firstButtonAction:(id)sender {
     if (sender && [sender isKindOfClass:[UIButton class]]) {
         [(UIButton *)sender setSelected:YES];
+
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            [(UIButton *)sender setSelected:NO];
+        });
     }
 
     // -----
@@ -3243,6 +3255,10 @@ LGAlertViewType;
 - (void)secondButtonAction:(id)sender {
     if (sender && [sender isKindOfClass:[UIButton class]]) {
         [(UIButton *)sender setSelected:YES];
+
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            [(UIButton *)sender setSelected:NO];
+        });
     }
 
     // -----
@@ -3259,6 +3275,10 @@ LGAlertViewType;
 - (void)thirdButtonAction:(id)sender {
     if (sender && [sender isKindOfClass:[UIButton class]]) {
         [(UIButton *)sender setSelected:YES];
+
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            [(UIButton *)sender setSelected:NO];
+        });
     }
 
     // -----
