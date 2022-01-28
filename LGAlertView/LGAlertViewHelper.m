@@ -41,7 +41,7 @@ CGFloat const LGAlertViewButtonImageOffsetFromTitle = 8.0;
 @implementation LGAlertViewHelper
 
 + (void)animateWithDuration:(NSTimeInterval)duration
-                 animations:(void(^)())animations
+                 animations:(void(^)(void))animations
                  completion:(void(^)(BOOL finished))completion {
     [UIView animateWithDuration:duration
                           delay:0.0
