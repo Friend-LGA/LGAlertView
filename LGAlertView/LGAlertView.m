@@ -776,14 +776,14 @@ LGAlertViewType;
                                       cancelButtonTitle:(nullable NSString *)cancelButtonTitle
                                  destructiveButtonTitle:(nullable NSString *)destructiveButtonTitle
                                                delegate:(nullable id<LGAlertViewDelegate>)delegate {
-    return [[self alloc] alertViewWithTextFieldsAndTitle:title
-                                                 message:message
-                                      numberOfTextFields:numberOfTextFields
-                                  textFieldsSetupHandler:textFieldsSetupHandler
-                                            buttonTitles:buttonTitles
-                                       cancelButtonTitle:cancelButtonTitle
-                                  destructiveButtonTitle:destructiveButtonTitle
-                                                delegate:delegate];
+    return [[self alloc] initWithTextFieldsAndTitle:title
+                                            message:message
+                                 numberOfTextFields:numberOfTextFields
+                             textFieldsSetupHandler:textFieldsSetupHandler
+                                       buttonTitles:buttonTitles
+                                  cancelButtonTitle:cancelButtonTitle
+                             destructiveButtonTitle:destructiveButtonTitle
+                                           delegate:delegate];
 }
 
 #pragma mark -
@@ -2880,6 +2880,7 @@ LGAlertViewType;
                 self.tableView.delegate = self;
                 self.tableView.scrollEnabled = NO;
                 [self.tableView registerClass:[LGAlertViewCell class] forCellReuseIdentifier:@"cell"];
+                self.tableView.estimatedRowHeight = self.buttonsHeight;
                 self.tableView.frame = CGRectMake(0.0, 0.0, width, CGFLOAT_MAX);
                 [self.tableView reloadData];
                 [self.tableView layoutIfNeeded];
