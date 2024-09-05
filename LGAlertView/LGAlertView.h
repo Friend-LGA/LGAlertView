@@ -28,8 +28,8 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "LGAlertViewButtonProperties.h"
-#import "LGAlertViewShared.h"
+#import <LGAlertView/LGAlertViewButtonProperties.h>
+#import <LGAlertView/LGAlertViewShared.h>
 
 @class LGAlertView;
 @protocol LGAlertViewDelegate;
@@ -59,7 +59,7 @@ extern NSString * _Nonnull const kLGAlertViewAnimationDuration;
 
 #pragma mark - Types
 
-typedef void (^ _Nullable LGAlertViewCompletionHandler)();
+typedef void (^ _Nullable LGAlertViewCompletionHandler)(void);
 typedef void (^ _Nullable LGAlertViewHandler)(LGAlertView * _Nonnull alertView);
 typedef void (^ _Nullable LGAlertViewActionHandler)(LGAlertView * _Nonnull alertView, NSUInteger index, NSString * _Nullable title);
 typedef void (^ _Nullable LGAlertViewTextFieldsSetupHandler)(UITextField * _Nonnull textField, NSUInteger index);
