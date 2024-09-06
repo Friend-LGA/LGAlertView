@@ -19,7 +19,9 @@
     [self.window makeKeyAndVisible];
 
     // Set default action sheet offset equal to safe area of the screen
-    [[LGAlertView appearance] setCancelButtonOffsetY: UIApplication.sharedApplication.windows.firstObject.safeAreaInsets.bottom];
+    if (@available(iOS 11.0, *)) {
+        [LGAlertView appearance].cancelButtonOffsetY = UIApplication.sharedApplication.windows.firstObject.safeAreaInsets.bottom;
+    }
 
     return YES;
 }

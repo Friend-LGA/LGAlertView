@@ -247,6 +247,27 @@ LGAlertView.appearance()...
 LGAlertView.appearance()...
 ```
 
+### Action Sheet Safe Area
+
+By default `LGAlertView` with `LGAlertViewStyleActionSheet` style doesn't use safe area insets.
+So for now it's up to you to set the offset, and it as easy as this:
+
+##### Objective-C
+
+```objective-c
+if (@available(iOS 11.0, *)) {
+    [LGAlertView appearance].cancelButtonOffsetY = UIApplication.sharedApplication.windows.firstObject.safeAreaInsets.bottom;
+}
+```
+
+##### Swift
+
+```swift
+if #available(iOS 11.0, *) {
+    LGAlertView.appearance().cancelButtonOffsetY = UIApplication.sharedApplication.windows.firstObject.safeAreaInsets.bottom
+}
+```
+
 ### Buttons
 
 If you want to set properties for each button individually, you can use method:
