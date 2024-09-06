@@ -16,7 +16,7 @@
     self.navigationBar.tintColor = [UIColor colorWithWhite:1.0 alpha:0.5];
 
     if (@available(iOS 13.0, *)) {
-        UINavigationBarAppearance* standardAppearance = [UINavigationBarAppearance new];
+        UINavigationBarAppearance *standardAppearance = [UINavigationBarAppearance new];
         standardAppearance.titleTextAttributes = @{NSForegroundColorAttributeName: [UIColor whiteColor]};
         standardAppearance.backgroundColor = [UIColor colorWithRed:0.0 green:0.5 blue:1.0 alpha:1.0];
         self.navigationBar.standardAppearance = standardAppearance;
