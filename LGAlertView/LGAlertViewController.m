@@ -54,10 +54,22 @@
 - (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator {
     [super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
 
+    __weak typeof(self) weakSelf = self;
+    __weak typeof(coordinator) weakCoordinator = coordinator;
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        [UIView animateWithDuration:coordinator.transitionDuration animations:^{
-            [self setNeedsStatusBarAppearanceUpdate];
-            [self.alertView layoutValidateWithSize:size];
+        if (!weakSelf) {
+            return;
+        }
+        __strong typeof(weakSelf) strongSelf = weakSelf;
+        float transitionDuration = ^{
+            if (weakCoordinator) {
+                return weakCoordinator.transitionDuration;
+            }
+            return [[LGAlertView appearance] animationDuration];
+        }();
+        [UIView animateWithDuration:transitionDuration animations:^{
+            [strongSelf setNeedsStatusBarAppearanceUpdate];
+            [strongSelf.alertView layoutValidateWithSize:size];
         }];
     });
 }
