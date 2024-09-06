@@ -28,8 +28,8 @@
 //
 
 #import <UIKit/UIKit.h>
-#import <LGAlertView/LGAlertViewButtonProperties.h>
-#import <LGAlertView/LGAlertViewShared.h>
+#import "LGAlertViewButtonProperties.h"
+#import "LGAlertViewShared.h"
 
 @class LGAlertView;
 @protocol LGAlertViewDelegate;
