@@ -1114,23 +1114,31 @@ LGAlertViewType;
 
 #pragma mark - UIAppearance
 
-+ (instancetype)appearance {
++ (nonnull instancetype)appearance {
     return [self sharedAlertViewForAppearance];
 }
 
-+ (instancetype)appearanceWhenContainedIn:(Class<UIAppearanceContainer>)ContainerClass, ... {
++ (nonnull instancetype)appearanceWhenContainedIn:(Class<UIAppearanceContainer>)ContainerClass, ... {
     return [self sharedAlertViewForAppearance];
 }
 
-+ (instancetype)appearanceForTraitCollection:(UITraitCollection *)trait {
++ (nonnull instancetype)appearanceForTraitCollection:(nonnull UITraitCollection *)trait {
     return [self sharedAlertViewForAppearance];
 }
 
-+ (instancetype)appearanceForTraitCollection:(UITraitCollection *)trait whenContainedIn:(Class<UIAppearanceContainer>)ContainerClass, ... {
++ (nonnull instancetype)appearanceForTraitCollection:(nonnull UITraitCollection *)trait whenContainedIn:(Class<UIAppearanceContainer>)ContainerClass, ... {
     return [self sharedAlertViewForAppearance];
 }
 
-+ (instancetype)sharedAlertViewForAppearance {
++ (nonnull instancetype)appearanceForTraitCollection:(nonnull UITraitCollection *)trait whenContainedInInstancesOfClasses:(nonnull NSArray<Class<UIAppearanceContainer>> *)containerTypes {
+    return [self sharedAlertViewForAppearance];
+}
+
++ (nonnull instancetype)appearanceWhenContainedInInstancesOfClasses:(nonnull NSArray<Class<UIAppearanceContainer>> *)containerTypes { 
+    return [self sharedAlertViewForAppearance];
+}
+
++ (nonnull instancetype)sharedAlertViewForAppearance {
     static LGAlertView *alertView;
     static dispatch_once_t onceToken;
 
